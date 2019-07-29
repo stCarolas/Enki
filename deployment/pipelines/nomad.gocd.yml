@@ -1,0 +1,20 @@
+format_version: 5
+pipelines:
+  NomadJob_Enki:
+    group: Enki
+    display_order: 40
+    label_template: ${code[:10]}
+    materials:
+      code:
+        type: configrepo
+        destination: code
+      service:
+        pipeline: Docker_Enki
+        stage: publish
+    stages:
+      - deploy_nomad_job:
+          elastic_profile_id: "levant"
+          tasks:
+            - script: |
+                export CODE_PATH=$(pwd)/code
+                /scripts/deploy.sh
