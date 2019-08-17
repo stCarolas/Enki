@@ -1,4 +1,4 @@
-package com.github.stcarolas;
+package com.github.stcarolas.enki.gocd.analyzers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,10 +8,11 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.stcarolas.gocd.api.GoCD;
-import com.github.stcarolas.gocd.model.ConfigRepo;
-import com.github.stcarolas.gocd.model.Material;
-import com.github.stcarolas.model.Repo;
+import com.github.stcarolas.enki.Analyzer;
+import com.github.stcarolas.enki.gocd.api.GoCD;
+import com.github.stcarolas.enki.gocd.model.ConfigRepo;
+import com.github.stcarolas.enki.gocd.model.Material;
+import com.github.stcarolas.enki.model.Repo;
 
 import feign.Feign;
 import feign.auth.BasicAuthRequestInterceptor;

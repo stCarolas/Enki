@@ -1,4 +1,4 @@
-package com.github.stcarolas.model;
+package com.github.stcarolas.enki.model;
 
 import java.util.Arrays;
 import java.util.List;

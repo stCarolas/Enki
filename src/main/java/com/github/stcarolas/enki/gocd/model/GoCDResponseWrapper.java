@@ -1,4 +1,4 @@
-package com.github.stcarolas.gocd.model;
+package com.github.stcarolas.enki.gocd.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

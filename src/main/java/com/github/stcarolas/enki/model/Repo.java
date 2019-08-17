@@ -1,4 +1,4 @@
-package com.github.stcarolas.model;
+package com.github.stcarolas.enki.model;
 
 import java.io.File;
 import java.util.Optional;
@@ -40,11 +40,11 @@ public class Repo {
                 @Override
                 protected JSch createDefaultJSch( FS fs ) throws JSchException {
                   JSch defaultJSch = super.createDefaultJSch( fs );
-                  defaultJSch.addIdentity( "/home/stCarolas/.ssh/id_rsa" );
+                  defaultJSch.addIdentity( System.getProperty("user.home") + "/.ssh/id_rsa" );
                   return defaultJSch;
                 }
             };
-            Git git = Git.cloneRepository()
+            Git.cloneRepository()
                 .setURI(sshUrl)
                 .setDirectory(directory)
                 .setTransportConfigCallback( new TransportConfigCallback() {

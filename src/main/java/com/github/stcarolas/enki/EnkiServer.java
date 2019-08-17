@@ -1,8 +1,8 @@
-package com.github.stcarolas;
+package com.github.stcarolas.enki;
 
 import java.util.List;
 
-import com.github.stcarolas.model.RepoProvider;
+import com.github.stcarolas.enki.model.RepoProvider;
 
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;

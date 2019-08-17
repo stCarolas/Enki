@@ -1,9 +1,10 @@
-package com.github.stcarolas;
+package com.github.stcarolas.enki;
 
 import java.util.Arrays;
 
-import com.github.stcarolas.analyzers.MavenDependencyCollector;
-import com.github.stcarolas.model.GiteaRepoProvider;
+import com.github.stcarolas.enki.analyzers.MavenDependencyCollector;
+import com.github.stcarolas.enki.gocd.analyzers.GocdConfigRepoSync;
+import com.github.stcarolas.enki.model.GiteaRepoProvider;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
@@ -25,7 +26,8 @@ public class Launcher {
         );
         val mvnDepsCollector = new MavenDependencyCollector();
         new EnkiServer(
-            Arrays.asList(gitea), Arrays.asList(gocdConfigRepoSync,mvnDepsCollector),
+            Arrays.asList(gitea), 
+            Arrays.asList(gocdConfigRepoSync,mvnDepsCollector),
             "0.0.0.0", 8080
         );
     }

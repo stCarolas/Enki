@@ -1,7 +1,7 @@
-package com.github.stcarolas.gocd.api;
+package com.github.stcarolas.enki.gocd.api;
 
-import com.github.stcarolas.gocd.model.ConfigRepo;
-import com.github.stcarolas.gocd.model.GoCDResponseWrapper;
+import com.github.stcarolas.enki.gocd.model.ConfigRepo;
+import com.github.stcarolas.enki.gocd.model.GoCDResponseWrapper;
 
 import feign.Headers;
 import feign.RequestLine;

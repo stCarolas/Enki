@@ -1,14 +1,16 @@
-package com.github.stcarolas.analyzers;
+package com.github.stcarolas.enki.analyzers;
 
 import java.io.FileReader;
 import java.util.Map;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
-import com.github.stcarolas.Analyzer;
-import com.github.stcarolas.model.Repo;
+import com.github.stcarolas.enki.Analyzer;
+import com.github.stcarolas.enki.model.Repo;
 
 import io.vavr.control.Try;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class MavenDependencyCollector implements Analyzer {
 
     @Override
