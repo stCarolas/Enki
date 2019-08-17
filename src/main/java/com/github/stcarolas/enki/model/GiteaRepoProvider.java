@@ -3,10 +3,8 @@ package com.github.stcarolas.enki.model;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,6 @@ import rocks.mango.gitea.Repository;
 
 @RequiredArgsConstructor
 public class GiteaRepoProvider implements RepoProvider {
-
     private final String baseUrl;
     private final String organization;
 
@@ -25,19 +22,18 @@ public class GiteaRepoProvider implements RepoProvider {
         val organizations = Feign.builder()
             .decoder(
                 new JacksonDecoder(Arrays.asList((Module) new JavaTimeModule()))
-            ).target(OrganizationApi.class, baseUrl);
-        return organizations
-            .orgListRepos(organization)
+            )
+            .target(OrganizationApi.class, baseUrl);
+        return organizations.orgListRepos(organization)
             .stream()
-            .map( repo -> convert(repo) )
+            .map(repo -> convert(repo))
             .collect(Collectors.toList());
     }
 
-    public Repo convert(Repository repo){
+    public Repo convert(Repository repo) {
         return Repo.builder()
             .name(repo.getName())
             .sshUrl(repo.getSshUrl())
             .build();
     }
-    
 }
