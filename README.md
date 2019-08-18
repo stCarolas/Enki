@@ -15,8 +15,9 @@ RepoHandler are used to do some work on repos loaded by RepoProvider.
 Available RepoHandler's:
 - GoCD ConfigRepo Sync
 - Logging
-- GitHub-Gitea-Mirroring
+- GitHub->Gitea Mirroring
 - Maven Dependency Handlers
+- Discord Channel Creator
 
 # Examples
 In directory `examples`
