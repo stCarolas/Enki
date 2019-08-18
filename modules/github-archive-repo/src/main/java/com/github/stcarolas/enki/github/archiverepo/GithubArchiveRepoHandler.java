@@ -1,5 +1,7 @@
 package com.github.stcarolas.enki.github.archiverepo;
 
+import java.util.HashMap;
+import java.util.Map;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoHandler;
 import org.eclipse.egit.github.core.service.RepositoryService;
@@ -17,13 +19,24 @@ public class GithubArchiveRepoHandler implements RepoHandler {
 
     @Override
     public void analyze(Repo repo) {
-        return Try.of(
+        Try.of(
             () -> {
                 val repoService = new RepositoryService();
                 repoService.getClient().setCredentials(username, password);
-                log.info("Getting repos for org:{}", organization);
-                repoService.editRepository(organization, repo.getName());
+                log.info("Getting repo {} in org {}", repo.getName(), organization);
+                return repoService.editRepository(
+                    organization,
+                    repo.getName(),
+                    archiveRepoOptions()
+                );
             }
-        );
+        )
+            .onFailure(error -> log.error(error));
+    }
+
+    public Map<String, Object> archiveRepoOptions() {
+        val options = new HashMap<String, Object>();
+        options.put("archived", true);
+        return options;
     }
 }
