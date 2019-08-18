@@ -1,0 +1,39 @@
+name: Enki GoCD Analyzers
+groupId: com.github.stcarolas.enki
+artifactId: enki-gocd-analyzers
+version: 0.0.1
+
+modelVersion: 4.0.0
+properties: {
+  feign-version: 9.4.0,
+  jackson-version: 2.8.9,
+  maven.compiler.source: 1.8,
+  maven.compiler.target: 1.8,
+  revision: 0.0.1,
+  java.version: 1.8
+}
+
+dependencies:
+- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: 0.0.1}
+- {groupId: io.github.openfeign, artifactId: feign-core, version: '${feign-version}'}
+- {groupId: io.github.openfeign, artifactId: feign-jackson, version: '${feign-version}'}
+- {groupId: io.github.openfeign, artifactId: feign-slf4j, version: '${feign-version}'}
+- {groupId: com.fasterxml.jackson.core, artifactId: jackson-core, version: '${jackson-version}'}
+- {groupId: com.fasterxml.jackson.core, artifactId: jackson-annotations, version: '${jackson-version}'}
+- {groupId: com.fasterxml.jackson.core, artifactId: jackson-databind, version: '${jackson-version}'}
+- {groupId: com.fasterxml.jackson.datatype, artifactId: jackson-datatype-jsr310, version: '${jackson-version}'}
+- {groupId: com.typesafe, artifactId: config, version: 1.3.4}
+- {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-2}
+- {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
+- {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
+- {groupId: org.projectlombok, artifactId: lombok, optional: true, version: 1.18.8, scope: provided}
+
+build:
+  plugins:
+  - artifactId: maven-surefire-plugin
+  - artifactId: maven-compiler-plugin
+    configuration:
+      annotationProcessorPaths:
+        - groupId: org.projectlombok
+          artifactId: lombok
+          version: 1.18.8
