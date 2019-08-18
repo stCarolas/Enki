@@ -1,6 +1,6 @@
 name: Enki GoCD Analyzers
 groupId: com.github.stcarolas.enki
-artifactId: enki-gocd-analyzers
+artifactId: enki-gocd-handlers
 version: 0.0.1
 
 modelVersion: 4.0.0
