@@ -1,6 +1,7 @@
 package com.github.stcarolas.enki;
 
 import com.github.stcarolas.enki.discord.commithook.DiscordCommitHookCreator;
+import com.github.stcarolas.enki.logginganalyzers.LoggingAnalyzers;
 import com.github.stcarolas.enki.gitea.provider.GiteaRepoProvider;
 import com.typesafe.config.ConfigFactory;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class Launcher {
                     config.getString("gitea.organization")
                 )
             )
+            .analyzer(new LoggingAnalyzers())
             .analyzer(
                 DiscordCommitHookCreator.builder()
                     .giteaBaseUrl(config.getString("gitea.url"))

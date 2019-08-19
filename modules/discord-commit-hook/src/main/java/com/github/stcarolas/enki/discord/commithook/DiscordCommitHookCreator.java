@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.stcarolas.enki.core.Repo;
@@ -19,9 +20,11 @@ import lombok.extern.log4j.Log4j2;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.Webhook;
 import rocks.mango.gitea.CreateHookOption;
-import rocks.mango.gitea.CreateHookOption.TypeEnum;
 import rocks.mango.gitea.RepositoryApi;
+import rocks.mango.gitea.CreateHookOption.TypeEnum;
 
 @Builder
 @Log4j2
@@ -48,7 +51,10 @@ public class DiscordCommitHookCreator implements RepoHandler {
 
     @Override
     public void analyze(Repo repo) {
-        val authInterceptor = new BasicAuthRequestInterceptor(giteaUsername, giteaPassword);
+        val authInterceptor = new BasicAuthRequestInterceptor(
+            giteaUsername,
+            giteaPassword
+        );
         val gitea = Feign.builder()
             .decoder(new JacksonDecoder(Arrays.asList((Module) new JavaTimeModule())))
             .encoder(new JacksonEncoder())
@@ -58,30 +64,83 @@ public class DiscordCommitHookCreator implements RepoHandler {
             .forEach(
                 guild -> {
                     val channelName = constructChannelName(repo.getName());
-                    guild.getCategoryById(discordCategoryId)
-                        .createTextChannel(channelName)
-                        .submit()
-                        .thenAccept(
+                    val category = guild.getCategoryById(discordCategoryId);
+                    category.getTextChannels()
+                        .stream()
+                        .filter(
+                            item -> {
+                                return item.getName().equals(channelName);
+                            }
+                        )
+                        .findAny()
+                        // .map(
+                    // findedChannel -> {
+                    // return Optional.of(findedChannel);
+                    // }
+                    // )
+                    // .orElse(createTextChannel(category, channelName))
+                    .ifPresent(
                             channel -> {
-                                channel.createWebhook(constructWebhookName(channelName))
-                                    .submit()
-                                    .thenAccept(
-                                        webhook -> {
-                                            gitea.repoCreateHook(
+                                log.info("working in channel:{}", channel.getName());
+                                val webhookName = constructWebhookName(channelName);
+                                log.info("construct webhook:{}", webhookName);
+                                val webhookUrl = channel.retrieveWebhooks()
+                                    .complete()
+                                    .stream()
+                                    .filter(
+                                        hook -> {
+                                            return hook.getName().equals(webhookName);
+                                        }
+                                    )
+                                    .findFirst()
+                                    .orElse(createWebhook(channel, webhookName))
+                                    .getUrl();
+                                log.info("webhook url: {}", webhookUrl);
+                                gitea.repoListHooks(giteaOrganization, repo.getName())
+                                    .forEach(
+                                        hook -> {
+                                            log.info(
+                                                "Delete hook {} in repo {}",
+                                                hook.getId(),
+                                                repo.getName()
+                                            );
+                                            gitea.repoDeleteHook(
                                                 giteaOrganization,
                                                 repo.getName(),
-                                                new CreateHookOption()
-                                                    .active(true)
-                                                    .type(TypeEnum.DISCORD)
-                                                    .config(giteaHookConfig(webhook.getUrl()))
-                                                    .events(giteaWebhookEvents())
+                                                hook.getId()
                                             );
                                         }
                                     );
+                                gitea.repoCreateHook(
+                                    giteaOrganization,
+                                    repo.getName(),
+                                    new CreateHookOption()
+                                        .active(true)
+                                        .type(TypeEnum.DISCORD)
+                                        .putConfigItem("content_type", "json")
+                                        .putConfigItem("content-type", "json")
+                                        .putConfigItem("url", webhookUrl)
+                                        .events(giteaWebhookEvents())
+                                );
                             }
                         );
                 }
             );
+    }
+
+    private Webhook createWebhook(TextChannel channel, String webhookName) {
+        log.info("create webhook:{}", webhookName);
+        return channel.createWebhook(webhookName).complete();
+    }
+
+    private Optional<TextChannel> createTextChannel(Category category, String name) {
+        log.info("Create text channel: {}", name);
+        return Try.of(
+            () -> {
+                return category.createTextChannel(name).submit().get();
+            }
+        )
+            .toOptional();
     }
 
     private String constructChannelName(String repoName) {
@@ -90,13 +149,6 @@ public class DiscordCommitHookCreator implements RepoHandler {
 
     private List<String> giteaWebhookEvents() {
         return Arrays.asList("push");
-    }
-
-    private Map<String, String> giteaHookConfig(String webhook) {
-        val config = new HashMap<String, String>();
-        config.put("content-type", "json");
-        config.put("url", webhook);
-        return config;
     }
 
     private String constructWebhookName(String channelName) {
