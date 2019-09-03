@@ -1,8 +1,10 @@
 package com.github.stcarolas.enki.logginganalyzers;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
@@ -19,6 +21,8 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 public class Generator implements RepoHandler {
     private final String cloneUrl;
+    private final Map<String, String> data;
+    private final Map<String, String> mapping;
 
     @Override
     public void analyze(Repo repo) {
@@ -29,12 +33,12 @@ public class Generator implements RepoHandler {
                 .build()
         );
         try {
-            Template template = handlebars.compile("image.gocd.yaml");
-            val data = new HashMap();
-            data.put("image", "testImageName");
-            data.put("group", "testGroupName");
-            try (val out = new FileWriter("/tmp/test2")) {
-                template.apply(data, out);
+            for (val pair : mapping.entrySet()) {
+                Template template = handlebars.compile(pair.getKey());
+                new File(pair.getValue()).toPath().getParent().toFile().mkdirs();
+                try (val out = new FileWriter(pair.getValue())) {
+                    template.apply(data, out);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
