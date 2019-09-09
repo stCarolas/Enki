@@ -17,6 +17,8 @@ dependencies:
 - {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
 - {groupId: com.github.stcarolas.gittemplateloader, artifactId: handlebars-git-templateloader, version: 0.0.1}
 - {groupId: org.projectlombok, artifactId: lombok, optional: true, version: 1.18.8, scope: provided}
+- {groupId: info.picocli, artifactId: picocli,  version: 4.0.3}
+- {groupId: io.projectreactor, artifactId: reactor-core,  version: 3.2.12.RELEASE}
 
 build:
   plugins:
@@ -27,3 +29,20 @@ build:
         - groupId: org.projectlombok
           artifactId: lombok
           version: 1.18.8
+  - groupId: org.apache.maven.plugins
+    artifactId: maven-shade-plugin
+    version: 3.2.1
+    executions:
+      - id: "shade"
+        goals: ["shade"]
+        phase: "package"
+        configuration:
+          transformers:
+            org.apache.maven.plugins.shade.resource.ManifestResourceTransformer:
+              mainClass: com.github.stcarolas.enki.logginganalyzers.GeneratorCli
+          filters:
+            - artifact: "*:*"
+              excludes:
+                - "META-INF/*.SF"
+                - "META-INF/*.DSA"
+                - "META-INF/*.RSA"

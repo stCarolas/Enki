@@ -11,7 +11,7 @@ public class GeneratorTest {
     @Test
     public void testGenerator() {
         val mapping = new HashMap<String, String>();
-        mapping.put("image.gocd.yaml","/tmp/test3");
+        mapping.put("image.gocd.yaml","test/test/test3");
         val data = new HashMap<String, String>();
         data.put("image","imageName");
         data.put("group","groupName");
