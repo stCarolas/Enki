@@ -24,8 +24,10 @@ public class GenerateWithMappingConsumer implements Consumer<Mapping> {
         try {
             Template template = handlebars.compile(mapping.getSource());
             try {
-                new File(mapping.getSource()).toPath().getParent().toFile().mkdirs();
-            } catch (Exception e) {}
+                new File(mapping.getDestination()).toPath().getParent().toFile().mkdirs();
+            } catch (Exception e) {
+                log.debug("error while creating structure:{}", e);
+            }
             try (val out = new FileWriter(mapping.getDestination())) {
                 template.apply(data, out);
             }

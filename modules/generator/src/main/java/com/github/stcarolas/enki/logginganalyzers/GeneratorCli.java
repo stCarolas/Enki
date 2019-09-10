@@ -1,5 +1,6 @@
 package com.github.stcarolas.enki.logginganalyzers;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
@@ -18,6 +19,9 @@ public class GeneratorCli implements Callable<Integer> {
     @Option(names = { "-d", "--data" })
     Map<String, String> data;
 
+    @Option(names = { "-m", "--mapping" })
+    Map<String, String> mapping;
+
     @Parameters(index = "0", description = "The git repo url")
     private String gitSshUrl;
 
@@ -28,9 +32,16 @@ public class GeneratorCli implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
+        if (mapping == null) {
+            mapping = new HashMap<>();
+        }
+        if (data == null) {
+            data = new HashMap<>();
+        }
         Generator.builder()
             .cloneUrl(gitSshUrl)
             .data(data)
+            .mapping(mapping)
             .build()
             .analyze(null);
         return 0;

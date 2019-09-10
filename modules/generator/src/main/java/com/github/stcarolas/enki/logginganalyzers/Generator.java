@@ -6,6 +6,7 @@ import java.util.Map;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoHandler;
+import com.github.stcarolas.enki.generator.operators.CustomMappingMapper;
 import com.github.stcarolas.enki.generator.operators.GenerateWithMappingConsumer;
 import com.github.stcarolas.enki.generator.operators.IgnoreFilesFilter;
 import com.github.stcarolas.enki.generator.operators.PathToFileMappingMapper;
@@ -21,10 +22,11 @@ import reactor.core.publisher.Flux;
 public class Generator implements RepoHandler {
     private final String cloneUrl;
     private final Map<String, String> data;
+    private final Map<String, String> mapping;
 
     @Override
     public void analyze(Repo repo) {
-        log.info("Start handle");
+        log.info("Start generation");
         val templateLoader = TemplateLoaderSupplier.builder().url(cloneUrl).build().get();
         templateLoader.getDirectory()
             .ifPresent(
@@ -41,10 +43,14 @@ public class Generator implements RepoHandler {
                     val ignoreFilePatterns = IgnoreFilesFilter.builder()
                         .ignoreList(Arrays.asList(".git"))
                         .build();
+                    val overrideWithCustomMapping = CustomMappingMapper.builder()
+                        .customMappings(mapping)
+                        .build();
                     Flux.just(templateLoader)
                         .flatMap(toPathes)
                         .filter(ignoreFilePatterns)
                         .map(toMapping)
+                        .map(overrideWithCustomMapping)
                         .doOnNext(generateByMapping)
                         .subscribe();
                 }
