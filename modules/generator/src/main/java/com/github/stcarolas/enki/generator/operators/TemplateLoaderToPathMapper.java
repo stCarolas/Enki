@@ -2,36 +2,34 @@ package com.github.stcarolas.enki.generator.operators;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import com.github.stcarolas.gittemplateloader.GitTemplateLoader;
-
 import io.vavr.control.Try;
 import lombok.Builder;
+import lombok.extern.log4j.Log4j2;
+import reactor.core.publisher.Flux;
 
 @Builder
+@Log4j2
 public class TemplateLoaderToPathMapper
-    implements Function<GitTemplateLoader, List<Path>> {
+    implements Function<GitTemplateLoader, Flux<Path>> {
 
     @Override
-    public List<Path> apply(GitTemplateLoader t) {
+    public Flux<Path> apply(GitTemplateLoader t) {
+        log.info("get flux of path from templateLoader");
         return t.getDirectory()
             .map(
                 path -> {
                     return Try.of(
                         () -> {
-                            return Files.walk(path.toPath())
-                                .filter(Files::isRegularFile)
-                                .collect(Collectors.toList());
+                            return Flux.fromStream(
+                                Files.walk(path.toPath()).filter(Files::isRegularFile)
+                            );
                         }
                     )
-                        .getOrElse(new ArrayList<Path>());
+                        .getOrElse(Flux.empty());
                 }
             )
-            .orElse(new ArrayList<Path>());
+            .orElse(Flux.empty());
     }
-
 }

@@ -18,9 +18,6 @@ public class GeneratorCli implements Callable<Integer> {
     @Option(names = { "-d", "--data" })
     Map<String, String> data;
 
-    @Option(names = { "-m", "--mapping" })
-    Map<String, String> mapping;
-
     @Parameters(index = "0", description = "The git repo url")
     private String gitSshUrl;
 
@@ -33,7 +30,6 @@ public class GeneratorCli implements Callable<Integer> {
     public Integer call() throws Exception {
         Generator.builder()
             .cloneUrl(gitSshUrl)
-            .mapping(mapping)
             .data(data)
             .build()
             .analyze(null);
