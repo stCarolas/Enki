@@ -10,6 +10,7 @@ import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
 import com.github.stcarolas.enki.core.impl.GitRepo;
 import feign.Feign;
+import feign.auth.BasicAuthRequestInterceptor;
 import feign.jackson.JacksonDecoder;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -20,11 +21,15 @@ import rocks.mango.gitea.Repository;
 public class GiteaRepoProvider implements RepoProvider {
     private final String baseUrl;
     private final String organization;
+    private final String username;
+    private final String password;
 
     @Override
     public List<Repo> getRepos() {
+        val authInterceptor = new BasicAuthRequestInterceptor(username, password);
         val organizations = Feign.builder()
             .decoder(new JacksonDecoder(Arrays.asList((Module) new JavaTimeModule())))
+            .requestInterceptor(authInterceptor)
             .target(OrganizationApi.class, baseUrl);
         return organizations.orgListRepos(organization)
             .stream()

@@ -16,7 +16,9 @@ public class Launcher {
             .provider(
                 new GiteaRepoProvider(
                     config.getString("gitea.url"),
-                    config.getString("gitea.organization")
+                    config.getString("gitea.organization"),
+                    config.getString("gitea.username"),
+                    config.getString("gitea.password")
                 )
             )
             .analyzer(new LoggingAnalyzers())
