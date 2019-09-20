@@ -28,7 +28,7 @@ public class GiteaRepoProvider implements RepoProvider {
     public List<Repo> getRepos() {
         val authInterceptor = new BasicAuthRequestInterceptor(username, password);
         val organizations = Feign.builder()
-            .decoder(new JacksonDecoder(Arrays.asList((Module) new JavaTimeModule())))
+            .decoder(new JacksonDecoder(Arrays.asList(new JavaTimeModule())))
             .requestInterceptor(authInterceptor)
             .target(OrganizationApi.class, baseUrl);
         return organizations.orgListRepos(organization)
