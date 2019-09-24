@@ -10,6 +10,10 @@ import org.eclipse.jgit.transport.SshTransport;
 import org.eclipse.jgit.transport.Transport;
 import org.eclipse.jgit.util.FS;
 
+import lombok.val;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 public class DefaultTransportConfigCallback implements TransportConfigCallback {
 
     @Override
@@ -25,7 +29,9 @@ public class DefaultTransportConfigCallback implements TransportConfigCallback {
                 protected JSch createDefaultJSch(FS fs) throws JSchException {
                     JSch defaultJSch = super.createDefaultJSch(fs);
                     JSch.setConfig("StrictHostKeyChecking", "no");
-                    defaultJSch.addIdentity(System.getProperty("user.home") + "/.ssh/id_rsa");
+                    val key = System.getProperty("user.home") + "/.ssh/id_rsa";
+                    log.info("using key: {}", key);
+                    defaultJSch.addIdentity(key);
                     return defaultJSch;
                 }
             }

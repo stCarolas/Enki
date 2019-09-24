@@ -11,4 +11,5 @@ public interface Repo {
     public Map<CloneURLType, String> getCloneUrls();
     public Optional<File> getDirectory();
     public RepoProvider getRepoProvider();
+    public void commitAndPush(String commitMessage);
 }

@@ -29,6 +29,10 @@ public class GitRepo implements Repo {
 
     public Optional<File> getDirectory() {
         val directory = new File("/tmp/enki/" + id.toString());
+        if (directory.exists()) {
+            log.info("Directory {} already exists", directory);
+            return Optional.of(directory);
+        }
         directory.mkdirs();
         return Try.of(
             () -> {
@@ -40,7 +44,24 @@ public class GitRepo implements Repo {
                 return directory;
             }
         )
-            .onFailure(error -> log.error("error: {}"))
+            .onFailure(error -> log.error("error: {}", error))
             .toOptional();
+    }
+
+    @Override
+    public void commitAndPush(String commitMessage) {
+        val directory = new File("/tmp/enki/" + id.toString());
+        if (!directory.exists()) {
+            return;
+        }
+        Try.of(
+            () -> {
+                val repo = Git.open(directory);
+                repo.add().addFilepattern(".").call();
+                repo.commit().setMessage(commitMessage).call();
+                return repo.push().call();
+            }
+        )
+            .onFailure(error -> log.error("error: {}", error));
     }
 }
