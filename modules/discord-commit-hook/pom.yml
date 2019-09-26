@@ -15,7 +15,7 @@ dependencies:
 - {groupId: rocks.mango, artifactId: gitea-api, version: 1.0.0}
 - {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: 0.0.1}
 - {groupId: net.dv8tion, artifactId: JDA, version: 4.0.0_43, exclusions: [{groupId: club.minnced, artifactId: opus-java}]}
-- {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-2}
+- {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
 - {groupId: org.projectlombok, artifactId: lombok, optional: true, version: 1.18.8, scope: provided}

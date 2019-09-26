@@ -44,8 +44,7 @@ public class GitRepo implements Repo {
                 return directory;
             }
         )
-            .onFailure(error -> log.error("error: {}", error))
-            .toOptional();
+            .onFailure(error -> log.error("error: {}", error)).toJavaOptional();
     }
 
     @Override
