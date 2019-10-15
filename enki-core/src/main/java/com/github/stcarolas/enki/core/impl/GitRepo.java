@@ -44,7 +44,8 @@ public class GitRepo implements Repo {
                 return directory;
             }
         )
-            .onFailure(error -> log.error("error: {}", error)).toJavaOptional();
+            .onFailure(error -> log.error("error: {}", error))
+            .toJavaOptional();
     }
 
     @Override
@@ -55,12 +56,28 @@ public class GitRepo implements Repo {
         }
         Try.of(
             () -> {
-                val repo = Git.open(directory);
-                repo.add().addFilepattern(".").call();
-                repo.commit().setMessage(commitMessage).call();
-                return repo.push().call();
+                return Git.open(directory);
             }
         )
-            .onFailure(error -> log.error("error: {}", error));
+            .onFailure(error -> log.error("error: {}", error))
+            .onSuccess(
+                repo -> {
+                    val hasChanges = Try.of(
+                        () -> {
+                            return repo.status().call().hasUncommittedChanges();
+                        }
+                    )
+                        .getOrElse(false);
+                    if (hasChanges) {
+                        Try.of(
+                            () -> {
+                                repo.add().addFilepattern(".").call();
+                                repo.commit().setMessage(commitMessage).call();
+                                return repo.push().call();
+                            }
+                        );
+                    }
+                }
+            );
     }
 }
