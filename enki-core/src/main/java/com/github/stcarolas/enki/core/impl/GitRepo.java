@@ -64,10 +64,11 @@ public class GitRepo implements Repo {
                 repo -> {
                     val hasChanges = Try.of(
                         () -> {
-                            return repo.status().call().hasUncommittedChanges();
+                            return !repo.status().call().isClean();
                         }
                     )
                         .getOrElse(false);
+                    log.info("has changes:{}",hasChanges);
                     if (hasChanges) {
                         Try.of(
                             () -> {
