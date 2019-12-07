@@ -19,5 +19,5 @@ jobs:
       run: mvn -B package
       working-directory: enki-core
     - name: deploy
-      run: mvn deploy -P github -Dgithub.token=${{ secrets.GITHUB_TOKEN }} -s ../.github/workflows/settings.xml
+      run: mvn deploy -Dgithub.token=${{ secrets.GITHUB_TOKEN }} -s ../.github/workflows/settings.xml
       working-directory: enki-core
