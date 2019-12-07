@@ -12,5 +12,5 @@ jobs:
       with:
         java-version: 11
     - name: build
-      run: mvn -B package
+      run: mvn -B package -f pom.yml
       working-directory: enki-core
