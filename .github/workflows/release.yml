@@ -3,16 +3,9 @@ name: Release
 on: [push]
 
 jobs:
-  build:
+  up_version:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        module: [
-          "enki-core", 
-          "enki-server",
-          "enki-modules/gitea-provider"
-        ]
 
     steps:
 
@@ -50,13 +43,26 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         push-branch: 'master'
         commit-message: 'bump version'
-        files: ${{ matrix.module }}/pom.yml
+        files: *
 
     - name: Tag new version
       uses: zwaldowski/semver-release-action@v1
       with:
         bump: patch
         github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        module: [
+          "enki-core", 
+          "enki-server"
+        ]
+
+    steps:
 
     - name: Publish Enki Core
       run: mvn -B package deploy -Dgithub.token=${{ secrets.GITHUB_TOKEN }} -s ../.github/workflows/settings.xml
