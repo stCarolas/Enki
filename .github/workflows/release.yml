@@ -6,6 +6,13 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [
+          "enki-core", 
+          "enki-server",
+          "enki-modules/gitea-provider"
+        ]
 
     steps:
 
@@ -31,7 +38,7 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set new version
-      working-directory: enki-core
+      working-directory: ${{ matrix.module }}
       run: |
         mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
         mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
@@ -43,7 +50,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         push-branch: 'master'
         commit-message: 'bump version'
-        files: enki-core/pom.yml
+        files: ${{ matrix.module }}/pom.yml
 
     - name: Tag new version
       uses: zwaldowski/semver-release-action@v1
@@ -53,4 +60,4 @@ jobs:
 
     - name: Publish Enki Core
       run: mvn -B package deploy -Dgithub.token=${{ secrets.GITHUB_TOKEN }} -s ../.github/workflows/settings.xml
-      working-directory: enki-core
+      working-directory: ${{ matrix.module }}
