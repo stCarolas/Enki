@@ -1,6 +1,6 @@
-name: Java CI
+name: Publish
 
-on: [push]
+on: [release]
 
 jobs:
   build:
@@ -19,12 +19,6 @@ jobs:
     - name: Package Enki Core
       run: mvn -B package
       working-directory: enki-core
-    - name: Bump version and push tag
-      uses: Instrument/github-tag-action@v1.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: master
-        BUMP: patch
     - name: Publish Enki Core
       run: mvn deploy -Dgithub.token=${{ secrets.GITHUB_TOKEN }} -s ../.github/workflows/settings.xml
       working-directory: enki-core
