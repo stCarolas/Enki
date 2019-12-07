@@ -30,3 +30,5 @@ build:
 repositories:
 - {id: jcenter, layout: default, name: jcenter, url: 'https://jcenter.bintray.com'}
 - {id: maven-central, layout: default, name: Maven Central, url: 'http://central.maven.org/maven2/'}
+distributionManagement:
+  repository: {id: github, layout: default, name: github, uniqueVersion: false, url: 'https://maven.pkg.github.com/stCarolas/Enki'}

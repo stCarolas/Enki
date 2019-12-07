@@ -22,3 +22,5 @@ build:
     configuration:
       annotationProcessorPaths:
       - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
+distributionManagement:
+  repository: {id: github, layout: default, name: github, uniqueVersion: false, url: 'https://maven.pkg.github.com/stCarolas/Enki'}

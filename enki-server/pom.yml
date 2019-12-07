@@ -46,3 +46,5 @@ build:
       inherited: true
       phase: package
       priority: 0
+distributionManagement:
+  repository: {id: github, layout: default, name: github, uniqueVersion: false, url: 'https://maven.pkg.github.com/stCarolas/Enki'}
