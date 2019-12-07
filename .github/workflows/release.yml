@@ -28,9 +28,11 @@ jobs:
     - name: Set new version
       working-directory: enki-core
       run: |
-        mvn io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
-        mvn versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
-        mvn io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
+        mvn -X io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
+        mvn -X versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
+        mvn -X io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
+        git config --global user.name "github-runner"
+        git config --global user.email "stcarolas@gmail.com"
         git add pom.yml
         git commit -m "Bump version"
         git tag ${{ steps.next_version.outputs.version }}
