@@ -14,6 +14,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Set up Apache Maven
+      uses: stCarolas/setup-maven@v1
+      with:
+        maven-version: 3.5.4
     - name: Calculate new version
       id: next_version
       uses: zwaldowski/semver-release-action@v1
