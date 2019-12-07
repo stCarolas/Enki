@@ -37,5 +37,4 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         push-branch: 'master'
         commit-message: 'bump version'
-        force-add: 'true'
         files: enki-core/pom.yml
