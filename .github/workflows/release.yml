@@ -32,12 +32,13 @@ jobs:
 
     - name: Set new version in enki-core and enki-server
       run: |
-        for module in $(echo "enki-core\nenki-server")
+        for module in enki-*
         do
           cd $module
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
           mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
+          cd ..
         done
 
     - name: Set new version in modules
@@ -48,6 +49,7 @@ jobs:
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
           mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
+          cd ../..
         done
 
     - name: Push pom.yml with new version
