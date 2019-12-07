@@ -28,3 +28,11 @@ build:
         - groupId: org.projectlombok
           artifactId: lombok
           version: 1.18.8
+
+distributionManagement:
+  repository:
+    id: "github"
+    uniqueVersion: false
+    name: "github"
+    url: "https://maven.pkg.github.com/stCarolas/Enki"
+    layout: default
