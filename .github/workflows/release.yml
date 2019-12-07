@@ -33,10 +33,9 @@ jobs:
         mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
     - name: push
       uses: github-actions-x/commit@v2.1
-      working-directory: enki-core
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         push-branch: 'master'
         commit-message: 'bump version'
         force-add: 'true'
-        files: pom.yml
+        files: enki-core/pom.yml
