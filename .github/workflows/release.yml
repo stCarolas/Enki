@@ -66,10 +66,6 @@ jobs:
         bump: patch
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Save new commit
-      env:
-        GITHUB_CONTEXT: ${{  }}
-
   build_core:
     needs: [up_version]
     runs-on: ubuntu-latest
