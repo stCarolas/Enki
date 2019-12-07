@@ -11,8 +11,11 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
+    - name: translate
+      run: mvn io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
+      working-directory: enki-core
     - name: cat
-      run: cat pom.yml
+      run: cat pom.xml
       working-directory: enki-core
     - name: build
       run: mvn -B package -f pom.yml
