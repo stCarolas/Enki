@@ -19,5 +19,5 @@ jobs:
       run: mvn -B package
       working-directory: enki-core
     - name: deploy
-      run: mvn deploy -Dregistry=https://maven.pkg.github.com/stCarolas -Dusername=stCarolas -Dpassword="${{ secrets.GITHUB_TOKEN }}"
+      run: mvn deploy -Dregistry=https://maven.pkg.github.com/stCarolas -Dgithub.token=${{ secrets.GITHUB_TOKEN }} -s ../.github/workflows/settings.xml
       working-directory: enki-core
