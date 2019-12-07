@@ -38,3 +38,8 @@ jobs:
         push-branch: 'master'
         commit-message: 'bump version'
         files: enki-core/pom.yml
+    - name: Tag new version
+      uses: zwaldowski/semver-release-action@v1
+      with:
+        bump: patch
+        github_token: ${{ secrets.GITHUB_TOKEN }}
