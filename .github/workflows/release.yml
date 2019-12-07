@@ -43,7 +43,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         push-branch: 'master'
         commit-message: 'bump version'
-        files: *
+        files: "./*"
 
     - name: Tag new version
       uses: zwaldowski/semver-release-action@v1
