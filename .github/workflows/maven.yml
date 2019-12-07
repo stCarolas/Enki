@@ -11,13 +11,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Set up Maven
-      uses: stCarolas/setup-maven@master
+    - name: Set up Apache Maven
+      uses: stCarolas/setup-maven@v1
       with:
         maven-version: 3.5.4
-    - name: cat
-      run: mvn -version
-      working-directory: enki-core
     - name: build
-      run: mvn -B package -f pom.yml
+      run: mvn -B package
       working-directory: enki-core
