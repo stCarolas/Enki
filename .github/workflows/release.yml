@@ -66,6 +66,10 @@ jobs:
         bump: patch
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Save new commit
+      env:
+        GITHUB_CONTEXT: ${{  }}
+
   build_core:
     needs: [up_version]
     runs-on: ubuntu-latest
@@ -75,7 +79,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v1
         with:
-          ref: ${{ github.event.after }}
+          ref: master
      
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
@@ -109,7 +113,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v1
         with:
-          ref: ${{ github.event.after }}
+          ref: master
      
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
