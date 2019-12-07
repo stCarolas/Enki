@@ -11,6 +11,9 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
+    - name: cat
+      run: cat pom.yml
+      working-directory: enki-core
     - name: build
       run: mvn -B package -f pom.yml
       working-directory: enki-core
