@@ -102,7 +102,7 @@ jobs:
 
     strategy:
       matrix:
-        module: [ "gitea-provider", "github-provider" ]
+        module: [ "github-provider","one-repo-provider"]
 
     steps:
     
