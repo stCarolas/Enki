@@ -102,7 +102,7 @@ jobs:
 
     strategy:
       matrix:
-        module: [ "github-provider", "one-repo-provider" ]
+        module: [ "github-provider", "one-repo-provider", "gocd-handlers" ]
 
     steps:
     
