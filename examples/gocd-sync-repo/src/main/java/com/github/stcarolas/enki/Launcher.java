@@ -1,8 +1,8 @@
 package com.github.stcarolas.enki;
 
 import com.github.stcarolas.enki.gitea.provider.GiteaRepoProvider;
-import com.github.stcarolas.enki.gocd.analyzers.GocdConfigRepoSync;
-import com.github.stcarolas.enki.logginganalyzers.LoggingAnalyzers;
+import com.github.stcarolas.enki.gocd.handlers.GocdConfigRepoSync;
+import com.github.stcarolas.enki.logginghandlers.LoggingAnalyzers;
 import com.typesafe.config.ConfigFactory;
 import lombok.Builder;
 import lombok.val;
@@ -21,8 +21,8 @@ public class Launcher {
                     config.getString("gitea.password")
                 )
             )
-            .analyzer(new LoggingAnalyzers())
-            .analyzer(
+            .handler(new LoggingAnalyzers())
+            .handler(
                 new GocdConfigRepoSync(
                     config.getString("gocd.url"),
                     config.getString("gocd.username"),

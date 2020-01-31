@@ -1,4 +1,4 @@
-package com.github.stcarolas.enki.gocd.analyzers;
+package com.github.stcarolas.enki.gocd.handlers;
 
 import java.util.Arrays;
 import com.fasterxml.jackson.databind.Module;
@@ -30,7 +30,7 @@ public class GocdWebhookCaller implements RepoHandler {
     }
 
     @Override
-    public void analyze(Repo repo) {
+    public void handle(Repo repo) {
         gocd.notifyGitMaterials(
             NotifyMaterialRequest.builder()
                 .repositoryUrl(repo.getCloneUrls().get(CloneURLType.SSH))

@@ -1,7 +1,7 @@
 package com.github.stcarolas.enki;
 
 import com.github.stcarolas.enki.github.provider.GitHubRepoProvider;
-import com.github.stcarolas.enki.logginganalyzers.LoggingAnalyzers;
+import com.github.stcarolas.enki.logginghandlers.LoggingAnalyzers;
 import com.typesafe.config.ConfigFactory;
 import lombok.Builder;
 import lombok.val;
@@ -19,7 +19,7 @@ public class Launcher {
                     .organization(config.getString("github.organization"))
                     .build()
             )
-            .analyzer(new LoggingAnalyzers())
+            .handler(new LoggingAnalyzers())
             .serverHost("0.0.0.0")
             .port(8080)
             .build()

@@ -27,7 +27,7 @@ public class Launcher {
                             )
                     )
             )
-            .analyzer(new MavenDependencyCollector())
+            .handler(new MavenDependencyCollector())
             .serverHost("0.0.0.0")
             .port(8080)
             .build()

@@ -6,10 +6,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface Repo {
+
     public UUID getId();
+
     public String getName();
+
     public Map<CloneURLType, String> getCloneUrls();
+
     public Optional<File> getDirectory();
+
     public RepoProvider getRepoProvider();
+
+    @Deprecated
     public void commitAndPush(String commitMessage);
 }

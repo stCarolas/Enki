@@ -10,15 +10,15 @@ public class EnkiRunner {
     private List<RepoProvider> providers;
 
     @Singular
-    private List<RepoHandler> analyzers;
+    private List<RepoHandler> handlers;
 
-    public void analyze() {
+    public void handle() {
         providers.stream()
             .flatMap(
                 provider -> {
                     return provider.getRepos().stream();
                 }
             )
-            .forEach(repo -> analyzers.forEach(analyzer -> analyzer.analyze(repo)));
+            .forEach(repo -> handlers.forEach(handler -> handler.handle(repo)));
     }
 }

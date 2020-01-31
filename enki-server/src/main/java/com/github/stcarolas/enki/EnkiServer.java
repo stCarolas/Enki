@@ -19,7 +19,7 @@ public class EnkiServer {
     private List<RepoProvider> providers;
 
     @Singular
-    private List<RepoHandler> analyzers;
+    private List<RepoHandler> handlers;
 
     private String serverHost;
     private int port;
@@ -27,7 +27,7 @@ public class EnkiServer {
     public void start() {
         val enkiBuilder = EnkiRunner.builder();
         providers.forEach(provider -> enkiBuilder.provider(provider));
-        analyzers.forEach(analyzer -> enkiBuilder.analyzer(analyzer));
+        handlers.forEach(handler -> enkiBuilder.handler(handler));
         val enki = enkiBuilder.build();
         Undertow.builder()
             .addHttpListener(port, serverHost)
@@ -38,11 +38,11 @@ public class EnkiServer {
                     public void handleRequest(final HttpServerExchange exchange)
                         throws Exception {
                         log.info(
-                            "Start to analyze with {} providers and {} analyzers",
+                            "Start to handle with {} providers and {} handlers",
                             providers.size(),
-                            analyzers.size()
+                            handlers.size()
                         );
-                        enki.analyze();
+                        enki.handle();
                     }
                 }
             )

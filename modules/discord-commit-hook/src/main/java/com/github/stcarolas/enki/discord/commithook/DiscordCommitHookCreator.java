@@ -50,7 +50,7 @@ public class DiscordCommitHookCreator implements RepoHandler {
     }
 
     @Override
-    public void analyze(Repo repo) {
+    public void handle(Repo repo) {
         val authInterceptor = new BasicAuthRequestInterceptor(
             giteaUsername,
             giteaPassword

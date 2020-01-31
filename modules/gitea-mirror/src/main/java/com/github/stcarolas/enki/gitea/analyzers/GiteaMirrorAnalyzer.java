@@ -1,4 +1,4 @@
-package com.github.stcarolas.enki.gitea.analyzers;
+package com.github.stcarolas.enki.gitea.handlers;
 
 import java.util.Arrays;
 import com.fasterxml.jackson.databind.Module;
@@ -28,7 +28,7 @@ public class GiteaMirrorAnalyzer implements RepoHandler {
     private final String organization;
 
     @Override
-    public void analyze(Repo repo) {
+    public void handle(Repo repo) {
         val authInterceptor = new BasicAuthRequestInterceptor(username, password);
         val organizations = Feign.builder()
             .decoder(new JacksonDecoder(Arrays.asList((Module) new JavaTimeModule())))

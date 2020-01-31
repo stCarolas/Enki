@@ -16,7 +16,7 @@ dependencies:
 - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
   optional: true}
 distributionManagement:
-  repository: {id: github, layout: default, name: github, uniqueVersion: false, url: 'https://maven.pkg.github.com/stCarolas/Enki'}
+  repository: {id: enki-github-repo, layout: default, name: github, uniqueVersion: false, url: 'https://maven.pkg.github.com/stCarolas/Enki'}
 build:
   plugins:
   - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
@@ -37,4 +37,4 @@ build:
       annotationProcessorPaths:
       - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
 repositories:
-- {id: github, layout: default, url: 'https://maven.pkg.github.com/stCarolas/Enki'}
+- {id: enki-github-repo, layout: default, url: 'https://maven.pkg.github.com/stCarolas/Enki'}

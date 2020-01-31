@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import com.github.stcarolas.enki.gitea.provider.GiteaRepoProvider;
 import com.github.stcarolas.enki.github.archiverepo.GithubArchiveRepoHandler;
 import com.github.stcarolas.enki.github.provider.GitHubRepoProvider;
-import com.github.stcarolas.enki.logginganalyzers.LoggingAnalyzers;
+import com.github.stcarolas.enki.logginghandlers.LoggingAnalyzers;
 import com.typesafe.config.ConfigFactory;
 import lombok.Builder;
 import lombok.val;
@@ -47,8 +47,8 @@ public class Launcher {
                             .build()
                     )
             )
-            .analyzer(new LoggingAnalyzers())
-            .analyzer(
+            .handler(new LoggingAnalyzers())
+            .handler(
                 GithubArchiveRepoHandler.builder()
                     .username(config.getString("github.username"))
                     .password(config.getString("github.password"))

@@ -1,4 +1,4 @@
-package com.github.stcarolas.enki.gocd.analyzers;
+package com.github.stcarolas.enki.gocd.handlers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +35,7 @@ public class GocdConfigRepoSync implements RepoHandler {
     }
 
     @Override
-    public void analyze(Repo repo) {
+    public void handle(Repo repo) {
         if (configRepos.contains(repo.getCloneUrls().get(CloneURLType.SSH))) {
             return;
         }

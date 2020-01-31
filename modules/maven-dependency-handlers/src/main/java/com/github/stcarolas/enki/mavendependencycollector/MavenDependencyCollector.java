@@ -12,7 +12,7 @@ import lombok.extern.log4j.Log4j2;
 public class MavenDependencyCollector implements RepoHandler {
 
     @Override
-    public void analyze(Repo repo) {
+    public void handle(Repo repo) {
         repo.getDirectory()
             .ifPresent(
                 directory -> {

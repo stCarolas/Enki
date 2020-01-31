@@ -1,6 +1,6 @@
 package com.github.stcarolas.enki;
 
-import com.github.stcarolas.enki.gitea.analyzers.GiteaMirrorAnalyzer;
+import com.github.stcarolas.enki.gitea.handlers.GiteaMirrorAnalyzer;
 import com.github.stcarolas.enki.github.provider.GitHubRepoProvider;
 import com.typesafe.config.ConfigFactory;
 import lombok.Builder;
@@ -19,7 +19,7 @@ public class Launcher {
                     .organization(config.getString("github.organization"))
                     .build()
             )
-            .analyzer(
+            .handler(
                 GiteaMirrorAnalyzer.builder()
                     .baseUrl(config.getString("gitea.url"))
                     .username(config.getString("gitea.username"))

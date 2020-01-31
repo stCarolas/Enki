@@ -18,7 +18,7 @@ public class GithubArchiveRepoHandler implements RepoHandler {
     private final String organization;
 
     @Override
-    public void analyze(Repo repo) {
+    public void handle(Repo repo) {
         Try.of(
             () -> {
                 val repoService = new RepositoryService();

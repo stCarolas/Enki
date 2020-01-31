@@ -12,10 +12,9 @@ dependencies:
 - {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
 - {groupId: org.eclipse.jgit, artifactId: org.eclipse.jgit, version: 5.4.0.201906121030-r}
-- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
-  optional: true}
+- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided, optional: true}
 distributionManagement:
-  repository: {id: github, layout: default, name: github, uniqueVersion: false, url: 'https://maven.pkg.github.com/stCarolas/Enki'}
+  repository: {id: enki-github-repo, layout: default, name: github, uniqueVersion: false, url: 'https://maven.pkg.github.com/stCarolas/Enki'}
 build:
   plugins:
   - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}

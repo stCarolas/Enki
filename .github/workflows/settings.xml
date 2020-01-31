@@ -9,7 +9,7 @@
 
   <profiles>
     <profile>
-      <id>github</id>
+      <id>enki-github-repo</id>
       <repositories>
         <repository>
           <id>github</id>
@@ -22,7 +22,7 @@
 
   <servers>
     <server>
-      <id>github</id>
+      <id>enki-github-repo</id>
       <username>stCarolas</username>
       <password>${github.token}</password>
     </server>
