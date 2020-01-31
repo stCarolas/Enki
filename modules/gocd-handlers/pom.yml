@@ -2,7 +2,7 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-gocd-handlers
-version: 0.0.18
+version: 0.0.19
 packaging: jar
 name: Enki GoCD Analyzers
 properties: {feign-version: 9.4.0, revision: 0.0.1, java.version: 1.8, jackson-version: 2.8.9,
@@ -23,7 +23,8 @@ dependencies:
 - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
   optional: true}
 distributionManagement:
-  repository: {id: enki-github-repo, layout: default, name: github, uniqueVersion: false, url: 'https://maven.pkg.github.com/stCarolas/Enki'}
+  repository: {id: enki-github-repo, layout: default, name: github, uniqueVersion: false,
+    url: 'https://maven.pkg.github.com/stCarolas/Enki'}
 build:
   plugins:
   - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
