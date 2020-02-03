@@ -126,7 +126,7 @@ jobs:
         working-directory: providers/${{ matrix.module }}
 
   build_modules:
-    needs: [build_core]
+    needs: [build_providers]
     runs-on: ubuntu-latest
 
     strategy:
