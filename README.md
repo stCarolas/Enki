@@ -21,3 +21,35 @@ Available RepoHandler's:
 
 # Examples
 In directory `examples`
+
+# How to use with Maven
+
+Add dependency to pom
+```
+    <dependency>
+        <groupId>com.github.stcarolas.enki</groupId>
+        <artifactId>enki-*</artifactId>
+        <version>X.X.X</version>
+    </dependency>
+```
+
+Add github repository to pom
+```
+  <repositories>
+    <repository>
+      <id>enki-github-repo</id>
+      <url>https://maven.pkg.github.com/stCarolas/Enki</url>
+    </repository>
+  </repositories>
+```
+
+Add github personal token with 'read:packages' scope to settings.xml
+```
+<servers>
+  <server>
+    <id>enki-github-repo</id>
+    <username>YOUR_GITHUB_USERNAME</username>
+    <password>YOUR_GITHUB_TOKEN</password>
+  </server>
+</servers>
+```
