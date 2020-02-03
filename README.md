@@ -1,3 +1,4 @@
+![Release](https://github.com/stCarolas/Enki/workflows/Release/badge.svg)
 # Enki
 Manipulate your git repos. At scale.
 
