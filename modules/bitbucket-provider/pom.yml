@@ -2,7 +2,7 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-bitbucket-provider
-version: 0.0.20
+version: 0.0.21
 packaging: jar
 name: Enki Bitbucket Provider
 properties: {revision: 0.0.1, java.version: 1.8, maven.compiler.source: 1.8, maven.compiler.target: 1.8}
@@ -17,14 +17,14 @@ dependencies:
 - {groupId: org.eclipse.jgit, artifactId: org.eclipse.jgit, version: 5.4.0.201906121030-r}
 - {groupId: org.eclipse.mylyn.github, artifactId: org.eclipse.egit.github.core, version: 2.1.5}
 - {groupId: com.esotericsoftware.yamlbeans, artifactId: yamlbeans, version: 1.13}
-- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided, optional: true}
+- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
+  optional: true}
 distributionManagement:
-  repository: {id: enki-github-repo, layout: default, name: github, uniqueVersion: false, url: 'https://maven.pkg.github.com/stCarolas/Enki'}
+  repository: {id: enki-github-repo, layout: default, name: github, uniqueVersion: false,
+    url: 'https://maven.pkg.github.com/stCarolas/Enki'}
 build:
   plugins:
-  - groupId: org.apache.maven.plugins
-    artifactId: maven-surefire-plugin
-    version: 3.0.0-M4
+  - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin, version: 3.0.0-M4}
   - groupId: org.apache.maven.plugins
     artifactId: maven-compiler-plugin
     version: 3.8.1
