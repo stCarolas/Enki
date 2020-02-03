@@ -41,11 +41,19 @@ jobs:
           cd ..
         done
 
-    - name: Set new version in modules
+    - name: Set new version in providers and modules
       run: |
         for module in $(ls modules)
         do
           cd modules/$module
+          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
+          mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
+          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
+          cd ../..
+        done
+        for provider in $(ls providers)
+        do
+          cd providers/$provider
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
           mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
