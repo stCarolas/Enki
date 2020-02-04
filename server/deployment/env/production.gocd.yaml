@@ -1,5 +1,0 @@
-format_version: 5
-environments:
-  Production:
-    pipelines:
-      - NomadJob_Enki

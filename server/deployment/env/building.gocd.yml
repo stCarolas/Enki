@@ -1,5 +1,0 @@
-format_version: 5
-environments:
-  Building:
-    pipelines:
-      - Docker_Enki
