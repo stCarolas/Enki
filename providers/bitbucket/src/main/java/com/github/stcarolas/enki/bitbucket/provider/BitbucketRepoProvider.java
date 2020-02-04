@@ -36,10 +36,17 @@ public class BitbucketRepoProvider implements RepoProvider {
                 List<Repository> repos = new ArrayList<>();
                 boolean lastPage = false;
                 int offset = 0;
-                while (!lastPage){
+                while (!lastPage) {
                     RepositoryPage page = client.api()
                         .repositoryApi()
-                        .listAll(options.getProjectname(), options.getName(), options.getPermission(), options.getVisibility(), offset, null);
+                        .listAll(
+                            options.getProjectname(),
+                            options.getName(),
+                            options.getPermission(),
+                            options.getVisibility(),
+                            offset,
+                            null
+                        );
                     repos.addAll(page.values());
                     offset = page.nextPageStart();
                     lastPage = page.isLastPage();
@@ -71,7 +78,7 @@ public class BitbucketRepoProvider implements RepoProvider {
             .filter(href -> "ssh".equals(href.get("name")))
             .map(
                 sshUrlHolder -> {
-                    return (Repo)GitRepo.builder()
+                    return (Repo) GitRepo.builder()
                         .name(repo.name())
                         .cloneUrl(CloneURLType.SSH, sshUrlHolder.get("href"))
                         .repoProvider(this)

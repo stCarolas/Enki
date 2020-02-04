@@ -1,12 +1,12 @@
 package com.github.stcarolas.enki.core;
 
 import java.util.List;
+
 import lombok.Builder;
 import lombok.Singular;
 
 @Builder
 public class EnkiRunner {
-
     @Singular
     private List<RepoProvider> providers;
 

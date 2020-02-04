@@ -112,7 +112,7 @@ jobs:
 
     strategy:
       matrix:
-        module: [ "github", "one-repo", "bitbucket" ]
+        module: [ "github", "one-repo", "bitbucket", "gitlab" ]
 
     steps:
     
