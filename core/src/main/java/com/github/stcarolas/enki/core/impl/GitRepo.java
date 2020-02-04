@@ -13,11 +13,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.val;
+import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 @Getter
 @Builder
 @Log4j2
+@ToString
 public class GitRepo implements Repo {
     private final RepoProvider repoProvider;
 
