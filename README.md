@@ -2,7 +2,7 @@
 # Enki
 Manipulate your git repos. At scale.
 
-# Modules
+# RepoProviders, Handlers and Functions
 Enki consists of modules. Main module - enki-core which provides core logic and interfaces for another modules to implement.
 Each other module should offer one of three functionalities:
 - RepoProvider
@@ -19,9 +19,6 @@ Available RepoHandler's:
 - GitHub->Gitea Mirroring
 - Maven Dependency Handlers
 - Discord Channel Creator
-
-# Examples
-In directory `examples`
 
 # How to use with Maven
 
