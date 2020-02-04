@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import com.cdancy.bitbucket.rest.BitbucketClient;
 import com.cdancy.bitbucket.rest.domain.repository.Repository;
+import com.cdancy.bitbucket.rest.domain.repository.RepositoryPage;
 import com.github.stcarolas.enki.core.CloneURLType;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
@@ -30,10 +31,18 @@ public class BitbucketRepoProvider implements RepoProvider {
                     .token(token)
                     .build();
 
-                return client.api()
-                    .repositoryApi()
-                    .listAll(null, null, null, null, null, null)
-                    .values();
+                List<Repository> repos = new ArrayList<>();
+                boolean lastPage = false;
+                int offset = 0;
+                while (!lastPage){
+                    RepositoryPage page = client.api()
+                        .repositoryApi()
+                        .listAll(null, null, null, null, offset, null);
+                    repos.addAll(page.values());
+                    offset = page.nextPageStart();
+                    lastPage = page.isLastPage();
+                }
+                return repos;
             }
         )
             .onFailure(
