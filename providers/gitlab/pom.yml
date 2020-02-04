@@ -2,7 +2,7 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-gitlab-provider
-version: 0.0.34
+version: 0.1.1
 packaging: jar
 name: Enki Gitlab Provider
 properties: {revision: 0.0.1, java.version: 1.8, maven.compiler.source: 1.8, maven.compiler.target: 1.8}
