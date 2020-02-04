@@ -20,7 +20,7 @@ Available RepoHandler's:
 - Maven Dependency Handlers
 - Discord Channel Creator
 
-# How to use with Maven
+# Set Up with Maven
 
 Add dependency to pom
 ```
@@ -52,7 +52,7 @@ Add github personal token with `read:packages` scope to settings.xml (use Person
 </servers>
 ```
 
-# How to use with Gradle
+# Set Up with Gradle
 
 Add repository (use Personal Access Token from Github with `read:packages` scope, not password)
 ```
