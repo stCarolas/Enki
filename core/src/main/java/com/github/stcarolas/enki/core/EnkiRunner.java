@@ -6,6 +6,7 @@ import lombok.Singular;
 
 @Builder
 public class EnkiRunner {
+
     @Singular
     private List<RepoProvider> providers;
 

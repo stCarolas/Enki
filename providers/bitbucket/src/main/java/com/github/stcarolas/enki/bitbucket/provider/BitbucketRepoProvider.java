@@ -2,9 +2,9 @@ package com.github.stcarolas.enki.bitbucket.provider;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import com.cdancy.bitbucket.rest.BitbucketClient;
 import com.cdancy.bitbucket.rest.domain.repository.Repository;
 import com.cdancy.bitbucket.rest.domain.repository.RepositoryPage;
@@ -12,6 +12,7 @@ import com.github.stcarolas.enki.core.CloneURLType;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
 import com.github.stcarolas.enki.core.impl.GitRepo;
+
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +22,7 @@ import lombok.extern.log4j.Log4j2;
 public class BitbucketRepoProvider implements RepoProvider {
     private String endpoint;
     private String token;
+    private BitbucketRepoQueryOptions options;
 
     @Override
     public List<Repo> getRepos() {
@@ -37,7 +39,7 @@ public class BitbucketRepoProvider implements RepoProvider {
                 while (!lastPage){
                     RepositoryPage page = client.api()
                         .repositoryApi()
-                        .listAll(null, null, null, null, offset, null);
+                        .listAll(options.getProjectname(), options.getName(), options.getPermission(), options.getVisibility(), offset, null);
                     repos.addAll(page.values());
                     offset = page.nextPageStart();
                     lastPage = page.isLastPage();
