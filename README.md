@@ -29,8 +29,8 @@ Add dependency to pom
 ```
     <dependency>
         <groupId>com.github.stcarolas.enki</groupId>
-        <artifactId>enki-*</artifactId>
-        <version>X.X.X</version>
+        <artifactId>enki-core</artifactId>
+        <version>0.0.29</version>
     </dependency>
 ```
 
@@ -44,7 +44,7 @@ Add github repository to pom
   </repositories>
 ```
 
-Add github personal token with 'read:packages' scope to settings.xml
+Add github personal token with `read:packages` scope to settings.xml (use Personal Access Token from Github, not password)
 ```
 <servers>
   <server>
@@ -53,4 +53,22 @@ Add github personal token with 'read:packages' scope to settings.xml
     <password>YOUR_GITHUB_TOKEN</password>
   </server>
 </servers>
+```
+
+# How to use with Gradle
+
+Add repository (use Personal Access Token from Github with `read:packages` scope, not password)
+```
+    maven { 
+        credentials(PasswordCredentials) {
+            username "<MY_USERNAME>"
+            password "<MY_GITHUB_TOKEN>"
+        }
+        url "https://maven.pkg.github.com/stCarolas/Enki" 
+    }
+```
+
+Add dependency
+```
+implementation("com.github.stcarolas.enki:enki-core:0.0.29")
 ```
