@@ -1,0 +1,34 @@
+modelEncoding: UTF-8
+modelVersion: 4.0.0
+groupId: com.github.stcarolas.enki
+artifactId: enki-discord-commit-hook
+version: 0.0.24
+packaging: jar
+name: Enki Gitea mirror maker
+properties: {revision: 0.0.1, java.version: 1.8, maven.compiler.source: 1.8, maven.compiler.target: 1.8}
+dependencies:
+- {groupId: rocks.mango, artifactId: gitea-api, version: 1.0.0}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: 0.0.1}
+- groupId: net.dv8tion
+  artifactId: JDA
+  version: 4.0.0_43
+  exclusions:
+  - {artifactId: opus-java, groupId: club.minnced}
+- {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}
+- {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
+- {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
+- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
+  optional: true}
+distributionManagement:
+  repository: {id: github, layout: default, name: github, uniqueVersion: false, url: 'https://maven.pkg.github.com/stCarolas/Enki'}
+build:
+  plugins:
+  - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
+  - groupId: org.apache.maven.plugins
+    artifactId: maven-compiler-plugin
+    configuration:
+      annotationProcessorPaths:
+      - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
+repositories:
+- {id: jcenter, layout: default, name: jcenter, url: 'https://jcenter.bintray.com'}
+- {id: maven-central, layout: default, name: Maven Central, url: 'http://central.maven.org/maven2/'}
