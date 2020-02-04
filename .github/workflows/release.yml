@@ -30,16 +30,18 @@ jobs:
         bump: patch
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set new version in enki-core and enki-server
+    - name: Set new version in core and server
       run: |
-        for module in enki-*
-        do
-          cd $module
+          cd core
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
           mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
           cd ..
-        done
+          cd server
+          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
+          mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
+          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
+          cd ..
 
     - name: Set new version in providers and handlers
       run: |
@@ -97,11 +99,11 @@ jobs:
   
       - name: Publish Enki Core
         run: mvn -B package deploy -Dgithub.token=${{ secrets.GITHUB_TOKEN }} -s ../.github/workflows/settings.xml
-        working-directory: enki-core
+        working-directory: core
 
       - name: Publish Enki Server
         run: mvn -B package deploy -Dgithub.token=${{ secrets.GITHUB_TOKEN }} -s ../.github/workflows/settings.xml
-        working-directory: enki-server
+        working-directory: server
 
 
   build_providers:
