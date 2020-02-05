@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import com.github.stcarolas.enki.bitbucket.provider.BitbucketRepoProvider;
 import com.github.stcarolas.enki.core.EnkiRunner;
 import com.github.stcarolas.enki.core.RepoHandler;
 import com.github.stcarolas.enki.core.EnkiRunner.EnkiRunnerBuilder;
@@ -29,7 +30,7 @@ public class ConsoleRunner implements Callable<Integer> {
     @Option(names = { "--github" }, description = "use GitHub RepoProvider")
     private boolean useGithubProvider = false;
 
-    @Option(names = { "--github-user" }, description = "GitHub Username")
+    @Option(names = { "--github-username" }, description = "GitHub Username")
     private String githubUser = "";
 
     @Option(names = { "--github-organization" }, description = "GitHub Organization")
@@ -43,6 +44,15 @@ public class ConsoleRunner implements Callable<Integer> {
 
     @Option(names = { "--bitbucket" }, description = "use Bitbucket RepoProvider")
     private boolean useBitbucketProvider = false;
+
+    @Option(
+        names = { "--bitbucket-endpoint" },
+        description = "Bitbucket REST API Endpoint"
+    )
+    private String bitbucketEndpoint = "";
+
+    @Option(names = { "--bitbucket-token" }, description = "Bitbucket Access Token")
+    private String bitbucketToken = "";
 
     @Option(names = { "--gitlab" }, description = "use GitLab RepoProvider")
     private boolean useGitlabProvider = false;
@@ -95,8 +105,17 @@ public class ConsoleRunner implements Callable<Integer> {
                     .build()
             );
         }
-        for (Class handler: handlers){
-            enki.handler((RepoHandler)handler.newInstance());
+        if (useBitbucketProvider) {
+            enki.provider(
+                BitbucketRepoProvider.builder()
+                    .token(bitbucketToken)
+                    .endpoint(bitbucketEndpoint)
+                    .build()
+            )
+                .build();
+        }
+        for (Class handler : handlers) {
+            enki.handler((RepoHandler) handler.newInstance());
         }
         enki.build().handle();
 

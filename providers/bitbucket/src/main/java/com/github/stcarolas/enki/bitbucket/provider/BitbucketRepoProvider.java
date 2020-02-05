@@ -20,7 +20,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Builder
 public class BitbucketRepoProvider implements RepoProvider {
+
     private String endpoint;
+    
     private String token;
     @Builder.Default
     private BitbucketRepoQueryOptions options = new BitbucketRepoQueryOptions();
