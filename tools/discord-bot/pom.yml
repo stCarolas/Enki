@@ -1,16 +1,11 @@
-name: Enki Example
+modelEncoding: UTF-8
+modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-github-gitea-mirror-example
-version: 0.0.1
-
-modelVersion: 4.0.0
-properties: {
-  maven.compiler.source: 1.8,
-  maven.compiler.target: 1.8,
-  revision: 0.0.1,
-  java.version: 1.8,
-}
-
+version: 0.1.5
+packaging: jar
+name: Enki Example
+properties: {revision: 0.0.1, java.version: 1.8, maven.compiler.source: 1.8, maven.compiler.target: 1.8}
 dependencyManagement:
   dependencies:
   - {groupId: org.junit, artifactId: junit-bom, version: 5.5.1, type: pom, scope: import}
@@ -29,32 +24,30 @@ dependencies:
 - {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
 - {groupId: org.slf4j, artifactId: slf4j-log4j12, version: 1.7.28}
-- {groupId: org.projectlombok, artifactId: lombok, optional: true, version: 1.18.8, scope: provided}
+- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
+  optional: true}
 - {groupId: org.junit.jupiter, artifactId: junit-jupiter-engine, scope: test}
-
 build:
   plugins:
   - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin, version: 3.0.0-M3}
-  - artifactId: maven-dependency-plugin
+  - groupId: org.apache.maven.plugins
+    artifactId: maven-dependency-plugin
     executions:
-      - id: unpack
-        phase: package
-        goals: [unpack]
-        configuration:
-          artifactItems:
-            - groupId: ${project.groupId}
-              artifactId: ${project.artifactId}
-              version: ${project.version}
-  - artifactId: maven-compiler-plugin
+    - configuration:
+        artifactItems:
+        - {groupId: '${project.groupId}', artifactId: '${project.artifactId}', version: '${project.version}'}
+      goals: [unpack]
+      id: unpack
+      inherited: true
+      phase: package
+      priority: 0
+  - groupId: org.apache.maven.plugins
+    artifactId: maven-compiler-plugin
     version: 3.8.1
     configuration:
       annotationProcessorPaths:
-        - groupId: org.projectlombok
-          artifactId: lombok
-          version: 1.18.8
-        - groupId: com.google.dagger
-          artifactId: dagger-compiler
-          version: 2.24
+      - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
+      - {groupId: com.google.dagger, artifactId: dagger-compiler, version: 2.24}
   - groupId: org.apache.maven.plugins
     artifactId: maven-assembly-plugin
     configuration:
