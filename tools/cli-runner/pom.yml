@@ -13,6 +13,7 @@ properties: {
 
 dependencies:
 - {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-github-provider, version: '${project.version}'}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
 - {groupId: org.xeustechnologies, artifactId: jcl-core, version: 2.8}

@@ -9,6 +9,8 @@ import com.github.stcarolas.enki.core.RepoProvider;
 import com.github.stcarolas.enki.core.impl.GitRepo;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.RepositoryService;
+import org.eclipse.jgit.util.StringUtils;
+
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.val;
@@ -27,7 +29,9 @@ public class GitHubRepoProvider implements RepoProvider {
             () -> {
                 val repoService = new RepositoryService();
                 repoService.getClient().setCredentials(username, password);
-                log.info("Getting repos for org:{}", organization);
+                if (StringUtils.isEmptyOrNull(organization)){
+                    return repoService.getRepositories();
+                }
                 return repoService.getOrgRepositories(organization);
             }
         )
