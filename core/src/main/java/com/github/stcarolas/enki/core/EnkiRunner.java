@@ -4,13 +4,16 @@ import java.util.List;
 import java.util.Objects;
 
 import lombok.Builder;
+import lombok.Singular;
 import lombok.extern.log4j.Log4j2;
 
 @Builder
 @Log4j2
 public class EnkiRunner {
+    @Singular
     private List<RepoProvider> providers;
 
+    @Singular
     private List<RepoHandler> handlers;
 
     public void handle() {

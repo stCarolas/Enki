@@ -11,6 +11,7 @@ import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import lombok.Builder;
+import lombok.Singular;
 import lombok.val;
 import lombok.extern.log4j.Log4j2;
 
@@ -18,8 +19,10 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class EnkiServer {
 
+    @Singular
     private List<RepoProvider> providers;
 
+    @Singular
     private List<RepoHandler> handlers;
 
     private String serverHost;
