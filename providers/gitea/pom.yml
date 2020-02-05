@@ -8,7 +8,7 @@ name: Enki Gitea Provider
 properties: {revision: 0.0.1, java.version: 1.8, maven.compiler.source: 1.8, maven.compiler.target: 1.8}
 dependencies:
 - {groupId: rocks.mango, artifactId: gitea-api, version: 1.0.0}
-- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: 0.0.1}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
 - {groupId: com.typesafe, artifactId: config, version: 1.3.4}
 - {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}

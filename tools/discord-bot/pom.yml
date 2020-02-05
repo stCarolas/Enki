@@ -15,7 +15,7 @@ dependencyManagement:
   dependencies:
   - {groupId: org.junit, artifactId: junit-bom, version: 5.5.1, type: pom, scope: import}
 dependencies:
-- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: 0.0.1}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
 - {groupId: com.github.stcarolas.enki, artifactId: enki-server, version: 0.0.1}
 - {groupId: com.github.stcarolas.enki, artifactId: enki-github-provider, version: 0.0.1}
 - {groupId: com.github.stcarolas.enki, artifactId: enki-gitea-provider, version: 0.0.1}

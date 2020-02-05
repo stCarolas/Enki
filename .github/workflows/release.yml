@@ -61,6 +61,14 @@ jobs:
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
           cd ../..
         done
+        for tool in $(ls tools)
+        do
+          cd tools/$tool
+          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
+          mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
+          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
+          cd ../..
+        done
 
     - name: Push pom.yml with new version
       uses: github-actions-x/commit@v2.1
