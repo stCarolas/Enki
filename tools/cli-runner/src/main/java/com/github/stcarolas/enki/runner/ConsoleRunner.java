@@ -3,17 +3,19 @@ package com.github.stcarolas.enki.runner;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
 import com.github.stcarolas.enki.bitbucket.provider.BitbucketRepoProvider;
 import com.github.stcarolas.enki.core.EnkiRunner;
-import com.github.stcarolas.enki.core.RepoHandler;
 import com.github.stcarolas.enki.core.EnkiRunner.EnkiRunnerBuilder;
+import com.github.stcarolas.enki.core.RepoHandler;
 import com.github.stcarolas.enki.github.provider.GitHubRepoProvider;
+
 import org.xeustechnologies.jcl.JarClassLoader;
+
 import lombok.extern.log4j.Log4j2;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -23,7 +25,7 @@ import picocli.CommandLine.Parameters;
 @Command(
     name = "enki",
     mixinStandardHelpOptions = true,
-    version = "checksum 0.1",
+    version = "0.2",
     description = "run enki handlers from cli"
 )
 @Log4j2
@@ -119,8 +121,7 @@ public class ConsoleRunner implements Callable<Integer> {
                     .token(bitbucketToken)
                     .endpoint(bitbucketEndpoint)
                     .build()
-            )
-                .build();
+            );
         }
         for (Class handler : handlers) {
             enki.handler((RepoHandler) handler.newInstance());
