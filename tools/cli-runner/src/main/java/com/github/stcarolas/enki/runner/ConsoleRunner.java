@@ -1,5 +1,6 @@
 package com.github.stcarolas.enki.runner;
 
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +28,7 @@ import picocli.CommandLine.Parameters;
 )
 @Log4j2
 public class ConsoleRunner implements Callable<Integer> {
+
     @Option(names = { "--github" }, description = "use GitHub RepoProvider")
     private boolean useGithubProvider = false;
 
@@ -42,7 +44,10 @@ public class ConsoleRunner implements Callable<Integer> {
     )
     private String githubPassword = "";
 
-    @Option(names = { "--bitbucket" }, description = "use Bitbucket RepoProvider")
+    @Option(
+        names = { "--bitbucket" }, 
+        description = "use Bitbucket RepoProvider"
+    )
     private boolean useBitbucketProvider = false;
 
     @Option(
@@ -51,7 +56,10 @@ public class ConsoleRunner implements Callable<Integer> {
     )
     private String bitbucketEndpoint = "";
 
-    @Option(names = { "--bitbucket-token" }, description = "Bitbucket Access Token")
+    @Option(
+        names = { "--bitbucket-token" }, 
+        description = "Bitbucket Access Token"
+    )
     private String bitbucketToken = "";
 
     @Option(names = { "--gitlab" }, description = "use GitLab RepoProvider")
@@ -89,7 +97,7 @@ public class ConsoleRunner implements Callable<Integer> {
         Set<Class> handlers = new HashSet<>();
         for (String className : classes) {
             Class loadedClass = jcl.loadClass(className);
-            if (List.of(loadedClass.getInterfaces()).contains(RepoHandler.class)) {
+            if (Arrays.asList(loadedClass.getInterfaces()).contains(RepoHandler.class)) {
                 log.info("Use {}", loadedClass.getName());
                 handlers.add(loadedClass);
             }
