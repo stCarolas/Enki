@@ -10,7 +10,6 @@ dependencies:
 - {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
-- {groupId: org.slf4j, artifactId: slf4j-log4j12, version: 2.0.0-alpha0}
 - {groupId: org.yaml, artifactId: snakeyaml, version: 1.25}
 - {groupId: io.undertow, artifactId: undertow-core, version: 2.0.1.Final}
 - {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}

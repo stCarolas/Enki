@@ -15,16 +15,21 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @Log4j2
 public class EnkiServer {
-    @Singular
+
     private List<RepoProvider> providers;
 
-    @Singular
     private List<RepoHandler> handlers;
 
     private String serverHost;
     private int port;
 
     public void start() {
+
+        if (Objects.isNull(providers) || Objects.isNull(handlers)){
+            log.info("no providers or handlers, exiting");
+            return;
+        }
+
         val enkiBuilder = EnkiRunner.builder();
         providers.forEach(provider -> enkiBuilder.provider(provider));
         handlers.forEach(handler -> enkiBuilder.handler(handler));
@@ -44,6 +49,7 @@ public class EnkiServer {
                         );
                         enki.handle();
                     }
+
                 }
             )
             .build()

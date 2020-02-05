@@ -23,7 +23,6 @@ dependencies:
 - {groupId: com.lmax, artifactId: disruptor, version: 3.4.2}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
-- {groupId: org.slf4j, artifactId: slf4j-log4j12, version: 1.7.28}
 - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
   optional: true}
 - {groupId: org.junit.jupiter, artifactId: junit-jupiter-engine, scope: test}
