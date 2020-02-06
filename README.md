@@ -29,7 +29,7 @@ Sometimes we want to do some work with multiple repositories - add step with Son
 pipelines, add JaCoCo to all projects, up library version everywhere, add helm charts, etc. 
 There is where Enki can help you.
 
-Enki takes all problems with handling of cloning and iterating over multiple repositories, commiting and pushing them. All you need to do its write or reuse some handler which takes metadata and local cloned copy of repository and do his work.
+Enki takes all problems with handling of cloning and iterating over multiple repositories, commiting and pushing them. All you need to do is write or reuse some handler which takes metadata and local cloned copy of repository and do his work.
 
 # Set Up with Maven
 
