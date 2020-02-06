@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @ToString
 public class GitRepo implements Repo {
-    private final RepoProvider repoProvider;
+    private final RepoProvider<Repo> repoProvider;
 
     @Singular
     private final Map<CloneURLType, String> cloneUrls;
@@ -46,7 +46,7 @@ public class GitRepo implements Repo {
                 return directory;
             }
         )
-            .onFailure(error -> log.error("error: {}", error))
+            .onFailure(error -> log.error("error: ", error))
             .toJavaOptional();
     }
 
@@ -57,20 +57,16 @@ public class GitRepo implements Repo {
             return;
         }
         Try.of(
-            () -> {
-                return Git.open(directory);
-            }
+            () -> Git.open(directory)
         )
-            .onFailure(error -> log.error("error: {}", error))
+            .onFailure(error -> log.error("error: ", error))
             .onSuccess(
                 repo -> {
                     val hasChanges = Try.of(
-                        () -> {
-                            return !repo.status().call().isClean();
-                        }
+                        () -> !repo.status().call().isClean()
                     )
                         .getOrElse(false);
-                    log.info("has changes:{}",hasChanges);
+                    log.info("has changes: {}", hasChanges);
                     if (hasChanges) {
                         Try.of(
                             () -> {

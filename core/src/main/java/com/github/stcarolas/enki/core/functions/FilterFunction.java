@@ -7,30 +7,32 @@ import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
 import lombok.RequiredArgsConstructor;
 
-public class FilterFunction implements com.github.stcarolas.enki.core.Function {
+import static java.util.stream.Collectors.*;
+
+public class FilterFunction<T extends Repo> implements com.github.stcarolas.enki.core.Function<T> {
     private final Predicate<? super Repo> filter;
 
     private FilterFunction(Predicate<? super Repo> filter) {
         this.filter = filter;
     }
 
-    public static FilterFunction filter(Predicate<? super Repo> filter) {
-        return new FilterFunction(filter);
+    public static <T extends Repo>FilterFunction<T> filter(Predicate<? super Repo> filter) {
+        return new FilterFunction<>(filter);
     }
 
     @Override
-    public RepoProvider from(RepoProvider source) {
-        return new InternalRepoProvider(source, filter);
+    public RepoProvider<T> from(RepoProvider<T> source) {
+        return new InternalRepoProvider<>(source, filter);
     }
 
     @RequiredArgsConstructor
-    public class InternalRepoProvider implements RepoProvider {
-        private final RepoProvider source;
+    public static class InternalRepoProvider<T extends Repo> implements RepoProvider<T> {
+        private final RepoProvider<T> source;
         private final Predicate<? super Repo> filter;
 
         @Override
-        public List<Repo> getRepos() {
-            return source.getRepos().stream().filter(filter).collect(Collectors.toList());
+        public List<T> getRepos() {
+            return source.getRepos().stream().filter(filter).collect(toList());
         }
     }
 }

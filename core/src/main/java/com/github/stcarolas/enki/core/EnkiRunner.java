@@ -9,12 +9,12 @@ import lombok.extern.log4j.Log4j2;
 
 @Builder
 @Log4j2
-public class EnkiRunner {
+public class EnkiRunner<T extends Repo> {
     @Singular
-    private List<RepoProvider> providers;
+    private List<RepoProvider<T>> providers;
 
     @Singular
-    private List<RepoHandler> handlers;
+    private List<RepoHandler<T>> handlers;
 
     public void handle() {
         if (Objects.isNull(providers) || Objects.isNull(handlers)){
@@ -22,11 +22,7 @@ public class EnkiRunner {
             return;
         }
         providers.stream()
-            .flatMap(
-                provider -> {
-                    return provider.getRepos().stream();
-                }
-            )
+            .flatMap(provider -> provider.getRepos().stream())
             .forEach(repo -> handlers.forEach(handler -> handler.handle(repo)));
     }
 }

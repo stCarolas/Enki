@@ -6,7 +6,7 @@ import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
 import lombok.RequiredArgsConstructor;
 
-public class TakeFunction implements Function {
+public class TakeFunction<T extends Repo> implements Function<T> {
     private final int count;
 
     private TakeFunction(int count) {
@@ -18,17 +18,17 @@ public class TakeFunction implements Function {
     }
 
     @Override
-    public RepoProvider from(RepoProvider source) {
-        return new InternalRepoProvider(source, count);
+    public RepoProvider<T> from(RepoProvider<T> source) {
+        return new InternalRepoProvider<>(source, count);
     }
 
     @RequiredArgsConstructor
-    public class InternalRepoProvider implements RepoProvider {
-        private final RepoProvider source;
+    public static class InternalRepoProvider<T extends Repo> implements RepoProvider<T> {
+        private final RepoProvider<T> source;
         private final int count;
 
         @Override
-        public List<Repo> getRepos() {
+        public List<T> getRepos() {
             return source.getRepos().subList(0, count);
         }
     }
