@@ -2,11 +2,9 @@ package com.github.stcarolas.enki;
 
 import java.util.List;
 import java.util.Objects;
-
 import com.github.stcarolas.enki.core.EnkiRunner;
 import com.github.stcarolas.enki.core.RepoHandler;
 import com.github.stcarolas.enki.core.RepoProvider;
-
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
@@ -18,7 +16,6 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @Log4j2
 public class EnkiServer {
-
     @Singular
     private List<RepoProvider> providers;
 
@@ -29,16 +26,12 @@ public class EnkiServer {
     private int port;
 
     public void start() {
-
-        if (Objects.isNull(providers) || Objects.isNull(handlers)){
+        if (Objects.isNull(providers) || Objects.isNull(handlers)) {
             log.info("no providers or handlers, exiting");
             return;
         }
 
-        val enkiBuilder = EnkiRunner.builder();
-        providers.forEach(provider -> enkiBuilder.provider(provider));
-        handlers.forEach(handler -> enkiBuilder.handler(handler));
-        val enki = enkiBuilder.build();
+        val repoRegistry = new RepoRegistry(providers);
         Undertow.builder()
             .addHttpListener(port, serverHost)
             .setHandler(
@@ -52,9 +45,7 @@ public class EnkiServer {
                             providers.size(),
                             handlers.size()
                         );
-                        enki.handle();
                     }
-
                 }
             )
             .build()

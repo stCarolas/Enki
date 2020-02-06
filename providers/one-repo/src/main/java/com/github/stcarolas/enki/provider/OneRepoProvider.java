@@ -1,4 +1,4 @@
-package com.github.stcarolas.enki.gitea.provider;
+package com.github.stcarolas.enki.provider;
 
 import java.util.Arrays;
 import java.util.List;
