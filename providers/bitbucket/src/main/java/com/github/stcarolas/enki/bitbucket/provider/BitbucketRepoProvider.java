@@ -15,6 +15,7 @@ import com.github.stcarolas.enki.core.impl.GitRepo;
 
 import io.vavr.control.Try;
 import lombok.Builder;
+import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2

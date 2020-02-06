@@ -3,6 +3,7 @@
 [![Release](https://github.com/stCarolas/Enki/workflows/Release/badge.svg)](https://github.com/stCarolas/Enki/actions?query=workflow%3ARelease) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a631d4eeb0834e8f99035ce52c204acb)](https://app.codacy.com/manual/stcarolas/Enki?utm_source=github.com&utm_medium=referral&utm_content=stCarolas/Enki&utm_campaign=Badge_Grade_Dashboard)
 
 Manipulate your git repos. At scale.
+![Console Runner](https://github.com/stCarolas/Enki/tree/master/tools/cli-runner)
 
 # RepoProviders, Handlers and Functions
 Enki consists of modules. Main module - enki-core which provides core logic and interfaces for another modules to implement.
