@@ -5,3 +5,4 @@ pom.xml
 target/
 .settings/
 *.versionsBackup
+dependency-reduced-pom.xml
