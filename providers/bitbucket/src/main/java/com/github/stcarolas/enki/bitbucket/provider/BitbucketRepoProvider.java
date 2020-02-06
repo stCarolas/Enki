@@ -27,7 +27,7 @@ public class BitbucketRepoProvider implements RepoProvider {
     
     private String token;
     @Builder.Default
-    private BitbucketRepoQueryOptions options = new BitbucketRepoQueryOptions();
+    private BitbucketRepoQueryOptions options = BitbucketRepoQueryOptions.builder().build();
 
     @Override
     public List<Repo> getRepos() {
