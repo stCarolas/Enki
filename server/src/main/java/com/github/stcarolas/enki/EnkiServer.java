@@ -1,52 +1,42 @@
 package com.github.stcarolas.enki;
 
+import static com.github.stcarolas.enki.ProviderCache.cache;
 import java.util.List;
 import java.util.Objects;
+import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoHandler;
 import com.github.stcarolas.enki.core.RepoProvider;
 import io.undertow.Undertow;
-import io.undertow.server.HttpHandler;
-import io.undertow.server.HttpServerExchange;
 import lombok.Builder;
 import lombok.Singular;
-import lombok.val;
 import lombok.extern.log4j.Log4j2;
 
 @Builder
 @Log4j2
-public class EnkiServer {
+public class EnkiServer<T extends Repo> {
     @Singular
-    private List<RepoProvider> providers;
+    private List<RepoProvider<T>> providers;
 
     @Singular
-    private List<RepoHandler> handlers;
+    private List<RepoHandler<T>> handlers;
 
     private String serverHost;
     private int port;
 
     public void start() {
-
         if (Objects.isNull(providers) || Objects.isNull(handlers)) {
             log.info("no providers or handlers, exiting");
             return;
         }
 
-        val repoRegistry = new RepoRegistry(providers);
+        RepoProvider<T> cachedProvider = cache(providers);
         Undertow.builder()
             .addHttpListener(port, serverHost)
             .setHandler(
-                new HttpHandler() {
-
-                    @Override
-                    public void handleRequest(final HttpServerExchange exchange)
-                        throws Exception {
-                        log.info(
-                            "Start to handle with {} providers and {} handlers",
-                            providers.size(),
-                            handlers.size()
-                        );
-                    }
-                }
+                GithubWebhookHandler.<T>builder()
+                    .provider(cachedProvider)
+                    .handlers(handlers)
+                    .build()
             )
             .build()
             .start();
