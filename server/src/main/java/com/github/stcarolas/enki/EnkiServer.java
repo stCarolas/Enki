@@ -25,6 +25,7 @@ public class EnkiServer {
     private int port;
 
     public void start() {
+
         if (Objects.isNull(providers) || Objects.isNull(handlers)) {
             log.info("no providers or handlers, exiting");
             return;

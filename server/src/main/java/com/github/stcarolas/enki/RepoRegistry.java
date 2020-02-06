@@ -1,5 +1,6 @@
 package com.github.stcarolas.enki;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,7 @@ import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoHandler;
 import com.github.stcarolas.enki.core.RepoProvider;
 
-public class RepoRegistry implements RepoHandler {
+public class RepoRegistry implements RepoHandler, RepoProvider {
     Map<CloneURLType, Map<String, Repo>> repos;
 
     public RepoRegistry(List<RepoProvider> providers) {
@@ -32,4 +33,11 @@ public class RepoRegistry implements RepoHandler {
                 }
             );
     }
+
+	@Override
+	public List<Repo> getRepos() {
+        List<Repo> allRepos = new ArrayList<>();
+        repos.values().forEach( listByUrlType -> allRepos.addAll(listByUrlType.values()) );
+        return allRepos;
+	}
 }
