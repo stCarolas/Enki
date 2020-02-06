@@ -30,6 +30,12 @@ jobs:
         bump: patch
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Set new version in parent pom
+      run: |
+          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
+          mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
+          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
+
     - name: Set new version in core and server
       run: |
           cd core
