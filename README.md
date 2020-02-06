@@ -1,26 +1,10 @@
 # Enki
 
-[![Release](https://github.com/stCarolas/Enki/workflows/Release/badge.svg)](https://github.com/stCarolas/Enki/actions?query=workflow%3ARelease) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a631d4eeb0834e8f99035ce52c204acb)](https://app.codacy.com/manual/stcarolas/Enki?utm_source=github.com&utm_medium=referral&utm_content=stCarolas/Enki&utm_campaign=Badge_Grade_Dashboard)
+ [![Release](https://github.com/stCarolas/Enki/workflows/Release/badge.svg)](https://github.com/stCarolas/Enki/actions?query=workflow%3ARelease)
+ [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a631d4eeb0834e8f99035ce52c204acb)](https://app.codacy.com/manual/stcarolas/Enki?utm_source=github.com&utm_medium=referral&utm_content=stCarolas/Enki&utm_campaign=Badge_Grade_Dashboard)
 
+- ![Core Concepts](https://github.com/stCarolas/Enki/tree/master/core)
 - ![Console Runner](https://github.com/stCarolas/Enki/tree/master/tools/cli-runner)
-
-# RepoProviders, Handlers and Functions
-Enki consists of modules. Main module - enki-core which provides core logic and interfaces for another modules to implement.
-Each other module should offer one of three functionalities:
-- RepoProvider
-- RepoHandler
-- Function
-
-RepoProvider can be used for loading repos from git servers like GitHub, Gitlab, etc.
-Available RepoProvider's at this moment are GitHub, Gitea.
-
-RepoHandler are used to do some work on repos loaded by RepoProvider.
-Available RepoHandler's:
-- GoCD ConfigRepo Sync
-- Logging
-- GitHub -> Gitea Mirroring
-- Maven Dependency Handlers
-- Discord Channel Creator
 
 # Set Up with Maven
 
