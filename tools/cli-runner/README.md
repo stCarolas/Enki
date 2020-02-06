@@ -1,4 +1,6 @@
-# Console Runner
+# Enki Console Runner
+
+Tool for running jar with RepoHandler from cli
 
 ### Usage
 ```
