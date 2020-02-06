@@ -13,11 +13,13 @@ import org.eclipse.jgit.util.StringUtils;
 
 import io.vavr.control.Try;
 import lombok.Builder;
+import lombok.ToString;
 import lombok.val;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Builder
+@ToString
 public class GitHubRepoProvider implements RepoProvider {
     private String username;
     private String password;
