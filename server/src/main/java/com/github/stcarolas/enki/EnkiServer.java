@@ -2,7 +2,6 @@ package com.github.stcarolas.enki;
 
 import java.util.List;
 import java.util.Objects;
-import com.github.stcarolas.enki.core.EnkiRunner;
 import com.github.stcarolas.enki.core.RepoHandler;
 import com.github.stcarolas.enki.core.RepoProvider;
 import io.undertow.Undertow;

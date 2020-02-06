@@ -3,9 +3,9 @@
  [![Version](https://img.shields.io/github/v/tag/stCarolas/Enki?label=version&sort=semver)](https://github.com/stCarolas/Enki/packages)
  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a631d4eeb0834e8f99035ce52c204acb)](https://app.codacy.com/manual/stcarolas/Enki?utm_source=github.com&utm_medium=referral&utm_content=stCarolas/Enki&utm_campaign=Badge_Grade_Dashboard)
 
-1. ![Why](#why)
-1. ![Set Up With Maven](#set-up-with-maven)
-1. ![Set Up With Gradle](#set-up-with-gradle)
+1. ![Why](https://github.com/stCarolas/Enki#why)
+1. ![Set Up With Maven](https://github.com/stCarolas/Enki#set-up-with-maven)
+1. ![Set Up With Gradle](https://github.com/stCarolas/Enki#set-up-with-gradle)
 1. ![Core Concepts](https://github.com/stCarolas/Enki/tree/master/core)
 1. ![Console Runner](https://github.com/stCarolas/Enki/tree/master/tools/cli-runner)
 1. Providers:

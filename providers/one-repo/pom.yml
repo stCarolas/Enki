@@ -12,8 +12,7 @@ dependencies:
 - {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
-- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
-  optional: true}
+- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided, optional: true}
 distributionManagement:
   repository: {id: enki-github-repo, layout: default, name: github, uniqueVersion: false,
     url: 'https://maven.pkg.github.com/stCarolas/Enki'}
@@ -25,3 +24,6 @@ build:
     configuration:
       annotationProcessorPaths:
       - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
+repositories:
+- {id: enki-github-repo, layout: default, url: 'https://maven.pkg.github.com/stCarolas/Enki'}
+- {id: jcenter, layout: default, name: jcenter, url: 'https://jcenter.bintray.com'}
