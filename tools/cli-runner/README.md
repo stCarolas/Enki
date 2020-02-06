@@ -35,5 +35,9 @@ run enki handlers from cli
 ### Example
 Prints all found repos
 ```
-java -jar enki-cli-runner-0.1.9.jar enki-logging-handlers-0.1.9.jar --github --github-username <GITHUB_USERNAME> --github-password <GITHUB_PASSWORD_OR_TOKEN>
+java -jar enki-cli-runner-0.1.9.jar \
+    enki-logging-handlers-0.1.9.jar \
+    --github \
+    --github-username <GITHUB_USERNAME> \
+    --github-password <GITHUB_PASSWORD_OR_TOKEN>
 ```
