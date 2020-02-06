@@ -1,4 +1,5 @@
 # Enki 
+
  [![Release](https://github.com/stCarolas/Enki/workflows/Release/badge.svg)](https://github.com/stCarolas/Enki/actions?query=workflow%3ARelease)
  [![Version](https://img.shields.io/github/v/tag/stCarolas/Enki?label=version&sort=semver)](https://github.com/stCarolas/Enki/packages)
  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a631d4eeb0834e8f99035ce52c204acb)](https://app.codacy.com/manual/stcarolas/Enki?utm_source=github.com&utm_medium=referral&utm_content=stCarolas/Enki&utm_campaign=Badge_Grade_Dashboard)
@@ -24,7 +25,6 @@
     - ![Console Runner](https://github.com/stCarolas/Enki/tree/master/tools/cli-runner)
     - ![Discord Bot](https://github.com/stCarolas/Enki/tree/master/tools/discord-bot)
     - ![Console Wrapper for Template Generator](https://github.com/stCarolas/Enki/tree/master/tools/generator)
-    
 
 # Why
 
@@ -36,13 +36,15 @@ Enki takes all the problems with handling of cloning and iterating over multiple
 
 # Set Up with Maven
 
-Add dependency to pom
+Add github personal token with `read:packages` scope to settings.xml (use Personal Access Token from Github, not password)
 ```
-    <dependency>
-        <groupId>com.github.stcarolas.enki</groupId>
-        <artifactId>enki-core</artifactId>
-        <version>0.0.29</version>
-    </dependency>
+<servers>
+  <server>
+    <id>enki-github-repo</id>
+    <username>YOUR_GITHUB_USERNAME</username>
+    <password>YOUR_GITHUB_TOKEN</password>
+  </server>
+</servers>
 ```
 
 Add github repository to pom
@@ -55,16 +57,7 @@ Add github repository to pom
   </repositories>
 ```
 
-Add github personal token with `read:packages` scope to settings.xml (use Personal Access Token from Github, not password)
-```
-<servers>
-  <server>
-    <id>enki-github-repo</id>
-    <username>YOUR_GITHUB_USERNAME</username>
-    <password>YOUR_GITHUB_TOKEN</password>
-  </server>
-</servers>
-```
+Add ![this](https://github.com/stCarolas/Enki/packages/70782) dependency to pom
 
 # Set Up with Gradle
 
@@ -79,7 +72,4 @@ Add repository (use Personal Access Token from Github with `read:packages` scope
     }
 ```
 
-Add dependency
-```
-implementation("com.github.stcarolas.enki:enki-core:0.0.29")
-```
+Add ![this](https://github.com/stCarolas/Enki/packages/70782) dependency to build.gradle
