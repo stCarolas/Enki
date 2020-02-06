@@ -7,7 +7,6 @@
 1. ![Set Up With Maven](https://github.com/stCarolas/Enki#set-up-with-maven)
 1. ![Set Up With Gradle](https://github.com/stCarolas/Enki#set-up-with-gradle)
 1. ![Core Concepts](https://github.com/stCarolas/Enki/tree/master/core)
-1. ![Console Runner](https://github.com/stCarolas/Enki/tree/master/tools/cli-runner)
 1. Providers:
     - ![Bitbucket](https://github.com/stCarolas/Enki/tree/master/providers/bitbucket)
     - ![Github](https://github.com/stCarolas/Enki/tree/master/providers/github)
@@ -21,6 +20,10 @@
     - ![JaCoCo configurator for maven projects](https://github.com/stCarolas/Enki/tree/master/handlers/jacoco)
     - ![Only print found repo's](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
     - ![Collect all dependency from maven project](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
+1. Tools:
+    - ![Console Runner](https://github.com/stCarolas/Enki/tree/master/tools/cli-runner)
+    - ![Discord Bot](https://github.com/stCarolas/Enki/tree/master/tools/discord-bot)
+    - ![Console Wrapper for Template Generator](https://github.com/stCarolas/Enki/tree/master/tools/generator)
     
 
 # Why
@@ -29,7 +32,7 @@ Sometimes we want to do some work with multiple repositories - add step with Son
 pipelines, add JaCoCo to all projects, up library version everywhere, add helm charts, etc. 
 There is where Enki can help you.
 
-Enki takes all problems with handling of cloning and iterating over multiple repositories, commiting and pushing them. All you need to do is write or reuse some handler which takes metadata and local cloned copy of repository and do his work.
+Enki takes all the problems with handling of cloning and iterating over multiple repositories, commiting and pushing them. All you need to do is write or reuse some handler which takes metadata and local cloned copy of repository and just does required job.
 
 # Set Up with Maven
 
