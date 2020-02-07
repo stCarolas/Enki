@@ -1,10 +1,11 @@
-# Enki Console Runner
+# Enki Runner
 
 Tool for running jar with RepoHandler from cli
 
 ### Usage
+
 ```
-$ java -jar enki-cli-runner-0.1.9.jar
+$ java -jar enki-server-0.1.9.jar
 Missing required parameter: <jar>
 Usage: enki [-hV] [--bitbucket] [--gitea] [--github] [--gitlab]
             [--bitbucket-endpoint=<bitbucketEndpoint>]
@@ -32,10 +33,21 @@ run enki handlers from cli
   -V, --version     Print version information and exit.
 ```
 
-### Example
-Prints all found repos
+### Run handler in server mode
 ```
-java -jar enki-cli-runner-0.1.9.jar \
+java -jar enki-server-0.1.9.jar \
+    enki-logging-handlers-0.1.9.jar \
+    --server \
+    --github \
+    --github-username <GITHUB_USERNAME> \
+    --github-password <GITHUB_PASSWORD_OR_TOKEN>
+```
+
+
+### Run handler from cli
+
+```
+java -jar enki-server-0.1.9.jar \
     enki-logging-handlers-0.1.9.jar \
     --github \
     --github-username <GITHUB_USERNAME> \

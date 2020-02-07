@@ -1,4 +1,4 @@
-package com.github.stcarolas.enki.runner;
+package com.github.stcarolas.enki;
 
 import static java.util.stream.Collectors.toList;
 

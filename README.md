@@ -22,7 +22,7 @@
     - ![Only print a list of found repositories](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
     - ![Collect all dependency from maven project](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
 1. Tools:
-    - ![Console Runner](https://github.com/stCarolas/Enki/tree/master/tools/cli-runner)
+    - ![Cli/Server Runner](https://github.com/stCarolas/Enki/tree/master/server)
     - ![Discord Bot](https://github.com/stCarolas/Enki/tree/master/tools/discord-bot)
     - ![Console Wrapper for Template Generator](https://github.com/stCarolas/Enki/tree/master/tools/generator)
 1. ![Roadmap](https://github.com/stCarolas/Enki/milestones)
