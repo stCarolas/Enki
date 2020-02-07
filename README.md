@@ -19,12 +19,13 @@
     - ![Archive GitHub repo](https://github.com/stCarolas/Enki/tree/master/handlers/github-archive-repo)
     - ![Sync with GoCD](https://github.com/stCarolas/Enki/tree/master/handlers/gocd-handlers)
     - ![JaCoCo configurator for maven projects](https://github.com/stCarolas/Enki/tree/master/handlers/jacoco)
-    - ![Only print found repo's](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
+    - ![Only print a list of found repositories](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
     - ![Collect all dependency from maven project](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
 1. Tools:
     - ![Console Runner](https://github.com/stCarolas/Enki/tree/master/tools/cli-runner)
     - ![Discord Bot](https://github.com/stCarolas/Enki/tree/master/tools/discord-bot)
     - ![Console Wrapper for Template Generator](https://github.com/stCarolas/Enki/tree/master/tools/generator)
+1. ![Roadmap](https://github.com/stCarolas/Enki/milestones)
 
 # Why
 

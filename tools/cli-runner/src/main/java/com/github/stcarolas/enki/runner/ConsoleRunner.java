@@ -1,22 +1,15 @@
 package com.github.stcarolas.enki.runner;
 
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import com.github.stcarolas.enki.bitbucket.provider.BitbucketRepoProvider;
 import com.github.stcarolas.enki.core.EnkiRunner;
 import com.github.stcarolas.enki.core.EnkiRunner.EnkiRunnerBuilder;
+import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoHandler;
 import com.github.stcarolas.enki.github.provider.GitHubRepoProvider;
 
-import org.xeustechnologies.jcl.JarClassLoader;
-
-import lombok.extern.log4j.Log4j2;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -28,7 +21,6 @@ import picocli.CommandLine.Parameters;
     version = "0.2",
     description = "run enki handlers from cli"
 )
-@Log4j2
 public class ConsoleRunner implements Callable<Integer> {
 
     @Option(names = { "--github" }, description = "use GitHub RepoProvider")
@@ -74,37 +66,13 @@ public class ConsoleRunner implements Callable<Integer> {
     private String jar;
 
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new ConsoleRunner()).execute(args);
-        System.exit(exitCode);
+        new CommandLine(new ConsoleRunner()).execute(args);
     }
 
     @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Integer call() throws Exception {
-        Set<String> classes = new HashSet<>();
-        try (ZipFile zipFile = new ZipFile(jar)) {
-            Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
-            while (zipEntries.hasMoreElements()) {
-                String fileName = ((ZipEntry) zipEntries.nextElement()).getName();
-                log.debug("seek {}", fileName);
-                if (fileName.endsWith("class")) {
-                    String className = fileName.replace("/", ".").replace(".class", "");
-                    log.debug("detect {} as {}", fileName, className);
-                    classes.add(className);
-                }
-            }
-        }
-        JarClassLoader jcl = new JarClassLoader();
-        jcl.add(jar);
-        Set<Class> handlers = new HashSet<>();
-        for (String className : classes) {
-            Class loadedClass = jcl.loadClass(className);
-            if (Arrays.asList(loadedClass.getInterfaces()).contains(RepoHandler.class)) {
-                log.info("Use {}", loadedClass.getName());
-                handlers.add(loadedClass);
-            }
-        }
-
+        List<RepoHandler<Repo>> handlers = ClasspathScanner.scan(jar);
         EnkiRunnerBuilder enki = EnkiRunner.builder();
         if (useGithubProvider) {
             enki.provider(
@@ -123,10 +91,7 @@ public class ConsoleRunner implements Callable<Integer> {
                     .build()
             );
         }
-        for (Class handler : handlers) {
-            enki.handler((RepoHandler) handler.newInstance());
-        }
-        enki.build().handle();
+        enki.handlers(handlers).build().handle();
 
         return 0;
     }

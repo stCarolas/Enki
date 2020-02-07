@@ -14,6 +14,7 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @Log4j2
 public class EnkiServer<T extends Repo> {
+
     @Singular
     private List<RepoProvider<T>> providers;
 
@@ -24,6 +25,7 @@ public class EnkiServer<T extends Repo> {
     private int port;
 
     public void start() {
+
         if (Objects.isNull(providers) || Objects.isNull(handlers)) {
             log.info("no providers or handlers, exiting");
             return;
@@ -40,5 +42,6 @@ public class EnkiServer<T extends Repo> {
             )
             .build()
             .start();
+
     }
 }
