@@ -14,3 +14,6 @@ jobs:
 
     - name: Run misspell with reviewdog
       uses: reviewdog/action-misspell@v1.0.0
+      with:
+        github_token: ${{ secrets.github_token }}
+        locale: "US"
