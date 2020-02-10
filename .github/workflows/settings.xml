@@ -6,7 +6,7 @@
     <server>
       <id>bintray-stcarolas-maven</id>
       <username>stCarolas</username>
-      <password>${env.TOKEN}</password>
+      <password>${deploy.token}</password>
     </server>
   </servers>
 </settings>
