@@ -18,8 +18,14 @@ distributionManagement:
   repository: {id: bintray-stcarolas-maven, layout: default, url: 'https://api.bintray.com/maven/stcarolas/maven/enki-core/;publish=1'}
 build:
   plugins:
-  - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
-  - {groupId: org.apache.maven.plugins, artifactId: maven-source-plugin}
+  - groupId: org.apache.maven.plugins
+    artifactId: maven-surefire-plugin
+  - groupId: org.apache.maven.plugins
+    artifactId: maven-source-plugin
+    executions:
+      - id: attach-sources
+        goals:
+        - jar
   - groupId: org.apache.maven.plugins
     artifactId: maven-compiler-plugin
     configuration:
