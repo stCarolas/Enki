@@ -145,7 +145,7 @@ jobs:
 
       - name: Publish Enki Module
         run: mvn -B package deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
-        working-directory: server
+        working-directory: providers/${{ matrix.module }}
 
   build_server:
     needs: [build_providers]
@@ -170,7 +170,7 @@ jobs:
 
       - name: Publish Enki Server
         run: mvn -B package deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
-        working-directory: providers/${{ matrix.module }}
+        working-directory: server
 
   build_handlers:
     needs: [build_providers]
