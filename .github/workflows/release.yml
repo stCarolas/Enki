@@ -172,6 +172,13 @@ jobs:
         with:
           maven-version: 3.5.4
 
-      - name: Publish Enki Server
-        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../.github/workflows/settings.xml
+      - name: Publish Enki Server jar
+        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../.github/workflows/settings.xml && rm -rf target/*-sources.jar
         working-directory: server
+
+      - name: Publish Enki Server docker image
+        uses: manusa/actions-publish-docker@master
+        with:
+          name: stcarolas/enki
+          username: stCarolas
+          password: ${{ secrets.DOCKER_TOKEN }}
