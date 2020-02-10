@@ -22,11 +22,6 @@ build:
   - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
   - groupId: org.apache.maven.plugins
     artifactId: maven-source-plugin
-    executions:
-    - goals: [jar]
-      id: attach-sources
-      inherited: true
-      priority: 0
   - groupId: org.apache.maven.plugins
     artifactId: maven-compiler-plugin
     configuration:
