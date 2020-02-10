@@ -2,7 +2,7 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-gocd-handlers
-version: 0.1.38
+version: 0.1.39
 packaging: jar
 name: Enki GoCD Analyzers
 properties: {feign-version: 9.4.0, revision: 0.0.1, java.version: 1.8, jackson-version: 2.8.9,
