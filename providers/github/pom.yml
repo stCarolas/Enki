@@ -24,6 +24,7 @@ distributionManagement:
 build:
   plugins:
   - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
+  - {groupId: org.apache.maven.plugins, artifactId: maven-source-plugin}
   - groupId: org.apache.maven.plugins
     artifactId: maven-compiler-plugin
     configuration:
