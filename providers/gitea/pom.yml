@@ -21,7 +21,14 @@ distributionManagement:
 build:
   plugins:
   - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
-  - {groupId: org.apache.maven.plugins, artifactId: maven-source-plugin}
+  - groupId: org.apache.maven.plugins
+    artifactId: maven-source-plugin
+    executions:
+    - goals: [jar-no-fork]
+      id: attach-sources
+      inherited: true
+      phase: package
+      priority: 0
   - groupId: org.apache.maven.plugins
     artifactId: maven-compiler-plugin
     configuration:

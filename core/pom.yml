@@ -23,10 +23,10 @@ build:
   - groupId: org.apache.maven.plugins
     artifactId: maven-source-plugin
     executions:
-    - goals: [jar]
+    - goals: [jar-no-fork]
       id: attach-sources
       inherited: true
-      phase: jar
+      phase: package
       priority: 0
   - groupId: org.apache.maven.plugins
     artifactId: maven-compiler-plugin
