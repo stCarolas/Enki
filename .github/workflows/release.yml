@@ -115,12 +115,18 @@ jobs:
           maven-version: 3.5.4
   
       - name: Publish Enki Core
-        run: mvn -B package deploy -Dgithub.token=${{ secrets.GITHUB_TOKEN }} -s ../.github/workflows/settings.xml
+        run: mvn -B package deploy -s ../.github/workflows/settings.xml
         working-directory: core
+        with:
+          env: # Or as an environment variable
+            TOKEN: ${{ secrets.BINTRAY_API_KEY }}
 
       - name: Publish Enki Server
-        run: mvn -B package deploy -Dgithub.token=${{ secrets.GITHUB_TOKEN }} -s ../.github/workflows/settings.xml
+        run: mvn -B package deploy -s ../.github/workflows/settings.xml
         working-directory: server
+        with:
+          env: # Or as an environment variable
+            TOKEN: ${{ secrets.BINTRAY_API_KEY }}
 
 
   build_providers:

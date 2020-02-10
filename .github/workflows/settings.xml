@@ -4,9 +4,9 @@
                       http://maven.apache.org/xsd/settings-1.0.0.xsd">
   <servers>
     <server>
-      <id>enki-github-repo</id>
+      <id>bintray-stcarolas-maven</id>
       <username>stCarolas</username>
-      <password>${github.token}</password>
+      <password>${env.TOKEN}</password>
     </server>
   </servers>
 </settings>
