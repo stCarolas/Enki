@@ -8,6 +8,7 @@ on:
 jobs:
 
   up_version:
+    name: Update Version
     runs-on: ubuntu-latest
 
     steps:
@@ -92,6 +93,18 @@ jobs:
       with:
         bump: patch
         github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  scan:
+    needs: [up_version]
+    name: SonarCloud Check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build_core:
     needs: [up_version]
