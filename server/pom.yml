@@ -59,4 +59,4 @@ build:
       phase: package
       priority: 0
 repositories:
-- {id: enki-github-repo, layout: default, url: 'https://maven.pkg.github.com/stCarolas/Enki'}
+- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}
