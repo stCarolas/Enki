@@ -2,7 +2,7 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki
-version: 0.1.46
+version: 0.1.47
 packaging: pom
 name: Enki
 modules: [core, server, tools/discord-bot, tools/generator, providers/github, providers/gitea,
