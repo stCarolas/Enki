@@ -128,7 +128,7 @@ jobs:
           maven-version: 3.5.4
   
       - name: Publish Enki Core
-        run: mvn -B package deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../.github/workflows/settings.xml
+        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../.github/workflows/settings.xml
         working-directory: core
 
   build_providers:
@@ -157,7 +157,7 @@ jobs:
           maven-version: 3.5.4
 
       - name: Publish Enki Provider
-        run: mvn -B package deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
+        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
         working-directory: providers/${{ matrix.module }}
 
   build_server:
@@ -182,5 +182,5 @@ jobs:
           maven-version: 3.5.4
 
       - name: Publish Enki Server
-        run: mvn -B package deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../.github/workflows/settings.xml
+        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../.github/workflows/settings.xml
         working-directory: server
