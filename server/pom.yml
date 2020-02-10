@@ -5,7 +5,7 @@ artifactId: enki-server
 version: 0.1.39
 packaging: jar
 name: Enki Server
-properties: {revision: 0.0.1, java.version: 1.8, maven.compiler.source: 1.8, maven.compiler.target: 1.8}
+properties: {revision: 0.0.1, java.version: 11, maven.compiler.source: 11, maven.compiler.target: 11}
 dependencies:
 - {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
 - {groupId: com.github.stcarolas.enki, artifactId: enki-one-repo-provider, version: '${project.version}'}
@@ -23,7 +23,7 @@ dependencies:
   optional: true}
 distributionManagement:
   repository: {id: bintray-stcarolas-maven, layout: default, uniqueVersion: true,
-    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-core/;publish=1'}
+    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-server/;publish=1'}
 build:
   plugins:
   - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
