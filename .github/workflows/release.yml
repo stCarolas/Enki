@@ -173,7 +173,11 @@ jobs:
           maven-version: 3.5.4
 
       - name: Publish Enki Server jar
-        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../.github/workflows/settings.xml && rm -rf target/*-sources.jar
+        run: |
+          mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../.github/workflows/settings.xml
+          rm -rf target/*-sources.jar 
+          cp -rf target ..
+          cp -rf Dockerfile ..
         working-directory: server
 
       - name: Publish Enki Server docker image
