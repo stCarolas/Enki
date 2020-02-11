@@ -3,6 +3,7 @@
  [![Release](https://github.com/stCarolas/Enki/workflows/Release/badge.svg)](https://github.com/stCarolas/Enki/actions?query=workflow%3ARelease)
  [![Version](https://img.shields.io/github/v/tag/stCarolas/Enki?label=version&sort=semver)](https://github.com/stCarolas/Enki/packages)
  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a631d4eeb0834e8f99035ce52c204acb)](https://app.codacy.com/manual/stcarolas/Enki?utm_source=github.com&utm_medium=referral&utm_content=stCarolas/Enki&utm_campaign=Badge_Grade_Dashboard)
+ [![Docker Pulls](https://img.shields.io/docker/pulls/stcarolas/enki)](https://hub.docker.com/repository/docker/stcarolas/enki)
 
 1. ![Why](https://github.com/stCarolas/Enki#why)
 1. ![Set Up With Maven](https://github.com/stCarolas/Enki#set-up-with-maven)
@@ -37,40 +38,32 @@ Enki takes all the problems with handling of cloning and iterating over multiple
 
 # Set Up with Maven
 
-Add github personal token with `read:packages` scope to settings.xml (use Personal Access Token from Github, not password)
+Add to pom.xml
 ```
-<servers>
-  <server>
-    <id>enki-github-repo</id>
-    <username>YOUR_GITHUB_USERNAME</username>
-    <password>YOUR_GITHUB_TOKEN</password>
-  </server>
-</servers>
-```
-
-Add github repository to pom
-```
-  <repositories>
+<repositories>
     <repository>
-      <id>enki-github-repo</id>
-      <url>https://maven.pkg.github.com/stCarolas/Enki</url>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
     </repository>
-  </repositories>
+</repositories>
 ```
-
-Add ![this](https://github.com/stCarolas/Enki/packages/70782) dependency to pom
+```
+<dependency>
+  <groupId>com.github.stcarolas.enki</groupId>
+  <artifactId>enki-core</artifactId>
+  <version>0.1.49</version>
+  <type>pom</type>
+</dependency>
+```
 
 # Set Up with Gradle
 
-Add repository (use Personal Access Token from Github with `read:packages` scope, not password)
+Add to build.gradle
 ```
-    maven { 
-        credentials(PasswordCredentials) {
-            username "<MY_USERNAME>"
-            password "<MY_GITHUB_TOKEN>"
-        }
-        url "https://maven.pkg.github.com/stCarolas/Enki" 
-    }
+repositories {
+    jcenter()
+}
 ```
-
-Add ![this](https://github.com/stCarolas/Enki/packages/70782) dependency to build.gradle
+```
+implementation 'com.github.stcarolas.enki:enki-core:0.1.49'
+```
