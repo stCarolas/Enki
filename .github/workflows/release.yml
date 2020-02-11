@@ -184,5 +184,5 @@ jobs:
         uses: manusa/actions-publish-docker@master
         with:
           name: stcarolas/enki
-          username: stCarolas
+          username: stcarolas
           password: ${{ secrets.DOCKER_TOKEN }}
