@@ -31,7 +31,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 14.0.0-ea.36
+        java-version: 14.0.0-ea.34
 
     - name: Set up Apache Maven
       uses: stCarolas/setup-maven@v3
@@ -121,7 +121,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 14.0.0-ea.36
+          java-version: 14.0.0-ea.34
 
       - name: Set up Apache Maven
         uses: stCarolas/setup-maven@v3
@@ -151,7 +151,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 14.0.0-ea.36
+          java-version: 14.0.0-ea.34
 
       - name: Set up Apache Maven
         uses: stCarolas/setup-maven@v3
@@ -177,7 +177,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 14.0.0-ea.36
+          java-version: 14.0.0-ea.34
 
       - name: Set up Apache Maven
         uses: stCarolas/setup-maven@v3
