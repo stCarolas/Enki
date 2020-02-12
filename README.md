@@ -72,6 +72,8 @@ implementation 'com.github.stcarolas.enki:enki-core:0.1.49'
 
 # Running with Docker
 
+Docker image includes a launcher and all RepoProviders but no handlers. RepoHandlers must be provided via volume like `-v $(pwd):/tmp` as in examples below. 
+
 Cli mode:
 ```
 docker run -v $(pwd):/tmp stcarolas/enki \
