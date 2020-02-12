@@ -16,7 +16,7 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Check with EditorConfig
-      uses: zbeekman/EditorConfig-Action@v1.1.1
+      uses: zbeekman/EditorConfig-Action@master
 
   up_version:
     name: Update Version
