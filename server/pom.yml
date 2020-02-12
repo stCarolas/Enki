@@ -2,7 +2,7 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-server
-version: 0.1.54
+version: 0.1.55
 packaging: jar
 name: Enki Server
 properties: {revision: 0.0.1, java.version: 11, maven.compiler.source: 11, maven.compiler.target: 11}
