@@ -15,7 +15,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.sha }}
 
     - name: Check with EditorConfig
-      uses: zbeekman/EditorConfig-Action@v1.1.0
+      uses: zbeekman/EditorConfig-Action@v1.1.1
 
     - name: Run misspell with reviewdog
       uses: reviewdog/action-misspell@v1.0.0
