@@ -2,10 +2,10 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-core
-version: 0.1.55
+version: 0.1.56
 packaging: jar
 name: Enki Core
-properties: {java.version: 14, maven.compiler.source: 14, maven.compiler.target: 14}
+properties: {maven.compiler.target: 14, java.version: 14, maven.compiler.source: 14}
 dependencies:
 - {groupId: com.typesafe, artifactId: config, version: 1.3.4}
 - {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}
@@ -33,10 +33,8 @@ build:
     version: 3.8.1
     configuration:
       failOnError: true
-      compilerArguments:
-        AaddGeneratedAnnotation: false
-        Adebug: true
-      dependencies: 
-      - {groupId: org.ow2.asm, artifactId: asm, version: 7.3.1, type: jar}
+      compilerArguments: {AaddGeneratedAnnotation: false, Adebug: true}
+      dependencies:
+        dependency: {groupId: org.ow2.asm, artifactId: asm, version: 7.3.1, type: jar}
       annotationProcessorPaths:
       - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}

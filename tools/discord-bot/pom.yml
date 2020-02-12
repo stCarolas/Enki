@@ -2,10 +2,11 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-github-gitea-mirror-example
-version: 0.1.55
+version: 0.1.56
 packaging: jar
 name: Enki Discord Bot
-properties: {revision: 0.0.1, java.version: 1.8, maven.compiler.source: 1.8, maven.compiler.target: 1.8}
+properties: {maven.compiler.target: 1.8, java.version: 1.8, maven.compiler.source: 1.8,
+  revision: 0.0.1}
 dependencyManagement:
   dependencies:
   - {groupId: org.junit, artifactId: junit-bom, version: 5.5.1, type: pom, scope: import}
