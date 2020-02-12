@@ -16,12 +16,12 @@
     - ![Gitlab](https://github.com/stCarolas/Enki/tree/master/providers/gitlab)
     - ![Gitea](https://github.com/stCarolas/Enki/tree/master/providers/gitea)
 1. Handlers:
-    - ![Discord commit hook](https://github.com/stCarolas/Enki/tree/master/handlers/discord-commit-hook)
+    - ![Add Discord commit hook](https://github.com/stCarolas/Enki/tree/master/handlers/discord-commit-hook)
     - ![Mirror repo to Gitea](https://github.com/stCarolas/Enki/tree/master/handlers/gitea-mirror)
     - ![Archive GitHub repo](https://github.com/stCarolas/Enki/tree/master/handlers/github-archive-repo)
     - ![Sync with GoCD](https://github.com/stCarolas/Enki/tree/master/handlers/gocd-handlers)
     - ![JaCoCo configurator for maven projects](https://github.com/stCarolas/Enki/tree/master/handlers/jacoco)
-    - ![Only print a list of found repositories](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
+    - ![Print a list of found repositories](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
     - ![Collect all dependency from maven project](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
 1. Tools:
     - ![Cli/Server Runner](https://github.com/stCarolas/Enki/tree/master/server)

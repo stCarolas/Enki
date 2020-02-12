@@ -7,6 +7,8 @@ import java.util.UUID;
 import com.github.stcarolas.enki.core.CloneURLType;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
+import com.github.stcarolas.enki.core.transport.DefaultTransportConfigCallback;
+
 import org.eclipse.jgit.api.Git;
 import io.vavr.control.Try;
 import lombok.Builder;

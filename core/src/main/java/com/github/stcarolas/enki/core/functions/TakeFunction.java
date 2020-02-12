@@ -13,8 +13,8 @@ public class TakeFunction<T extends Repo> implements Function<T> {
 		this.count = count;
 	}
 
-	public static TakeFunction take(int count) {
-		return new TakeFunction(count);
+	public static <T extends Repo>TakeFunction<T> take(int count) {
+		return new TakeFunction<>(count);
 	}
 
 	@Override

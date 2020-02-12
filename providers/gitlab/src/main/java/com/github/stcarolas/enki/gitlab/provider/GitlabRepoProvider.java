@@ -1,4 +1,4 @@
-package com.github.stcarolas.enki.provider;
+package com.github.stcarolas.enki.gitlab.provider;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,6 +4,7 @@
 pom.xml
 .settings/
 *.versionsBackup
+.vim
 
 ### Maven template
 target/

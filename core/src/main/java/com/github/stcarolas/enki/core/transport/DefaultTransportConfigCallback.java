@@ -1,4 +1,4 @@
-package com.github.stcarolas.enki.core.impl;
+package com.github.stcarolas.enki.core.transport;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;

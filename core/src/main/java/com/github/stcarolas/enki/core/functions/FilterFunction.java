@@ -2,7 +2,6 @@ package com.github.stcarolas.enki.core.functions;
 
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
 import lombok.RequiredArgsConstructor;

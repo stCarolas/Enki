@@ -5,10 +5,15 @@ artifactId: enki-gitlab-provider
 version: 0.1.55
 packaging: jar
 name: Enki Gitlab Provider
-properties: {revision: 0.0.1, java.version: 1.8, maven.compiler.source: 1.8, maven.compiler.target: 1.8}
+properties: {java.version: 14, maven.compiler.source: 14, maven.compiler.target: 14}
 dependencies:
 - {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
-- {groupId: org.gitlab4j, artifactId: gitlab4j-api, version: 4.14.15}
+- groupId: org.gitlab4j
+  artifactId: gitlab4j-api
+  version: 4.14.15
+  exclusions:
+  - groupId: com.fasterxml.jackson.jaxrs
+    artifactId: jackson-jaxrs-json-provider
 - {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
@@ -22,6 +27,7 @@ build:
   - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin, version: 3.0.0-M4}
   - groupId: org.apache.maven.plugins
     artifactId: maven-source-plugin
+    version: 3.2.1
     executions:
     - goals: [jar-no-fork]
       id: attach-sources
@@ -32,6 +38,12 @@ build:
     artifactId: maven-compiler-plugin
     version: 3.8.1
     configuration:
+      failOnError: true
+      compilerArguments:
+        AaddGeneratedAnnotation: false
+        Adebug: true
+      dependencies: 
+      - {groupId: org.ow2.asm, artifactId: asm, version: 7.3.1, type: jar}
       annotationProcessorPaths:
       - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
 repositories:

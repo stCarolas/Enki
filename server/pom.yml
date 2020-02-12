@@ -5,7 +5,7 @@ artifactId: enki-server
 version: 0.1.55
 packaging: jar
 name: Enki Server
-properties: {revision: 0.0.1, java.version: 11, maven.compiler.source: 11, maven.compiler.target: 11}
+properties: {java.version: 14, maven.compiler.source: 14, maven.compiler.target: 14}
 dependencies:
 - {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
 - {groupId: com.github.stcarolas.enki, artifactId: enki-one-repo-provider, version: '${project.version}'}
@@ -26,9 +26,10 @@ distributionManagement:
     url: 'https://api.bintray.com/maven/stcarolas/maven/enki-server/;publish=1'}
 build:
   plugins:
-  - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
+  - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin, version: 3.0.0-M4}
   - groupId: org.apache.maven.plugins
     artifactId: maven-source-plugin
+    version: 3.2.1
     executions:
     - goals: [jar-no-fork]
       id: attach-sources
@@ -48,7 +49,14 @@ build:
       priority: 0
   - groupId: org.apache.maven.plugins
     artifactId: maven-compiler-plugin
+    version: 3.8.1
     configuration:
+      failOnError: true
+      compilerArguments:
+        AaddGeneratedAnnotation: false
+        Adebug: true
+      dependencies: 
+      - {groupId: org.ow2.asm, artifactId: asm, version: 7.3.1, type: jar}
       annotationProcessorPaths:
       - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
   - groupId: org.apache.maven.plugins

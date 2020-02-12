@@ -1,4 +1,4 @@
-package com.github.stcarolas.enki.provider;
+package com.github.stcarolas.enki.onerepo.provider;
 
 import java.util.Arrays;
 import java.util.List;
