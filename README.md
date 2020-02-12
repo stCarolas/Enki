@@ -8,6 +8,7 @@
 1. [Why](#why)
 1. [Set Up With Maven](#set-up-with-maven)
 1. [Set Up With Gradle](#set-up-with-gradle)
+1. [Running With Docker](#running-with-docker)
 1. ![Core Concepts](https://github.com/stCarolas/Enki/tree/master/core)
 1. Providers:
     - ![Bitbucket](https://github.com/stCarolas/Enki/tree/master/providers/bitbucket)
@@ -34,7 +35,8 @@ Sometimes we want to do some work with multiple repositories - add step with Son
 pipelines, add JaCoCo to all projects, up library version everywhere, add helm charts, etc. 
 There is where Enki can help you.
 
-Enki takes all the problems with handling of cloning and iterating over multiple repositories, commiting and pushing them. All you need to do is write or reuse some handler which takes metadata and local cloned copy of repository and just does required job.
+Enki takes all the problems with handling of cloning and iterating over multiple repositories, commiting and pushing them. 
+All you need to do is write or reuse some handler which takes metadata and local cloned copy of repository and just does required job.
 
 # Set Up with Maven
 
@@ -66,4 +68,21 @@ repositories {
 ```
 ```
 implementation 'com.github.stcarolas.enki:enki-core:0.1.49'
+```
+
+# Running with Docker
+
+Cli mode:
+```
+docker run -v $(pwd):/tmp stcarolas/enki \
+    --github --github-username=stCarolas --github-password=252f939e823c441fc7a2f5914e93a9fe30725b3c \
+    /tmp/enki-logging-handlers-0.1.5.jar 
+```
+
+Server mode:
+```
+docker run -v $(pwd):/tmp -p 8080:8080 stcarolas/enki \
+    --server \
+    --github --github-username=stCarolas --github-password=252f939e823c441fc7a2f5914e93a9fe30725b3c \
+    /tmp/enki-logging-handlers-0.1.5.jar 
 ```
