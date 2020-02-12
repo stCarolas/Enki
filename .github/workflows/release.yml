@@ -7,6 +7,17 @@ on:
 
 jobs:
 
+  check_style:
+    name: Check Code Style
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout sources
+      uses: actions/checkout@v1
+
+    - name: Check with EditorConfig
+      uses: zbeekman/EditorConfig-Action@v1.1.0
+
   up_version:
     name: Update Version
     runs-on: ubuntu-latest
