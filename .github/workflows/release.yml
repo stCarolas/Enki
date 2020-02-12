@@ -28,10 +28,10 @@ jobs:
     - name: Checkout sources
       uses: actions/checkout@v1
      
-    - name: Set up JDK 1.8
+    - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 1.8
+        java-version: 14.0.0-ea.36
 
     - name: Set up Apache Maven
       uses: stCarolas/setup-maven@v3
@@ -118,10 +118,10 @@ jobs:
         with:
           ref: master
      
-      - name: Set up JDK 1.8
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          java-version: 14.0.0-ea.36
 
       - name: Set up Apache Maven
         uses: stCarolas/setup-maven@v3
@@ -148,10 +148,10 @@ jobs:
         with:
           ref: master
      
-      - name: Set up JDK 1.8
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          java-version: 14.0.0-ea.36
 
       - name: Set up Apache Maven
         uses: stCarolas/setup-maven@v3
@@ -174,10 +174,10 @@ jobs:
         with:
           ref: master
      
-      - name: Set up JDK 1.11
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 1.11
+          java-version: 14.0.0-ea.36
 
       - name: Set up Apache Maven
         uses: stCarolas/setup-maven@v3
