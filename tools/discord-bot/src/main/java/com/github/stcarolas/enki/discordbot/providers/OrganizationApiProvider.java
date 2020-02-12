@@ -18,34 +18,34 @@ import rocks.mango.gitea.OrganizationApi;
 @Log4j2
 @dagger.Module
 public class OrganizationApiProvider {
-    private final BasicAuthRequestInterceptor auth;
-    private final Configuration configuration;
+	private final BasicAuthRequestInterceptor auth;
+	private final Configuration configuration;
 
-    public OrganizationApiProvider(Configuration configuration) {
-        log.info("Loaded configuration: {}", configuration);
-        this.configuration = configuration;
-        this.auth =
-            new BasicAuthRequestInterceptor(
-                configuration.getUsername(),
-                configuration.getPassword()
-            );
-    }
+	public OrganizationApiProvider(Configuration configuration) {
+		log.info("Loaded configuration: {}", configuration);
+		this.configuration = configuration;
+		this.auth =
+			new BasicAuthRequestInterceptor(
+				configuration.getUsername(),
+				configuration.getPassword()
+			);
+	}
 
-    @Provides
-    public OrganizationApi provide() {
-        return Feign.builder()
-            .decoder(new JacksonDecoder(Arrays.asList((Module) new JavaTimeModule())))
-            .encoder(new JacksonEncoder())
-            .requestInterceptor(auth)
-            .target(OrganizationApi.class, configuration.getGiteaUrl());
-    }
+	@Provides
+	public OrganizationApi provide() {
+		return Feign.builder()
+			.decoder(new JacksonDecoder(Arrays.asList((Module) new JavaTimeModule())))
+			.encoder(new JacksonEncoder())
+			.requestInterceptor(auth)
+			.target(OrganizationApi.class, configuration.getGiteaUrl());
+	}
 
-    @Builder
-    @Getter
-    public static class Configuration {
-        private final String username;
-        private final String password;
-        private final String organization;
-        private final String giteaUrl;
-    }
+	@Builder
+	@Getter
+	public static class Configuration {
+		private final String username;
+		private final String password;
+		private final String organization;
+		private final String giteaUrl;
+	}
 }

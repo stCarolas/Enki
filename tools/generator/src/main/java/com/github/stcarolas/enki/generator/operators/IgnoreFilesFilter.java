@@ -9,16 +9,16 @@ import lombok.val;
 
 @Builder
 public class IgnoreFilesFilter implements Predicate<Path> {
-    private final List<String> ignoreList;
+	private final List<String> ignoreList;
 
 	@Override
 	public boolean test(Path path) {
-        for (val ignorePattern: ignoreList) {
-            if (path.toString().contains(ignorePattern)) {
-                return false;
-            }
-        }
-        return true;
+		for (val ignorePattern: ignoreList) {
+			if (path.toString().contains(ignorePattern)) {
+				return false;
+			}
+		}
+		return true;
 	}
     
 }

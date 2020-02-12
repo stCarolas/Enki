@@ -9,11 +9,11 @@ import com.github.stcarolas.enki.discordbot.providers.SessionHandlersProvider;
 import dagger.Component;
 
 @Component(
-    modules = {
-        ConfigProvider.class, SessionHandlersProvider.class, CommandsProvider.class
-    }
+	modules = {
+		ConfigProvider.class, SessionHandlersProvider.class, CommandsProvider.class
+	}
 )
 @Singleton
 public interface EnkiDiscordBotComponent {
-    MessageListener listener();
+	MessageListener listener();
 }

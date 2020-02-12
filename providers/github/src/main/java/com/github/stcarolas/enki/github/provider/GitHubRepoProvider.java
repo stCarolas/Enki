@@ -21,42 +21,42 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @ToString
 public class GitHubRepoProvider implements RepoProvider {
-    private String username;
-    private String password;
-    private String organization;
+	private String username;
+	private String password;
+	private String organization;
 
-    @Override
-    public List<Repo> getRepos() {
-        return Try.of(
-            () -> {
-                val repoService = new RepositoryService();
-                repoService.getClient().setCredentials(username, password);
-                if (StringUtils.isEmptyOrNull(organization)){
-                    return repoService.getRepositories();
-                }
-                return repoService.getOrgRepositories(organization);
-            }
-        )
-            .onFailure(
-                error -> {
-                    log.error(error);
-                }
-            )
-            .map(
-                repos -> {
-                    return repos.stream()
-                        .map(repo -> convert(repo))
-                        .collect(Collectors.toList());
-                }
-            )
-            .getOrElse(new ArrayList<>());
-    }
+	@Override
+	public List<Repo> getRepos() {
+		return Try.of(
+			() -> {
+				val repoService = new RepositoryService();
+				repoService.getClient().setCredentials(username, password);
+				if (StringUtils.isEmptyOrNull(organization)){
+					return repoService.getRepositories();
+				}
+				return repoService.getOrgRepositories(organization);
+			}
+		)
+			.onFailure(
+				error -> {
+					log.error(error);
+				}
+			)
+			.map(
+				repos -> {
+					return repos.stream()
+						.map(repo -> convert(repo))
+						.collect(Collectors.toList());
+				}
+			)
+			.getOrElse(new ArrayList<>());
+	}
 
-    private Repo convert(Repository repo) {
-        return GitRepo.builder()
-            .name(repo.getName())
-            .cloneUrl(CloneURLType.SSH, repo.getSshUrl())
-            .repoProvider(this)
-            .build();
-    }
+	private Repo convert(Repository repo) {
+		return GitRepo.builder()
+			.name(repo.getName())
+			.cloneUrl(CloneURLType.SSH, repo.getSshUrl())
+			.repoProvider(this)
+			.build();
+	}
 }

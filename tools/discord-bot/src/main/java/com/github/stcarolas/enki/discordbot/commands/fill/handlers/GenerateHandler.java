@@ -16,50 +16,50 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 @Builder
 @Log4j2
 public class GenerateHandler implements SessionHandler {
-    private final Map<String, FillData> sessions;
+	private final Map<String, FillData> sessions;
 
-    @Inject
-    public GenerateHandler(Map<String, FillData> sessions) {
-        this.sessions = sessions;
-    }
+	@Inject
+	public GenerateHandler(Map<String, FillData> sessions) {
+		this.sessions = sessions;
+	}
 
-    @Override
-    public void handle(MessageReceivedEvent event) {
-        // todo
-    }
+	@Override
+	public void handle(MessageReceivedEvent event) {
+		// todo
+	}
 
-    @Override
-    public String command(MessageReceivedEvent event) {
-        return "";
-    }
+	@Override
+	public String command(MessageReceivedEvent event) {
+		return "";
+	}
 
-    @Override
-    public String instruction(MessageReceivedEvent event) {
-        return "";
-    }
+	@Override
+	public String instruction(MessageReceivedEvent event) {
+		return "";
+	}
 
-    @Override
-    public String handle(String sessionId) {
-        val data = sessions.get(sessionId);
-        val generator = Generator.builder()
-            .cloneUrl(data.getTemplateUrl())
-            .data(data.getValues())
-            .mappings(new HashMap(data.getMappins()))
-            .saveParameters(true)
-            .build();
-        val repo = GitRepo.builder()
-            .cloneUrl(CloneURLType.SSH, data.getRepoUrl())
-            .build();
-        generator.analyze(repo);
-        sessions.put(sessionId, FillData.builder().values(new HashMap<>()).mappins(new HashMap<>()).build());
-        return "Исполнено";
-    }
+	@Override
+	public String handle(String sessionId) {
+		val data = sessions.get(sessionId);
+		val generator = Generator.builder()
+			.cloneUrl(data.getTemplateUrl())
+			.data(data.getValues())
+			.mappings(new HashMap(data.getMappins()))
+			.saveParameters(true)
+			.build();
+		val repo = GitRepo.builder()
+			.cloneUrl(CloneURLType.SSH, data.getRepoUrl())
+			.build();
+		generator.analyze(repo);
+		sessions.put(sessionId, FillData.builder().values(new HashMap<>()).mappins(new HashMap<>()).build());
+		return "Исполнено";
+	}
 
-    @Override
-    public void putInSession(String sessionId, String data) {}
+	@Override
+	public void putInSession(String sessionId, String data) {}
 
-    @Override
-    public String data(String sessionId) {
-        return "";
-    }
+	@Override
+	public String data(String sessionId) {
+		return "";
+	}
 }

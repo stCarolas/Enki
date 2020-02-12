@@ -13,30 +13,30 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @Log4j2
 public class GithubArchiveRepoHandler implements RepoHandler {
-    private final String username;
-    private final String password;
-    private final String organization;
+	private final String username;
+	private final String password;
+	private final String organization;
 
-    @Override
-    public void handle(Repo repo) {
-        Try.of(
-            () -> {
-                val repoService = new RepositoryService();
-                repoService.getClient().setCredentials(username, password);
-                log.info("Getting repo {} in org {}", repo.getName(), organization);
-                return repoService.editRepository(
-                    organization,
-                    repo.getName(),
-                    archiveRepoOptions()
-                );
-            }
-        )
-            .onFailure(error -> log.error(error));
-    }
+	@Override
+	public void handle(Repo repo) {
+		Try.of(
+			() -> {
+				val repoService = new RepositoryService();
+				repoService.getClient().setCredentials(username, password);
+				log.info("Getting repo {} in org {}", repo.getName(), organization);
+				return repoService.editRepository(
+					organization,
+					repo.getName(),
+					archiveRepoOptions()
+				);
+			}
+		)
+			.onFailure(error -> log.error(error));
+	}
 
-    public Map<String, Object> archiveRepoOptions() {
-        val options = new HashMap<String, Object>();
-        options.put("archived", true);
-        return options;
-    }
+	public Map<String, Object> archiveRepoOptions() {
+		val options = new HashMap<String, Object>();
+		options.put("archived", true);
+		return options;
+	}
 }

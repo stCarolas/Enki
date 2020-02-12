@@ -17,24 +17,24 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class GocdWebhookCaller implements RepoHandler {
-    private final GoCD gocd;
+	private final GoCD gocd;
 
-    public GocdWebhookCaller(String gocdUrl, String gocdUsername, String gocdPassword) {
-        val interceptor = new BasicAuthRequestInterceptor(gocdUsername, gocdPassword);
-        gocd =
-            Feign.builder()
-                .encoder(new JacksonEncoder())
-                .decoder(new JacksonDecoder(Arrays.asList((Module) new JavaTimeModule())))
-                .requestInterceptor(interceptor)
-                .target(GoCD.class, gocdUrl);
-    }
+	public GocdWebhookCaller(String gocdUrl, String gocdUsername, String gocdPassword) {
+		val interceptor = new BasicAuthRequestInterceptor(gocdUsername, gocdPassword);
+		gocd =
+			Feign.builder()
+				.encoder(new JacksonEncoder())
+				.decoder(new JacksonDecoder(Arrays.asList((Module) new JavaTimeModule())))
+				.requestInterceptor(interceptor)
+				.target(GoCD.class, gocdUrl);
+	}
 
-    @Override
-    public void handle(Repo repo) {
-        gocd.notifyGitMaterials(
-            NotifyMaterialRequest.builder()
-                .repositoryUrl(repo.getCloneUrls().get(CloneURLType.SSH))
-                .build()
-        );
-    }
+	@Override
+	public void handle(Repo repo) {
+		gocd.notifyGitMaterials(
+			NotifyMaterialRequest.builder()
+				.repositoryUrl(repo.getCloneUrls().get(CloneURLType.SSH))
+				.build()
+		);
+	}
 }

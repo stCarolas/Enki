@@ -12,24 +12,24 @@ import reactor.core.publisher.Flux;
 @Builder
 @Log4j2
 public class TemplateLoaderToPathMapper
-    implements Function<GitTemplateLoader, Flux<Path>> {
+	implements Function<GitTemplateLoader, Flux<Path>> {
 
-    @Override
-    public Flux<Path> apply(GitTemplateLoader t) {
-        log.info("get flux of path from templateLoader");
-        return t.getDirectory()
-            .map(
-                path -> {
-                    return Try.of(
-                        () -> {
-                            return Flux.fromStream(
-                                Files.walk(path.toPath()).filter(Files::isRegularFile)
-                            );
-                        }
-                    )
-                        .getOrElse(Flux.empty());
-                }
-            )
-            .orElse(Flux.empty());
-    }
+	@Override
+	public Flux<Path> apply(GitTemplateLoader t) {
+		log.info("get flux of path from templateLoader");
+		return t.getDirectory()
+			.map(
+				path -> {
+					return Try.of(
+						() -> {
+							return Flux.fromStream(
+								Files.walk(path.toPath()).filter(Files::isRegularFile)
+							);
+						}
+					)
+						.getOrElse(Flux.empty());
+				}
+			)
+			.orElse(Flux.empty());
+	}
 }

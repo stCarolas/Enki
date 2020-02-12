@@ -8,9 +8,9 @@ import lombok.Getter;
 @Builder
 public class BitbucketRepoQueryOptions {
 
-    private String visibility;
-    private String permission;
-    private String projectname;
-    private String name;
+	private String visibility;
+	private String permission;
+	private String projectname;
+	private String name;
     
 }

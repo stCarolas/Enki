@@ -6,6 +6,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class Mapping {
-    private final String source;
-    private final String destination;
+	private final String source;
+	private final String destination;
 }

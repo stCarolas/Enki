@@ -19,28 +19,28 @@ import rocks.mango.gitea.Repository;
 
 @RequiredArgsConstructor
 public class GiteaRepoProvider implements RepoProvider {
-    private final String baseUrl;
-    private final String organization;
-    private final String username;
-    private final String password;
+	private final String baseUrl;
+	private final String organization;
+	private final String username;
+	private final String password;
 
-    @Override
-    public List<Repo> getRepos() {
-        val authInterceptor = new BasicAuthRequestInterceptor(username, password);
-        val organizations = Feign.builder()
-            .decoder(new JacksonDecoder(Arrays.asList(new JavaTimeModule())))
-            .requestInterceptor(authInterceptor)
-            .target(OrganizationApi.class, baseUrl);
-        return organizations.orgListRepos(organization)
-            .stream()
-            .map(repo -> convert(repo))
-            .collect(Collectors.toList());
-    }
+	@Override
+	public List<Repo> getRepos() {
+		val authInterceptor = new BasicAuthRequestInterceptor(username, password);
+		val organizations = Feign.builder()
+			.decoder(new JacksonDecoder(Arrays.asList(new JavaTimeModule())))
+			.requestInterceptor(authInterceptor)
+			.target(OrganizationApi.class, baseUrl);
+		return organizations.orgListRepos(organization)
+			.stream()
+			.map(repo -> convert(repo))
+			.collect(Collectors.toList());
+	}
 
-    public Repo convert(Repository repo) {
-        return GitRepo.builder()
-            .name(repo.getName())
-            .cloneUrl(CloneURLType.SSH, repo.getSshUrl())
-            .build();
-    }
+	public Repo convert(Repository repo) {
+		return GitRepo.builder()
+			.name(repo.getName())
+			.cloneUrl(CloneURLType.SSH, repo.getSshUrl())
+			.build();
+	}
 }

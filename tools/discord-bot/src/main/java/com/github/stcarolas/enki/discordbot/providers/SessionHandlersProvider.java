@@ -14,9 +14,9 @@ import dagger.Provides;
 @Module
 public class SessionHandlersProvider {
 
-    @Provides
-    @Singleton
-    public Map<String, List<Handler>> provider() {
-        return new HashMap<>();
-    }
+	@Provides
+	@Singleton
+	public Map<String, List<Handler>> provider() {
+		return new HashMap<>();
+	}
 }

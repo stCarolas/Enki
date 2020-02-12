@@ -14,23 +14,23 @@ import lombok.val;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProviderCache<T extends Repo> implements RepoHandler<T>, RepoProvider<T> {
-    List<T> repos = new ArrayList<>();
+	List<T> repos = new ArrayList<>();
 
-    public static <T extends Repo> ProviderCache<T> cache(
-        List<RepoProvider<T>> providers
-    ) {
-        val cache = new ProviderCache<T>();
-        EnkiRunner.<T>builder().providers(providers).handler(cache).build().handle();
-        return cache;
-    }
+	public static <T extends Repo> ProviderCache<T> cache(
+		List<RepoProvider<T>> providers
+	) {
+		val cache = new ProviderCache<T>();
+		EnkiRunner.<T>builder().providers(providers).handler(cache).build().handle();
+		return cache;
+	}
 
-    @Override
-    public void handle(T repo) {
-        repos.add(repo);
-    }
+	@Override
+	public void handle(T repo) {
+		repos.add(repo);
+	}
 
-    @Override
-    public List<T> getRepos() {
-        return repos;
-    }
+	@Override
+	public List<T> getRepos() {
+		return repos;
+	}
 }

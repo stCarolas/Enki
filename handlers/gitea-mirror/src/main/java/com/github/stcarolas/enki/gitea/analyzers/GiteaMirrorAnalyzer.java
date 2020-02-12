@@ -22,38 +22,38 @@ import rocks.mango.gitea.OrganizationApi;
 @Builder
 @Log4j2
 public class GiteaMirrorAnalyzer implements RepoHandler {
-    private final String username;
-    private final String password;
-    private final String baseUrl;
-    private final String organization;
+	private final String username;
+	private final String password;
+	private final String baseUrl;
+	private final String organization;
 
-    @Override
-    public void handle(Repo repo) {
-        val authInterceptor = new BasicAuthRequestInterceptor(username, password);
-        val organizations = Feign.builder()
-            .decoder(new JacksonDecoder(Arrays.asList((Module) new JavaTimeModule())))
-            .encoder(new JacksonEncoder())
-            .requestInterceptor(authInterceptor)
-            .target(OrganizationApi.class, baseUrl);
-        val newRepo = organizations.createOrgRepo(
-            organization,
-            new CreateRepoOption().name(repo.getName())
-        );
-        repo.getDirectory()
-            .ifPresent(
-                dir -> Try.of(
-                    () -> {
-                        val git = Git.open(dir);
-                        git.remoteSetUrl()
-                            .setRemoteName("origin")
-                            .setRemoteUri(new URIish(newRepo.getSshUrl()))
-                            .call();
-                        return git.push()
-                            .setTransportConfigCallback(new DefaultTransportConfigCallback())
-                            .call();
-                    }
-                )
-                    .onFailure(error -> log.error(error))
-            );
-    }
+	@Override
+	public void handle(Repo repo) {
+		val authInterceptor = new BasicAuthRequestInterceptor(username, password);
+		val organizations = Feign.builder()
+			.decoder(new JacksonDecoder(Arrays.asList((Module) new JavaTimeModule())))
+			.encoder(new JacksonEncoder())
+			.requestInterceptor(authInterceptor)
+			.target(OrganizationApi.class, baseUrl);
+		val newRepo = organizations.createOrgRepo(
+			organization,
+			new CreateRepoOption().name(repo.getName())
+		);
+		repo.getDirectory()
+			.ifPresent(
+				dir -> Try.of(
+					() -> {
+						val git = Git.open(dir);
+						git.remoteSetUrl()
+							.setRemoteName("origin")
+							.setRemoteUri(new URIish(newRepo.getSshUrl()))
+							.call();
+						return git.push()
+							.setTransportConfigCallback(new DefaultTransportConfigCallback())
+							.call();
+					}
+				)
+					.onFailure(error -> log.error(error))
+			);
+	}
 }

@@ -15,24 +15,24 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @Log4j2
 public class GenerateWithMappingConsumer implements Consumer<Mapping> {
-    private final Handlebars handlebars;
-    private final Map<String, String> data;
+	private final Handlebars handlebars;
+	private final Map<String, String> data;
 
-    @Override
-    public void accept(Mapping mapping) {
-        log.info("generate: {} to {}", mapping.getSource(), mapping.getDestination());
-        try {
-            Template template = handlebars.compile(mapping.getSource());
-            try {
-                new File(mapping.getDestination()).toPath().getParent().toFile().mkdirs();
-            } catch (Exception e) {
-                log.debug("error while creating structure:{}", e);
-            }
-            try (val out = new FileWriter(mapping.getDestination())) {
-                template.apply(data, out);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void accept(Mapping mapping) {
+		log.info("generate: {} to {}", mapping.getSource(), mapping.getDestination());
+		try {
+			Template template = handlebars.compile(mapping.getSource());
+			try {
+				new File(mapping.getDestination()).toPath().getParent().toFile().mkdirs();
+			} catch (Exception e) {
+				log.debug("error while creating structure:{}", e);
+			}
+			try (val out = new FileWriter(mapping.getDestination())) {
+				template.apply(data, out);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

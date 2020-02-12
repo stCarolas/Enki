@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class Material {
-  private String type;
-  private Map<String, Object> attributes;
+	private String type;
+	private Map<String, Object> attributes;
 }

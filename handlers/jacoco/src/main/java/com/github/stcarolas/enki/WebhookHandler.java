@@ -14,38 +14,38 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class WebhookHandler implements HttpHandler {
-  WebhookHandler(Seq<RepoHandler> handlers) { this.handlers = handlers; }
+	WebhookHandler(Seq<RepoHandler> handlers) { this.handlers = handlers; }
   
-  public static WebhookHandlerBuilder builder() { return new WebhookHandlerBuilder(); }
+	public static WebhookHandlerBuilder builder() { return new WebhookHandlerBuilder(); }
   
-  public static class WebhookHandlerBuilder {
-    private Seq<RepoHandler> handlers;
+	public static class WebhookHandlerBuilder {
+		private Seq<RepoHandler> handlers;
     
-    public WebhookHandlerBuilder handlers(Seq<RepoHandler> handlers) { this.handlers = handlers;
-      return this; }
+		public WebhookHandlerBuilder handlers(Seq<RepoHandler> handlers) { this.handlers = handlers;
+			return this; }
     
-    public WebhookHandler build() { return new WebhookHandler(this.handlers); }
+		public WebhookHandler build() { return new WebhookHandler(this.handlers); }
     
-    public String toString() { return "WebhookHandler.WebhookHandlerBuilder(handlers=" + this.handlers + ")"; }
-  }
+		public String toString() { return "WebhookHandler.WebhookHandlerBuilder(handlers=" + this.handlers + ")"; }
+	}
   
-  private static final Logger log = LogManager.getLogger(WebhookHandler.class);
+	private static final Logger log = LogManager.getLogger(WebhookHandler.class);
   
-  private final Seq<RepoHandler> handlers;
+	private final Seq<RepoHandler> handlers;
   
-  public void handleRequest(HttpServerExchange exchange) throws Exception {
-    exchange.startBlocking();
-    exchange.dispatch(new HttpHandler() {
-          public void handleRequest(HttpServerExchange exchange) throws Exception {
-            Map request = (Map)(new Gson()).fromJson(new InputStreamReader(exchange
-                  .getInputStream()), Map.class);
-            String url = (String)((Map)request.get("repository")).get("ssh_url");
-            EnkiRunner.EnkiRunnerBuilder enki = EnkiRunner.builder().provider(new OneRepoProvider(url, CloneURLType.SSH));
-            WebhookHandler.this.handlers.forEach(handler -> 
+	public void handleRequest(HttpServerExchange exchange) throws Exception {
+		exchange.startBlocking();
+		exchange.dispatch(new HttpHandler() {
+					public void handleRequest(HttpServerExchange exchange) throws Exception {
+						Map request = (Map)(new Gson()).fromJson(new InputStreamReader(exchange
+									.getInputStream()), Map.class);
+						String url = (String)((Map)request.get("repository")).get("ssh_url");
+						EnkiRunner.EnkiRunnerBuilder enki = EnkiRunner.builder().provider(new OneRepoProvider(url, CloneURLType.SSH));
+						WebhookHandler.this.handlers.forEach(handler -> 
                 
-                enki.analyzer(handler));
-            enki.build().analyze();
-          }
-        });
-  }
+								enki.analyzer(handler));
+						enki.build().analyze();
+					}
+				});
+	}
 }

@@ -7,15 +7,15 @@ import java.util.UUID;
 
 public interface Repo {
 
-    UUID getId();
+	UUID getId();
 
-    String getName();
+	String getName();
 
-    Map<CloneURLType, String> getCloneUrls();
+	Map<CloneURLType, String> getCloneUrls();
 
-    Optional<File> getDirectory();
+	Optional<File> getDirectory();
 
-    RepoProvider getRepoProvider();
+	RepoProvider getRepoProvider();
 
-    @Deprecated void commitAndPush(String commitMessage);
+	@Deprecated void commitAndPush(String commitMessage);
 }

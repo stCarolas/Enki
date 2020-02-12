@@ -10,10 +10,10 @@ import dagger.Provides;
 @Module
 public class FillDataWrapperProvider {
 
-    @Provides
-    @Singleton
-    public Map<String, FillData> provide(){
-        return new HashMap<>();
-    }
+	@Provides
+	@Singleton
+	public Map<String, FillData> provide(){
+		return new HashMap<>();
+	}
     
 }

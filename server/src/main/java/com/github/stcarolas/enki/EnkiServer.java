@@ -15,33 +15,33 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class EnkiServer<T extends Repo> {
 
-    @Singular
-    private List<RepoProvider<T>> providers;
+	@Singular
+	private List<RepoProvider<T>> providers;
 
-    @Singular
-    private List<RepoHandler<T>> handlers;
+	@Singular
+	private List<RepoHandler<T>> handlers;
 
-    private String serverHost;
-    private int port;
+	private String serverHost;
+	private int port;
 
-    public void start() {
+	public void start() {
 
-        if (Objects.isNull(providers) || Objects.isNull(handlers)) {
-            log.info("no providers or handlers, exiting");
-            return;
-        }
+		if (Objects.isNull(providers) || Objects.isNull(handlers)) {
+			log.info("no providers or handlers, exiting");
+			return;
+		}
 
-        RepoProvider<T> cachedProvider = cache(providers);
-        Undertow.builder()
-            .addHttpListener(port, serverHost)
-            .setHandler(
-                GithubWebhookHandler.<T>builder()
-                    .provider(cachedProvider)
-                    .handlers(handlers)
-                    .build()
-            )
-            .build()
-            .start();
+		RepoProvider<T> cachedProvider = cache(providers);
+		Undertow.builder()
+			.addHttpListener(port, serverHost)
+			.setHandler(
+				GithubWebhookHandler.<T>builder()
+					.provider(cachedProvider)
+					.handlers(handlers)
+					.build()
+			)
+			.build()
+			.start();
 
-    }
+	}
 }

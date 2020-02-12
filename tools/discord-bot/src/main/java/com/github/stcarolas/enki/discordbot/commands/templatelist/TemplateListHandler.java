@@ -13,69 +13,69 @@ import rocks.mango.gitea.Repository;
 
 @Singleton
 public class TemplateListHandler implements SessionHandler {
-    private final OrganizationApi organizationApi;
-    private final String organizationName;
-    private final Writer writer;
+	private final OrganizationApi organizationApi;
+	private final String organizationName;
+	private final Writer writer;
 
-    @Inject
-    public TemplateListHandler(
-        OrganizationApi organizationApi,
-        Writer writer,
-        @Named("giteaOrganization") String organizationName
-    ) {
-        this.organizationApi = organizationApi;
-        this.writer = writer;
-        this.organizationName = organizationName;
-    }
+	@Inject
+	public TemplateListHandler(
+		OrganizationApi organizationApi,
+		Writer writer,
+		@Named("giteaOrganization") String organizationName
+	) {
+		this.organizationApi = organizationApi;
+		this.writer = writer;
+		this.organizationName = organizationName;
+	}
 
-    @Override
-    public String command(MessageReceivedEvent event) {
-        return "list";
-    }
+	@Override
+	public String command(MessageReceivedEvent event) {
+		return "list";
+	}
 
-    @Override
-    public String instruction(MessageReceivedEvent event) {
-        return "changeme";
-    }
+	@Override
+	public String instruction(MessageReceivedEvent event) {
+		return "changeme";
+	}
 
-    @Override
-    public void handle(MessageReceivedEvent event) {
-        val message = event.getMessage().getContentRaw().trim();
-        if (
-            message != null &&
-            (message.startsWith("fill") || message.startsWith("template -list"))
-        ) {
-            writer.writeResponse(event, handle(event.getChannel().getId()));
-        }
-    }
+	@Override
+	public void handle(MessageReceivedEvent event) {
+		val message = event.getMessage().getContentRaw().trim();
+		if (
+			message != null &&
+			(message.startsWith("fill") || message.startsWith("template -list"))
+		) {
+			writer.writeResponse(event, handle(event.getChannel().getId()));
+		}
+	}
 
-    @Override
-    public String handle(String sessionId) {
-        StringBuilder response = new StringBuilder("**__Доступные шаблоны__**");
-        organizationApi.orgListRepos(organizationName)
-            .stream()
-            .filter(repo -> repo.getName().startsWith("template"))
-            .sorted(
-                new Comparator<Repository>() {
-                    @Override
-                    public int compare(Repository o1, Repository o2) {
-                        return o1.getName().compareTo(o2.getName());
-                    }
-                }
-            )
-            .forEach(
-                repo -> {
-                    response.append("\n").append(repo.getName());
-                }
-            );
-        return response.toString();
-    }
+	@Override
+	public String handle(String sessionId) {
+		StringBuilder response = new StringBuilder("**__Доступные шаблоны__**");
+		organizationApi.orgListRepos(organizationName)
+			.stream()
+			.filter(repo -> repo.getName().startsWith("template"))
+			.sorted(
+				new Comparator<Repository>() {
+					@Override
+					public int compare(Repository o1, Repository o2) {
+						return o1.getName().compareTo(o2.getName());
+					}
+				}
+			)
+			.forEach(
+				repo -> {
+					response.append("\n").append(repo.getName());
+				}
+			);
+		return response.toString();
+	}
 
-    @Override
-    public void putInSession(String sessionId, String data) {}
+	@Override
+	public void putInSession(String sessionId, String data) {}
 
-    @Override
-    public String data(String sessionId) {
-        return "";
-    }
+	@Override
+	public String data(String sessionId) {
+		return "";
+	}
 }

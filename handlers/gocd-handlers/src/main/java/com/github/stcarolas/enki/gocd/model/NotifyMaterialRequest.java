@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 @Data
 public class NotifyMaterialRequest {
-    @JsonProperty("repository_url")
-    private String repositoryUrl;
+	@JsonProperty("repository_url")
+	private String repositoryUrl;
 }

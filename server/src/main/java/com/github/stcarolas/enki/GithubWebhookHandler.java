@@ -23,38 +23,38 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @Log4j2
 public class GithubWebhookHandler<T extends Repo> implements HttpHandler {
-    private RepoProvider<T> provider;
-    @Singular
-    private List<RepoHandler<T>> handlers;
+	private RepoProvider<T> provider;
+	@Singular
+	private List<RepoHandler<T>> handlers;
 
-    @Override
-    public void handleRequest(HttpServerExchange exchange) throws Exception {
-        exchange.startBlocking();
-        exchange.dispatch(
-            new HttpHandler() {
+	@Override
+	public void handleRequest(HttpServerExchange exchange) throws Exception {
+		exchange.startBlocking();
+		exchange.dispatch(
+			new HttpHandler() {
 
-                @Override
-                public void handleRequest(HttpServerExchange exchange) throws Exception {
-                    val request = new Gson()
-                        .fromJson(
-                            new InputStreamReader(exchange.getInputStream()),
-                            Map.class
-                        );
-                    String url = (String) ((Map) request.get("repository"))
-                        .get("ssh_url");
-                    val selectByUrl = FilterFunction.<T>filter(
-                        repo -> Objects.equals(
-                            repo.getCloneUrls().get(CloneURLType.SSH),
-                            url
-                        )
-                    );
-                    EnkiRunner.<T>builder()
-                        .provider(selectByUrl.from(provider))
-                        .handlers(handlers)
-                        .build()
-                        .handle();
-                }
-            }
-        );
-    }
+				@Override
+				public void handleRequest(HttpServerExchange exchange) throws Exception {
+					val request = new Gson()
+						.fromJson(
+							new InputStreamReader(exchange.getInputStream()),
+							Map.class
+						);
+					String url = (String) ((Map) request.get("repository"))
+						.get("ssh_url");
+					val selectByUrl = FilterFunction.<T>filter(
+						repo -> Objects.equals(
+							repo.getCloneUrls().get(CloneURLType.SSH),
+							url
+						)
+					);
+					EnkiRunner.<T>builder()
+						.provider(selectByUrl.from(provider))
+						.handlers(handlers)
+						.build()
+						.handle();
+				}
+			}
+		);
+	}
 }

@@ -9,9 +9,9 @@ import dagger.Provides;
 @Module
 public class ConfigProvider {
 
-    @Provides
-    public Config provide(){
-        return ConfigFactory.load();
-    }
+	@Provides
+	public Config provide(){
+		return ConfigFactory.load();
+	}
     
 }

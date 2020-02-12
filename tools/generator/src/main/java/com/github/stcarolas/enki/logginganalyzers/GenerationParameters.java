@@ -8,7 +8,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class GenerationParameters {
-    private final String cloneUrl;
-    private final Map<String, String> data;
-    private final Map<String, String> mapping;
+	private final String cloneUrl;
+	private final Map<String, String> data;
+	private final Map<String, String> mapping;
 }

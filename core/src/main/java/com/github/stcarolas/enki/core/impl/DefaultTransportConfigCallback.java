@@ -16,25 +16,25 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class DefaultTransportConfigCallback implements TransportConfigCallback {
 
-    @Override
-    public void configure(Transport transport) {
-        SshTransport sshTransport = (SshTransport) transport;
-        sshTransport.setSshSessionFactory(
-            new JschConfigSessionFactory() {
+	@Override
+	public void configure(Transport transport) {
+		SshTransport sshTransport = (SshTransport) transport;
+		sshTransport.setSshSessionFactory(
+			new JschConfigSessionFactory() {
 
-                @Override
-                protected void configure(Host arg0, Session arg1) {}
+				@Override
+				protected void configure(Host arg0, Session arg1) {}
 
-                @Override
-                protected JSch createDefaultJSch(FS fs) throws JSchException {
-                    JSch defaultJSch = super.createDefaultJSch(fs);
-                    JSch.setConfig("StrictHostKeyChecking", "no");
-                    val key = System.getProperty("user.home") + "/.ssh/id_rsa";
-                    log.info("using key: {}", key);
-                    defaultJSch.addIdentity(key);
-                    return defaultJSch;
-                }
-            }
-        );
-    }
+				@Override
+				protected JSch createDefaultJSch(FS fs) throws JSchException {
+					JSch defaultJSch = super.createDefaultJSch(fs);
+					JSch.setConfig("StrictHostKeyChecking", "no");
+					val key = System.getProperty("user.home") + "/.ssh/id_rsa";
+					log.info("using key: {}", key);
+					defaultJSch.addIdentity(key);
+					return defaultJSch;
+				}
+			}
+		);
+	}
 }

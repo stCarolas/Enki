@@ -19,36 +19,36 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Builder
 public class GitlabRepoProvider implements RepoProvider {
-    private String endpoint;
-    private String token;
+	private String endpoint;
+	private String token;
 
-    @Override
-    public List<Repo> getRepos() {
-        return Try.of(
-            () -> {
-                return new GitLabApi(endpoint, token).getProjectApi().getProjects();
-            }
-        )
-            .onFailure(
-                error -> {
-                    log.error(error);
-                }
-            )
-            .map(
-                repos -> {
-                    return repos.stream()
-                        .map(repo -> convert(repo))
-                        .collect(Collectors.toList());
-                }
-            )
-            .getOrElse(new ArrayList<>());
-    }
+	@Override
+	public List<Repo> getRepos() {
+		return Try.of(
+			() -> {
+				return new GitLabApi(endpoint, token).getProjectApi().getProjects();
+			}
+		)
+			.onFailure(
+				error -> {
+					log.error(error);
+				}
+			)
+			.map(
+				repos -> {
+					return repos.stream()
+						.map(repo -> convert(repo))
+						.collect(Collectors.toList());
+				}
+			)
+			.getOrElse(new ArrayList<>());
+	}
 
-    private Repo convert(Project repo) {
-        return GitRepo.builder()
-            .name(repo.getName())
-            .cloneUrl(CloneURLType.SSH, repo.getSshUrlToRepo())
-            .repoProvider(this)
-            .build();
-    }
+	private Repo convert(Project repo) {
+		return GitRepo.builder()
+			.name(repo.getName())
+			.cloneUrl(CloneURLType.SSH, repo.getSshUrlToRepo())
+			.repoProvider(this)
+			.build();
+	}
 }
