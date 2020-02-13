@@ -14,29 +14,29 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TestRepo implements Repo {
 
-    private final String name;
+	private final String name;
 
-    @Override public UUID getId() {
-        return UUID.randomUUID();
-    }
+	@Override public UUID getId() {
+		return UUID.randomUUID();
+	}
 
-    @Override public String getName() {
-        return name;
-    }
+	@Override public String getName() {
+		return name;
+	}
 
-    @Override public Map<CloneURLType, String> getCloneUrls() {
-        return Collections.emptyMap();
-    }
+	@Override public Map<CloneURLType, String> getCloneUrls() {
+		return Collections.emptyMap();
+	}
 
-    @Override public Optional<File> getDirectory() {
-        return Optional.empty();
-    }
+	@Override public Optional<File> getDirectory() {
+		return Optional.empty();
+	}
 
-    @Override public RepoProvider getRepoProvider() {
-        return null;
-    }
+	@Override public RepoProvider getRepoProvider() {
+		return null;
+	}
 
-    @Override public void commitAndPush(String commitMessage) {
+	@Override public void commitAndPush(String commitMessage) {
 
-    }
+	}
 }

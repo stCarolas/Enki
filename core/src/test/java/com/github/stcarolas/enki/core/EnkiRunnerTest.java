@@ -19,60 +19,60 @@ import lombok.RequiredArgsConstructor;
 
 public class EnkiRunnerTest {
 
-    @Test
-    @SuppressWarnings({"unchecked"})
-    public void should_accept_two_different_providers_generics() {
-        //expect:
-        RepoProvider<AnotherTestRepo> anotherProvider = AnotherTestProvider.builder()
-            .testRepos(Arrays.asList(new AnotherTestRepo("first")))
-            .build();
-        EnkiRunner.<Repo>builder()
-            .provider(
-                (RepoProvider<Repo>)(RepoProvider<?>)TestProviderMother.testProvider()
-            )
-            .provider((RepoProvider<Repo>)(RepoProvider<?>)anotherProvider)
-            .build();
-    }
+	@Test
+	@SuppressWarnings({"unchecked"})
+	public void should_accept_two_different_providers_generics() {
+		//expect:
+		RepoProvider<AnotherTestRepo> anotherProvider = AnotherTestProvider.builder()
+			.testRepos(Arrays.asList(new AnotherTestRepo("first")))
+			.build();
+		EnkiRunner.<Repo>builder()
+			.provider(
+				(RepoProvider<Repo>)(RepoProvider<?>)TestProviderMother.testProvider()
+			)
+			.provider((RepoProvider<Repo>)(RepoProvider<?>)anotherProvider)
+			.build();
+	}
 
-    @RequiredArgsConstructor
-    public class AnotherTestRepo implements Repo {
+	@RequiredArgsConstructor
+	public class AnotherTestRepo implements Repo {
 
-        private final String name;
+		private final String name;
 
-        @Override public UUID getId() {
-            return UUID.randomUUID();
-        }
+		@Override public UUID getId() {
+			return UUID.randomUUID();
+		}
 
-        @Override public String getName() {
-            return name;
-        }
+		@Override public String getName() {
+			return name;
+		}
 
-        @Override public Map<CloneURLType, String> getCloneUrls() {
-            return Collections.emptyMap();
-        }
+		@Override public Map<CloneURLType, String> getCloneUrls() {
+			return Collections.emptyMap();
+		}
 
-        @Override public Optional<File> getDirectory() {
-            return Optional.empty();
-        }
+		@Override public Optional<File> getDirectory() {
+			return Optional.empty();
+		}
 
-        @Override public RepoProvider getRepoProvider() {
-            return null;
-        }
+		@Override public RepoProvider getRepoProvider() {
+			return null;
+		}
 
-        @Override public void commitAndPush(String commitMessage) {
+		@Override public void commitAndPush(String commitMessage) {
 
-        }
-    }
+		}
+	}
 
-    @Builder
-    @AllArgsConstructor
-    public static class AnotherTestProvider implements RepoProvider<AnotherTestRepo> {
+	@Builder
+	@AllArgsConstructor
+	public static class AnotherTestProvider implements RepoProvider<AnotherTestRepo> {
 
-        private List<AnotherTestRepo> testRepos;
+		private List<AnotherTestRepo> testRepos;
 
-        @Override public List<AnotherTestRepo> getRepos() {
-            return testRepos;
-        }
-    }
+		@Override public List<AnotherTestRepo> getRepos() {
+			return testRepos;
+		}
+	}
     
 }

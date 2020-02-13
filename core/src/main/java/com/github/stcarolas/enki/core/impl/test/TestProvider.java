@@ -10,10 +10,10 @@ import java.util.List;
 @AllArgsConstructor
 public class TestProvider implements RepoProvider<TestRepo> {
 
-    private List<TestRepo> testRepos;
+	private List<TestRepo> testRepos;
 
-    @Override public List<TestRepo> getRepos() {
-        return testRepos;
-    }
+	@Override public List<TestRepo> getRepos() {
+		return testRepos;
+	}
 
 }

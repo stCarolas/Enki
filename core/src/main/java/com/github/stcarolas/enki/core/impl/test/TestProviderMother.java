@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 public class TestProviderMother {
 
-    public static TestProvider testProvider(){
-        return TestProvider.builder()
-            .testRepos(Arrays.asList(new TestRepo("first")))
-            .build();
-    }
+	public static TestProvider testProvider(){
+		return TestProvider.builder()
+			.testRepos(Arrays.asList(new TestRepo("first")))
+			.build();
+	}
 }
