@@ -164,7 +164,7 @@ jobs:
 
   build_handlers:
     name: publish handler
-    needs: [build_core]
+    needs: [build_providers]
     runs-on: ubuntu-latest
 
     strategy:
