@@ -3,12 +3,16 @@ package com.github.stcarolas.enki.discord.commithook;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoHandler;
+import com.github.stcarolas.gitea.api.CreateHookOption;
+import com.github.stcarolas.gitea.api.CreateHookOption.TypeEnum;
+import com.github.stcarolas.gitea.api.RepositoryApi;
+
 import feign.Feign;
 import feign.auth.BasicAuthRequestInterceptor;
 import feign.jackson.JacksonDecoder;
@@ -22,9 +26,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.Webhook;
-import rocks.mango.gitea.CreateHookOption;
-import rocks.mango.gitea.RepositoryApi;
-import rocks.mango.gitea.CreateHookOption.TypeEnum;
 
 @Builder
 @Log4j2
@@ -96,7 +97,7 @@ public class DiscordCommitHookCreator implements RepoHandler {
 									.orElse(createWebhook(channel, webhookName))
 									.getUrl();
 								log.info("webhook url: {}", webhookUrl);
-								gitea.repoListHooks(giteaOrganization, repo.getName())
+								gitea.repoListHooks(giteaOrganization, repo.getName(), new HashMap<>())
 									.forEach(
 										hook -> {
 											log.info(
@@ -111,16 +112,18 @@ public class DiscordCommitHookCreator implements RepoHandler {
 											);
 										}
 									);
+
+								val options = new CreateHookOption()
+										.active(true)
+										.type(TypeEnum.DISCORD)
+										.events(giteaWebhookEvents());
+								options.getConfig().put("content-type", "json");
+								options.getConfig().put("url", webhookUrl);
+
 								gitea.repoCreateHook(
 									giteaOrganization,
 									repo.getName(),
-									new CreateHookOption()
-										.active(true)
-										.type(TypeEnum.DISCORD)
-										.putConfigItem("content_type", "json")
-										.putConfigItem("content-type", "json")
-										.putConfigItem("url", webhookUrl)
-										.events(giteaWebhookEvents())
+									options
 								);
 							}
 						);
@@ -140,7 +143,7 @@ public class DiscordCommitHookCreator implements RepoHandler {
 				return category.createTextChannel(name).submit().get();
 			}
 		)
-			.toOptional();
+			.toJavaOptional();
 	}
 
 	private String constructChannelName(String repoName) {

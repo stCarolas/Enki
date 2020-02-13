@@ -6,11 +6,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import com.github.stcarolas.enki.discordbot.commands.SessionHandler;
 import com.github.stcarolas.enki.discordbot.commands.Writer;
+import com.github.stcarolas.gitea.api.CreateRepoOption;
+import com.github.stcarolas.gitea.api.OrganizationApi;
+
 import lombok.val;
 import lombok.extern.log4j.Log4j2;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import rocks.mango.gitea.CreateRepoOption;
-import rocks.mango.gitea.OrganizationApi;
 
 @Log4j2
 public class CreateRepoHandler implements SessionHandler {

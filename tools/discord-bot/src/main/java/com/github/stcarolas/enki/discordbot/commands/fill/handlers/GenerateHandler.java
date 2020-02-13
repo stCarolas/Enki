@@ -50,7 +50,7 @@ public class GenerateHandler implements SessionHandler {
 		val repo = GitRepo.builder()
 			.cloneUrl(CloneURLType.SSH, data.getRepoUrl())
 			.build();
-		generator.analyze(repo);
+		generator.handle(repo);
 		sessions.put(sessionId, FillData.builder().values(new HashMap<>()).mappins(new HashMap<>()).build());
 		return "Исполнено";
 	}

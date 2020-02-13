@@ -11,10 +11,10 @@ import com.github.stcarolas.enki.discordbot.SessionWrapper;
 import com.github.stcarolas.enki.discordbot.commands.Command;
 import com.github.stcarolas.enki.discordbot.commands.Handler;
 import com.github.stcarolas.enki.discordbot.commands.Writer;
+import com.github.stcarolas.gitea.api.OrganizationApi;
 
 import lombok.val;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import rocks.mango.gitea.OrganizationApi;
 
 public class TemplateListCommand implements Command {
 	private final Writer writer;

@@ -58,7 +58,7 @@ public class Launcher extends Object implements Callable<Integer> {
 				.start();
 		} else {
 			JacocoHandler handler = JacocoHandler.builder().build();
-			handler.analyze(new File(""));
+			handler.handle(new File(""));
 		} 
 		return Integer.valueOf(0);
 	}

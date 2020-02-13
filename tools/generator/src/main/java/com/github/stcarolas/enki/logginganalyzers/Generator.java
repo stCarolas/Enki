@@ -21,14 +21,14 @@ import reactor.core.publisher.Flux;
 
 @Builder
 @Log4j2
-public class Generator implements RepoHandler {
+public class Generator implements RepoHandler<Repo> {
 	private final String cloneUrl;
 	private final Map<String, String> data;
 	private final Map<String, String> mappings;
 	private final boolean saveParameters;
 
 	@Override
-	public void analyze(Repo repo) {
+	public void handle(Repo repo) {
 		log.info("Start generation");
 		val parameters = GenerationParameters.builder().cloneUrl(cloneUrl).data(data).mapping(mappings).build();
 		val templateLoader = TemplateLoaderSupplier.builder().url(cloneUrl).build().get();

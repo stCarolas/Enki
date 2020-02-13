@@ -8,4 +8,4 @@ name: Enki
 modules: [core, server, providers/github, providers/gitea, providers/gitlab, providers/one-repo,
   providers/bitbucket, handlers/discord-commit-hook, handlers/gitea-mirror, handlers/github-archive-repo,
   handlers/gocd-handlers, handlers/jacoco, handlers/logging-handlers, handlers/maven-dependency-handlers,
-  tools/discord-bot, tools/generator]
+  tools/generator, tools/discord-bot]

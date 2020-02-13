@@ -9,13 +9,14 @@ properties: {maven.compiler.target: 1.8, java.version: 1.8, maven.compiler.sourc
   revision: 0.0.1}
 dependencies:
 - {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-one-repo-provider, version: '${project.version}'}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
 - {groupId: org.yaml, artifactId: snakeyaml, version: 1.25}
 - {groupId: io.undertow, artifactId: undertow-core, version: 2.0.1.Final}
 - {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}
 - {groupId: com.github.stcarolas.gittemplateloader, artifactId: handlebars-git-templateloader,
-  version: 0.0.1}
+  version: 0.0.3}
 - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
   optional: true}
 - {groupId: info.picocli, artifactId: picocli, version: 4.0.3}

@@ -10,10 +10,10 @@ import lombok.val;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class RetroGenerator implements RepoHandler {
+public class RetroGenerator implements RepoHandler<Repo> {
 
 	@Override
-	public void analyze(Repo repo) {
+	public void handle(Repo repo) {
 		regenerate(repo);
 	}
 
@@ -39,7 +39,7 @@ public class RetroGenerator implements RepoHandler {
 								.onSuccess(
 									parameters -> {
 										log.info("Loaded parameters: {}", parameters);
-										new HandlebarsGenerator(parameters).analyze(repo);
+										new HandlebarsGenerator(parameters).handle(repo);
 									}
 								)
 								.onFailure(error -> log.error("Error in RetroGenerator: {}", error));

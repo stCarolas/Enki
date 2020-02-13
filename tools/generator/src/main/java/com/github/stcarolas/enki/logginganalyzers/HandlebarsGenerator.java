@@ -3,7 +3,7 @@ package com.github.stcarolas.enki.logginganalyzers;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoHandler;
 
-public class HandlebarsGenerator implements RepoHandler {
+public class HandlebarsGenerator implements RepoHandler<Repo> {
 	private final Generator generator;
 
 	public HandlebarsGenerator(GenerationParameters parameters) {
@@ -17,7 +17,7 @@ public class HandlebarsGenerator implements RepoHandler {
 	}
 
 	@Override
-	public void analyze(Repo repo) {
-		generator.analyze(repo);
+	public void handle(Repo repo) {
+		generator.handle(repo);
 	}
 }

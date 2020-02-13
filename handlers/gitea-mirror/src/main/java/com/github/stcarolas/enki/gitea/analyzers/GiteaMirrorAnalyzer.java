@@ -1,11 +1,13 @@
-package com.github.stcarolas.enki.gitea.handlers;
+package com.github.stcarolas.enki.gitea.analyzers;
 
 import java.util.Arrays;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoHandler;
-import com.github.stcarolas.enki.core.impl.DefaultTransportConfigCallback;
+import com.github.stcarolas.gitea.api.CreateRepoOption;
+import com.github.stcarolas.gitea.api.OrganizationApi;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.transport.URIish;
 import feign.Feign;
@@ -16,12 +18,10 @@ import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.val;
 import lombok.extern.log4j.Log4j2;
-import rocks.mango.gitea.CreateRepoOption;
-import rocks.mango.gitea.OrganizationApi;
 
 @Builder
 @Log4j2
-public class GiteaMirrorAnalyzer implements RepoHandler {
+public class GiteaMirrorAnalyzer implements RepoHandler<Repo> {
 	private final String username;
 	private final String password;
 	private final String baseUrl;

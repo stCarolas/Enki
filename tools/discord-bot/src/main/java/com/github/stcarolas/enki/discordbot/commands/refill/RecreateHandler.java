@@ -47,7 +47,7 @@ public class RecreateHandler implements SessionHandler {
 	@Override
 	public String handle(String sessionId) {
 		new RetroGenerator()
-			.analyze(GitRepo.builder().cloneUrl(CloneURLType.SSH, sessions.get(sessionId)).build());
+			.handle(GitRepo.builder().cloneUrl(CloneURLType.SSH, sessions.get(sessionId)).build());
 		return "Исполнено";
 	}
 
@@ -55,9 +55,6 @@ public class RecreateHandler implements SessionHandler {
 	public void putInSession(String sessionId, String data) {
 		if (data == null || data.isEmpty()) {
 			return;
-		}
-		if (!data.startsWith("ssh")) {
-			data = "ssh://git@git.service.consul:2222/Mango/" + data + ".git";
 		}
 		log.info("Start `recreate` for {}", data);
 		sessions.put(sessionId, data);

@@ -3,7 +3,7 @@ package com.github.stcarolas.enki;
 import com.github.stcarolas.enki.core.CloneURLType;
 import com.github.stcarolas.enki.core.EnkiRunner;
 import com.github.stcarolas.enki.core.RepoHandler;
-import com.github.stcarolas.enki.gitea.provider.OneRepoProvider;
+import com.github.stcarolas.enki.onerepo.provider.OneRepoProvider;
 import com.google.gson.Gson;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
@@ -43,8 +43,8 @@ public class WebhookHandler implements HttpHandler {
 						EnkiRunner.EnkiRunnerBuilder enki = EnkiRunner.builder().provider(new OneRepoProvider(url, CloneURLType.SSH));
 						WebhookHandler.this.handlers.forEach(handler -> 
                 
-								enki.analyzer(handler));
-						enki.build().analyze();
+								enki.handler(handler));
+						enki.build().handle();
 					}
 				});
 	}

@@ -44,7 +44,7 @@ public class GeneratorCli implements Callable<Integer> {
 			.mappings(mapping)
 			.saveParameters(true)
 			.build()
-			.analyze(null);
+			.handle(null);
 		return 0;
 	}
 }

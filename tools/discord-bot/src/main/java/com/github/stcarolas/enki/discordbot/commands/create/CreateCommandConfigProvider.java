@@ -13,7 +13,7 @@ public class CreateCommandConfigProvider {
 	@Provides
 	@Named("giteaOrganization")
 	public String provideOrganizationName() {
-		return "Mango";
+		return "some-org";
 	}
 
 	@Provides

@@ -21,11 +21,11 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class JacocoHandler implements RepoHandler {
 
-	public void analyze(Repo repo) {
-		repo.getDirectory().ifPresent(this::analyze);
+	public void handle(Repo repo) {
+		repo.getDirectory().ifPresent(this::handle);
 	}
 
-	public void analyze(File repo) {
+	public void handle(File repo) {
 		checkDir(repo).forEach(this::transform);
 	}
 

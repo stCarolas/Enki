@@ -1,15 +1,18 @@
 package com.github.stcarolas.enki.discordbot.commands.templatelist;
 
 import java.util.Comparator;
+import java.util.HashMap;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import com.github.stcarolas.enki.discordbot.commands.SessionHandler;
 import com.github.stcarolas.enki.discordbot.commands.Writer;
+import com.github.stcarolas.gitea.api.OrganizationApi;
+import com.github.stcarolas.gitea.api.Repository;
+
 import lombok.val;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import rocks.mango.gitea.OrganizationApi;
-import rocks.mango.gitea.Repository;
 
 @Singleton
 public class TemplateListHandler implements SessionHandler {
@@ -52,7 +55,7 @@ public class TemplateListHandler implements SessionHandler {
 	@Override
 	public String handle(String sessionId) {
 		StringBuilder response = new StringBuilder("**__Доступные шаблоны__**");
-		organizationApi.orgListRepos(organizationName)
+		organizationApi.orgListRepos(organizationName, new HashMap<>())
 			.stream()
 			.filter(repo -> repo.getName().startsWith("template"))
 			.sorted(

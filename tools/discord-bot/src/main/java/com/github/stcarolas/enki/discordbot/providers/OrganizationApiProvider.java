@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.stcarolas.gitea.api.OrganizationApi;
 
 import dagger.Provides;
 import feign.Feign;
@@ -13,7 +14,6 @@ import feign.jackson.JacksonEncoder;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import rocks.mango.gitea.OrganizationApi;
 
 @Log4j2
 @dagger.Module

@@ -61,9 +61,6 @@ public class TemplateUrlHandler implements SessionHandler {
 		} else {
 			builder = FillData.builder().values(new HashMap<>()).mappins(new HashMap<>());
 		}
-		if (!data.startsWith("ssh")) {
-			data = "ssh://git@git.service.consul:2222/Mango/" + data + ".git";
-		}
 		sessions.put(sessionId, builder.templateUrl(data).build());
 		loadDefault(sessionId,data);
 	}
