@@ -217,14 +217,6 @@ jobs:
         with:
           maven-version: 3.5.4
 
-      - name: Publish Enki Generator
-        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
-        working-directory: tools/generator
-
-      - name: Publish Enki Discord Bot
-        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
-        working-directory: tools/discord-bot
-
       - name: Publish Enki Server jar
         run: |
           mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../.github/workflows/settings.xml
@@ -232,6 +224,15 @@ jobs:
           cp -rf target ..
           cp -rf Dockerfile ..
         working-directory: server
+
+
+      - name: Publish Enki Generator
+        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
+        working-directory: tools/generator
+
+      - name: Publish Enki Discord Bot
+        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
+        working-directory: tools/discord-bot
 
       - name: Publish Enki Server docker image
         uses: manusa/actions-publish-docker@master
