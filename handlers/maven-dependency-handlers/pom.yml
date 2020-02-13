@@ -1,7 +1,7 @@
 modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
-artifactId: enki-manen-dependency-handlers
+artifactId: enki-maven-dependency-handlers
 version: 0.1.57
 packaging: jar
 name: Enki Maven Denendency Handlers
@@ -18,7 +18,7 @@ dependencies:
   optional: true}
 distributionManagement:
   repository: {id: bintray-stcarolas-maven, layout: default, uniqueVersion: true,
-    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-core/;publish=1'}
+    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-maven-dependency-handlers/;publish=1'}
 build:
   plugins:
   - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}

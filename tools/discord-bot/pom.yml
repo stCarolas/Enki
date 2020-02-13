@@ -68,4 +68,4 @@ repositories:
 
 distributionManagement:
   repository: {id: bintray-stcarolas-maven, layout: default, uniqueVersion: true,
-    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-core/;publish=1'}
+    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-discord-bot/;publish=1'}
