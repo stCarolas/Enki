@@ -195,15 +195,7 @@ jobs:
         run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
         working-directory: handlers/${{ matrix.module }}
 
-      - name: Publish Enki Generator
-        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
-        working-directory: tools/generator
-
-      - name: Publish Enki Discord Bot
-        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
-        working-directory: tools/discord-bot
-
-  build_server:
+  build_tools:
     name: Publish Enki Server
     needs: [build_providers]
     runs-on: ubuntu-latest
@@ -224,6 +216,14 @@ jobs:
         uses: stCarolas/setup-maven@v3
         with:
           maven-version: 3.5.4
+
+      - name: Publish Enki Generator
+        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
+        working-directory: tools/generator
+
+      - name: Publish Enki Discord Bot
+        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
+        working-directory: tools/discord-bot
 
       - name: Publish Enki Server jar
         run: |
