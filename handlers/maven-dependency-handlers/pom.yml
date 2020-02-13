@@ -27,3 +27,6 @@ build:
     configuration:
       annotationProcessorPaths:
       - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
+repositories:
+- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}
+- {id: jcenter, layout: default, name: jcenter, url: 'https://jcenter.bintray.com'}
