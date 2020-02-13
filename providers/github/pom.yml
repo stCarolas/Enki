@@ -2,7 +2,7 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-github-provider
-version: 0.1.61
+version: 0.1.62
 packaging: jar
 name: Enki GitHub Provider
 properties: {maven.compiler.target: 14, java.version: 14, maven.compiler.source: 14}
