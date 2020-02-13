@@ -1,6 +1,7 @@
 package com.github.stcarolas.enki.gitea.provider;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.Module;
@@ -9,13 +10,14 @@ import com.github.stcarolas.enki.core.CloneURLType;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
 import com.github.stcarolas.enki.core.impl.GitRepo;
+import com.github.stcarolas.gitea.api.OrganizationApi;
+import com.github.stcarolas.gitea.api.Repository;
+
 import feign.Feign;
 import feign.auth.BasicAuthRequestInterceptor;
 import feign.jackson.JacksonDecoder;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import rocks.mango.gitea.OrganizationApi;
-import rocks.mango.gitea.Repository;
 
 @RequiredArgsConstructor
 public class GiteaRepoProvider implements RepoProvider {
@@ -31,7 +33,7 @@ public class GiteaRepoProvider implements RepoProvider {
 			.decoder(new JacksonDecoder(Arrays.asList(new JavaTimeModule())))
 			.requestInterceptor(authInterceptor)
 			.target(OrganizationApi.class, baseUrl);
-		return organizations.orgListRepos(organization)
+		return organizations.orgListRepos(organization,new HashMap<>())
 			.stream()
 			.map(repo -> convert(repo))
 			.collect(Collectors.toList());
