@@ -2,9 +2,13 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-gocd-handlers
-version: 1.2.3
 packaging: jar
 name: Enki GoCD Analyzers
+parent:
+  groupId: com.github.stcarolas.enki
+  artifactId: enki
+  version: 0.1.62
+  relativePath: ../../pom.xml
 properties: {maven.compiler.target: 1.8, java.version: 1.8, maven.compiler.source: 1.8,
   feign-version: 9.4.0, jackson-version: 2.8.9, revision: 0.0.1}
 dependencies:

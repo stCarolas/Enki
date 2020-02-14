@@ -38,9 +38,9 @@ jobs:
 
     - name: Set new version in pom
       run: |
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
-          mvn  -DnewVersion=${{ steps.next_version.outputs.version }} -DgroupId='*' -DprocessAllModules=true -DgenerateBackupPoms=false versions:set
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
+          mvn -B -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
+          mvn -B -q -DgroupId='*' -DprocessAllModules=true -DgenerateBackupPoms=false versions:set -DnewVersion=${{ steps.next_version.outputs.version }}
+          mvn -B -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
 
     - name: Push pom.yml with new version
       uses: github-actions-x/commit@v2.1

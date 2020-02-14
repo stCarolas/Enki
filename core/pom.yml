@@ -2,10 +2,13 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-core
-version: 1.2.3
 packaging: jar
 name: Enki Core
-properties: {maven.compiler.target: 14, java.version: 14, maven.compiler.source: 14}
+parent:
+  groupId: com.github.stcarolas.enki
+  artifactId: enki
+  version: 0.1.62
+  relativePath: ../pom.xml
 dependencyManagement:
   dependencies:
   - {groupId: org.junit, artifactId: junit-bom, version: 5.5.1, type: pom, scope: import}

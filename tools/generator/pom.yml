@@ -2,9 +2,13 @@ modelEncoding: UTF-8
 modelVersion: 4.0.0
 groupId: com.github.stcarolas.enki
 artifactId: enki-generator
-version: 1.2.3
 packaging: jar
 name: Enki Generator
+parent:
+  groupId: com.github.stcarolas.enki
+  artifactId: enki
+  version: 0.1.62
+  relativePath: ../../pom.xml
 properties: {maven.compiler.target: 1.8, java.version: 1.8, maven.compiler.source: 1.8,
   revision: 0.0.1}
 dependencies:
