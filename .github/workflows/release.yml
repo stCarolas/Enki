@@ -17,16 +17,6 @@ jobs:
 
     - name: Check with EditorConfig
       uses: zbeekman/EditorConfig-Action@master
-
-  up_version:
-    name: Update Version
-    needs: [checks]
-    runs-on: ubuntu-latest
-
-    steps:
-
-    - name: Checkout sources
-      uses: actions/checkout@v1
      
     - name: Set up JDK
       uses: actions/setup-java@v1
@@ -46,51 +36,11 @@ jobs:
         bump: patch
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set new version in parent pom
+    - name: Set new version in pom
       run: |
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
-          mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
+          mvn  -DnewVersion=1.2.3 -DgroupId='*' -DprocessAllModules=true -DgenerateBackupPoms=false versions:set
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
-
-    - name: Set new version in core and server
-      run: |
-          cd core
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
-          mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
-          cd ..
-          cd server
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
-          mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
-          cd ..
-
-    - name: Set new version in providers and handlers
-      run: |
-        for handler in $(ls handlers)
-        do
-          cd handlers/$handler
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
-          mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
-          cd ../..
-        done
-        for provider in $(ls providers)
-        do
-          cd providers/$provider
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
-          mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
-          cd ../..
-        done
-        for tool in $(ls tools)
-        do
-          cd tools/$tool
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
-          mvn -q versions:set -DnewVersion=${{ steps.next_version.outputs.version }} -f pom.xml
-          mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
-          cd ../..
-        done
 
     - name: Push pom.yml with new version
       uses: github-actions-x/commit@v2.1
@@ -105,138 +55,20 @@ jobs:
       with:
         bump: patch
         github_token: ${{ secrets.GITHUB_TOKEN }}
-
-  build_core:
-    name: Publish Enki Core
-    needs: [up_version]
-    runs-on: ubuntu-latest
-
-    steps:
-
-      - name: Checkout sources
-        uses: actions/checkout@v1
-        with:
-          ref: master
-     
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14.0.0-ea.34
-
-      - name: Set up Apache Maven
-        uses: stCarolas/setup-maven@v3
-        with:
-          maven-version: 3.5.4
   
-      - name: Publish Enki Core
-        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../.github/workflows/settings.xml
-        working-directory: core
+    - name: Publish Enki jar's
+      run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s .github/workflows/settings.xml
 
-  build_providers:
-    name: Publish Enki Providers
-    needs: [build_core]
-    runs-on: ubuntu-latest
+    - name: Prepare Docker building
+      run: |
+        rm -rf target/*-sources.jar 
+        cp -rf target ..
+        cp -rf Dockerfile ..
+      working-directory: server
 
-    strategy:
-      matrix:
-        module: [ "github", "one-repo", "bitbucket", "gitlab", "gitea" ]
-
-    steps:
-    
-      - name: Checkout sources
-        uses: actions/checkout@v1
-        with:
-          ref: master
-     
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14.0.0-ea.34
-
-      - name: Set up Apache Maven
-        uses: stCarolas/setup-maven@v3
-        with:
-          maven-version: 3.5.4
-
-      - name: Publish Enki Provider
-        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
-        working-directory: providers/${{ matrix.module }}
-
-  build_handlers:
-    name: publish handler
-    needs: [build_providers]
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        module: [
-          "discord-commit-hook", "gitea-mirror", "github-archive-repo", "gocd-handlers", 
-          "jacoco", "logging-handlers", "maven-dependency-handlers"
-        ]
-
-    steps:
-    
-      - name: Checkout sources
-        uses: actions/checkout@v1
-        with:
-          ref: master
-     
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14.0.0-ea.34
-
-      - name: Set up Apache Maven
-        uses: stCarolas/setup-maven@v3
-        with:
-          maven-version: 3.5.4
-
-      - name: Publish Enki Handler
-        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
-        working-directory: handlers/${{ matrix.module }}
-
-  build_tools:
-    name: Publish Enki Server
-    needs: [build_providers]
-    runs-on: ubuntu-latest
-
-    steps:
-    
-      - name: Checkout sources
-        uses: actions/checkout@v1
-        with:
-          ref: master
-     
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14.0.0-ea.34
-
-      - name: Set up Apache Maven
-        uses: stCarolas/setup-maven@v3
-        with:
-          maven-version: 3.5.4
-
-      - name: Publish Enki Server jar
-        run: |
-          mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../.github/workflows/settings.xml
-          rm -rf target/*-sources.jar 
-          cp -rf target ..
-          cp -rf Dockerfile ..
-        working-directory: server
-
-
-      - name: Publish Enki Generator
-        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
-        working-directory: tools/generator
-
-      - name: Publish Enki Discord Bot
-        run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s ../../.github/workflows/settings.xml
-        working-directory: tools/discord-bot
-
-      - name: Publish Enki Server docker image
-        uses: manusa/actions-publish-docker@master
-        with:
-          name: stcarolas/enki
-          username: stcarolas
-          password: ${{ secrets.DOCKER_TOKEN }}
+    - name: Publish Enki Server Docker
+      uses: manusa/actions-publish-docker@master
+      with:
+        name: stcarolas/enki
+        username: stcarolas
+        password: ${{ secrets.DOCKER_TOKEN }}
