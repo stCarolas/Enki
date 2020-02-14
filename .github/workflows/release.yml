@@ -7,8 +7,8 @@ on:
 
 jobs:
 
-  checks:
-    name: Check Code Style
+  publis:
+    name: Publish Artifacts
     runs-on: ubuntu-latest
     steps:
 
@@ -39,7 +39,7 @@ jobs:
     - name: Set new version in pom
       run: |
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
-          mvn  -DnewVersion=1.2.3 -DgroupId='*' -DprocessAllModules=true -DgenerateBackupPoms=false versions:set
+          mvn  -DnewVersion=${{ steps.next_version.outputs.version }} -DgroupId='*' -DprocessAllModules=true -DgenerateBackupPoms=false versions:set
           mvn -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
 
     - name: Push pom.yml with new version
