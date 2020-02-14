@@ -36,19 +36,16 @@ jobs:
         bump: patch
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set new version in pom
-      run: |
-          mvn -B -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.yml -Doutput=pom.xml
-          mvn -B -q -DgroupId='*' -DprocessAllModules=true -DgenerateBackupPoms=false versions:set -DnewVersion=${{ steps.next_version.outputs.version }}
-          mvn -B -q io.takari.polyglot:polyglot-translate-plugin:translate -Dinput=pom.xml -Doutput=pom.yml
+    - name: Set new version in maven.config
+      run: echo "-Drevision=${{ steps.next_version.outputs.version }}" > .mvn/maven.config
 
-    - name: Push pom.yml with new version
+    - name: Push new version
       uses: github-actions-x/commit@v2.1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         push-branch: 'master'
         commit-message: 'bump version'
-        files: "./*"
+        files: ".mvn/maven.config"
 
     - name: Tag new version
       uses: zwaldowski/semver-release-action@v1

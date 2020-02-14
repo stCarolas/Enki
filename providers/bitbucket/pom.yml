@@ -1,50 +1,22 @@
-modelEncoding: UTF-8
-modelVersion: 4.0.0
-parent: {artifactId: enki, groupId: com.github.stcarolas.enki, relativePath: ../../pom.xml,
-  version: 1.1.1}
-groupId: com.github.stcarolas.enki
-artifactId: enki-bitbucket-provider
-packaging: jar
 name: Enki Bitbucket Provider
-properties: {maven.compiler.target: 14, java.version: 14, maven.compiler.source: 14}
+artifactId: enki-bitbucket-provider
+
+modelVersion: 4.0.0
+parent:
+  artifactId: enki
+  groupId: com.github.stcarolas.enki
+  relativePath: ../../pom.yml
+  version: ${revision}
+
 dependencies:
-- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
-- {groupId: com.cdancy, artifactId: bitbucket-rest, version: 2.6.2}
-- {groupId: io.undertow, artifactId: undertow-core, version: 2.0.1.Final}
-- {groupId: com.typesafe, artifactId: config, version: 1.3.4}
-- {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
-- {groupId: org.eclipse.jgit, artifactId: org.eclipse.jgit, version: 5.4.0.201906121030-r}
-- {groupId: org.eclipse.mylyn.github, artifactId: org.eclipse.egit.github.core, version: 2.1.5}
-- {groupId: com.esotericsoftware.yamlbeans, artifactId: yamlbeans, version: 1.13}
-- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
-  optional: true}
-distributionManagement:
-  repository: {id: bintray-stcarolas-maven, layout: default, uniqueVersion: true,
-    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-bitbucket-provider/;publish=1'}
-build:
-  plugins:
-  - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin, version: 3.0.0-M4}
-  - groupId: org.apache.maven.plugins
-    artifactId: maven-source-plugin
-    version: 3.2.1
-    executions:
-    - goals: [jar-no-fork]
-      id: attach-sources
-      inherited: true
-      phase: package
-      priority: 0
-  - groupId: org.apache.maven.plugins
-    artifactId: maven-compiler-plugin
-    version: 3.8.1
-    configuration:
-      failOnError: true
-      compilerArguments: {AaddGeneratedAnnotation: false, Adebug: true}
-      dependencies:
-        dependency: {groupId: org.ow2.asm, artifactId: asm, version: 7.3.1, type: jar}
-      annotationProcessorPaths:
-      - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
-repositories:
-- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}
-- {id: jcenter, layout: default, name: jcenter, url: 'https://jcenter.bintray.com'}
+- {groupId: com.github.stcarolas.enki,      artifactId: enki-core,                    version: '${project.version}'}
+- {groupId: com.cdancy,                     artifactId: bitbucket-rest,               version: 2.6.2}
+- {groupId: io.undertow,                    artifactId: undertow-core,                version: 2.0.1.Final}
+- {groupId: com.typesafe,                   artifactId: config,                       version: 1.3.4}
+- {groupId: io.vavr,                        artifactId: vavr,                         version: 1.0.0-alpha-3}
+- {groupId: org.apache.logging.log4j,       artifactId: log4j-api,                    version: 2.12.1}
+- {groupId: org.apache.logging.log4j,       artifactId: log4j-core,                   version: 2.12.1}
+- {groupId: org.eclipse.jgit,               artifactId: org.eclipse.jgit,             version: 5.4.0.201906121030-r}
+- {groupId: org.eclipse.mylyn.github,       artifactId: org.eclipse.egit.github.core, version: 2.1.5}
+- {groupId: com.esotericsoftware.yamlbeans, artifactId: yamlbeans,                    version: 1.13}
+- {groupId: org.projectlombok,              artifactId: lombok,                       version: 1.18.8, scope: provided, optional: true}

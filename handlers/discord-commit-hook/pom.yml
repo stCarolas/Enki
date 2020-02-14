@@ -1,35 +1,20 @@
-modelEncoding: UTF-8
-modelVersion: 4.0.0
-parent: {artifactId: enki, groupId: com.github.stcarolas.enki, relativePath: ../../pom.xml,
-  version: 1.1.1}
-groupId: com.github.stcarolas.enki
-artifactId: enki-discord-commit-hook
-packaging: jar
 name: Enki Discord commit hook
+artifactId: enki-discord-commit-hook
+
+modelVersion: 4.0.0
+parent:
+  artifactId: enki
+  groupId: com.github.stcarolas.enki
+  relativePath: ../../pom.yml
+  version: ${revision}
+
 dependencies:
-- {groupId: com.github.stcarolas.gitea, artifactId: gitea-api, version: 1.0.0}
-- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
-- groupId: net.dv8tion
-  artifactId: JDA
-  version: 4.0.0_43
-  exclusions:
-  - {artifactId: opus-java, groupId: club.minnced}
-- {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
-- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
-  optional: true}
-distributionManagement:
-  repository: {id: bintray-stcarolas-maven, layout: default, uniqueVersion: true,
-    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-discord-commit-hook/;publish=1'}
-build:
-  plugins:
-  - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
-  - groupId: org.apache.maven.plugins
-    artifactId: maven-compiler-plugin
-    configuration:
-      annotationProcessorPaths:
-      - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
-repositories:
-- {id: jcenter, layout: default, name: jcenter, url: 'https://jcenter.bintray.com'}
-- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}
+- {groupId: com.github.stcarolas.enki,  artifactId: enki-core,  version: '${project.version}'}
+- {groupId: com.github.stcarolas.gitea, artifactId: gitea-api,  version: 1.0.0}
+- {groupId: io.vavr,                    artifactId: vavr,       version: 1.0.0-alpha-3}
+- {groupId: org.apache.logging.log4j,   artifactId: log4j-api,  version: 2.12.1}
+- {groupId: org.apache.logging.log4j,   artifactId: log4j-core, version: 2.12.1}
+- {groupId: org.projectlombok,          artifactId: lombok,     version: 1.18.8,   scope: provided, optional: true}
+- {groupId: net.dv8tion,                artifactId: JDA,        version: 4.0.0_43, exclusions:[
+    {artifactId: opus-java, groupId: club.minnced}
+  ]}

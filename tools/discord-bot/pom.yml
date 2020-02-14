@@ -1,38 +1,36 @@
-modelEncoding: UTF-8
-modelVersion: 4.0.0
-parent: {artifactId: enki, groupId: com.github.stcarolas.enki, relativePath: ../../pom.xml,
-  version: 1.1.1}
-groupId: com.github.stcarolas.enki
-artifactId: enki-discord-bot
-packaging: jar
 name: Enki Discord Bot
-properties: {maven.compiler.target: 1.8, java.version: 1.8, maven.compiler.source: 1.8}
+artifactId: enki-discord-bot
+
+modelVersion: 4.0.0
+parent:
+  artifactId: enki
+  groupId: com.github.stcarolas.enki
+  relativePath: ../../pom.yml
+  version: ${revision}
+
 dependencyManagement:
   dependencies:
   - {groupId: org.junit, artifactId: junit-bom, version: 5.5.1, type: pom, scope: import}
+
 dependencies:
-- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
-- {groupId: com.github.stcarolas.enki, artifactId: enki-github-provider, version: '${project.version}'}
-- {groupId: com.github.stcarolas.enki, artifactId: enki-gitea-provider, version: '${project.version}'}
-- {groupId: com.github.stcarolas.enki, artifactId: enki-server, version: '${project.version}'}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-core,                version: '${project.version}'}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-github-provider,     version: '${project.version}'}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-gitea-provider,      version: '${project.version}'}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-server,              version: '${project.version}'}
 - {groupId: com.github.stcarolas.enki, artifactId: enki-discord-commit-hook, version: '${project.version}'}
-- {groupId: com.github.stcarolas.enki, artifactId: enki-logging-handlers, version: '${project.version}'}
-- {groupId: com.github.stcarolas.enki, artifactId: enki-generator, version: '${project.version}'}
-- {groupId: com.typesafe, artifactId: config, version: 1.3.4}
-- {groupId: com.google.dagger, artifactId: dagger, version: 2.24}
-- {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}
-- {groupId: com.lmax, artifactId: disruptor, version: 3.4.2}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
-- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
-  optional: true}
-- {groupId: org.junit.jupiter, artifactId: junit-jupiter-engine, scope: test}
-distributionManagement:
-  repository: {id: bintray-stcarolas-maven, layout: default, uniqueVersion: true,
-    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-discord-bot/;publish=1'}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-logging-handlers,    version: '${project.version}'}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-generator,           version: '${project.version}'}
+- {groupId: com.typesafe,              artifactId: config,                   version: 1.3.4}
+- {groupId: com.google.dagger,         artifactId: dagger,                   version: 2.24}
+- {groupId: io.vavr,                   artifactId: vavr,                     version: 1.0.0-alpha-3}
+- {groupId: com.lmax,                  artifactId: disruptor,                version: 3.4.2}
+- {groupId: org.apache.logging.log4j,  artifactId: log4j-api,                version: 2.12.1}
+- {groupId: org.apache.logging.log4j,  artifactId: log4j-core,               version: 2.12.1}
+- {groupId: org.projectlombok,         artifactId: lombok,                   version: 1.18.8, scope: provided, optional: true}
+- {groupId: org.junit.jupiter,         artifactId: junit-jupiter-engine,     scope: test}
+
 build:
   plugins:
-  - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin, version: 3.0.0-M3}
   - groupId: org.apache.maven.plugins
     artifactId: maven-dependency-plugin
     executions:
@@ -66,5 +64,10 @@ build:
       inherited: true
       phase: package
       priority: 0
+      
 repositories:
 - {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}
+
+distributionManagement:
+  repository: {id: bintray-stcarolas-maven, layout: default, uniqueVersion: true,
+    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-discord-bot/;publish=1'}

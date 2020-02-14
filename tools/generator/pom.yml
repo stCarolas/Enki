@@ -1,40 +1,25 @@
-modelEncoding: UTF-8
-modelVersion: 4.0.0
-parent: {artifactId: enki, groupId: com.github.stcarolas.enki, relativePath: ../../pom.xml,
-  version: 1.1.1}
-groupId: com.github.stcarolas.enki
-artifactId: enki-generator
-packaging: jar
 name: Enki Generator
-properties: {maven.compiler.target: 1.8, java.version: 1.8, maven.compiler.source: 1.8,
-  revision: 0.0.1}
+artifactId: enki-generator
+
+modelVersion: 4.0.0
+parent: 
+  artifactId: enki
+  groupId: com.github.stcarolas.enki
+  relativePath: ../../pom.yml
+  version: ${revision}
+
 dependencies:
-- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
-- {groupId: com.github.stcarolas.gittemplateloader, artifactId: handlebars-git-templateloader,
-  version: 0.0.3}
-- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
-  optional: true}
-- {groupId: info.picocli, artifactId: picocli, version: 4.0.3}
-- {groupId: io.projectreactor, artifactId: reactor-core, version: 3.2.12.RELEASE}
-- {groupId: com.google.code.gson, artifactId: gson, version: 2.8.5}
-distributionManagement:
-  repository: {id: bintray-stcarolas-maven, layout: default, uniqueVersion: true,
-    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-generator/;publish=1'}
+- {groupId: com.github.stcarolas.enki,              artifactId: enki-core,                     version: '${project.version}'}
+- {groupId: org.apache.logging.log4j,               artifactId: log4j-api,                     version: 2.12.1}
+- {groupId: org.apache.logging.log4j,               artifactId: log4j-core,                    version: 2.12.1}
+- {groupId: com.github.stcarolas.gittemplateloader, artifactId: handlebars-git-templateloader, version: 0.0.3}
+- {groupId: org.projectlombok,                      artifactId: lombok,                        version: 1.18.8, scope: provided, optional: true}
+- {groupId: info.picocli,                           artifactId: picocli,                       version: 4.0.3}
+- {groupId: io.projectreactor,                      artifactId: reactor-core,                  version: 3.2.12.RELEASE}
+- {groupId: com.google.code.gson,                   artifactId: gson,                          version: 2.8.5}
+
 build:
   plugins:
-  - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin, version: 3.0.0-M4}
-  - groupId: org.apache.maven.plugins
-    artifactId: maven-compiler-plugin
-    version: 3.8.1
-    configuration:
-      failOnError: true
-      compilerArguments: {AaddGeneratedAnnotation: false, Adebug: true}
-      dependencies:
-        dependency: {groupId: org.ow2.asm, artifactId: asm, version: 7.3.1, type: jar}
-      annotationProcessorPaths:
-      - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
   - groupId: org.apache.maven.plugins
     artifactId: maven-shade-plugin
     version: 3.2.1
@@ -50,5 +35,3 @@ build:
       inherited: true
       phase: package
       priority: 0
-repositories:
-- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}

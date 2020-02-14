@@ -1,37 +1,25 @@
-modelEncoding: UTF-8
-modelVersion: 4.0.0
-parent: {artifactId: enki, groupId: com.github.stcarolas.enki, relativePath: ../../pom.xml,
-  version: 1.1.1}
-groupId: com.github.stcarolas.enki
-artifactId: enki-gocd-handlers
-packaging: jar
 name: Enki GoCD Analyzers
-properties: {maven.compiler.target: 1.8, java.version: 1.8, maven.compiler.source: 1.8,
-  feign-version: 9.4.0, jackson-version: 2.8.9, revision: 0.0.1}
+artifactId: enki-gocd-handlers
+
+modelVersion: 4.0.0
+parent:
+  artifactId: enki
+  groupId: com.github.stcarolas.enki
+  relativePath: ../../pom.yml
+  version: ${revision}
+
+properties: { feign-version: 9.4.0, jackson-version: 2.8.9 }
+
 dependencies:
-- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
-- {groupId: io.github.openfeign, artifactId: feign-core, version: '${feign-version}'}
-- {groupId: io.github.openfeign, artifactId: feign-jackson, version: '${feign-version}'}
-- {groupId: com.fasterxml.jackson.core, artifactId: jackson-core, version: '${jackson-version}'}
-- {groupId: com.fasterxml.jackson.core, artifactId: jackson-annotations, version: '${jackson-version}'}
-- {groupId: com.fasterxml.jackson.core, artifactId: jackson-databind, version: '${jackson-version}'}
+- {groupId: com.github.stcarolas.enki,      artifactId: enki-core,               version: '${project.version}'}
+- {groupId: io.github.openfeign,            artifactId: feign-core,              version: '${feign-version}'}
+- {groupId: io.github.openfeign,            artifactId: feign-jackson,           version: '${feign-version}'}
+- {groupId: com.fasterxml.jackson.core,     artifactId: jackson-core,            version: '${jackson-version}'}
+- {groupId: com.fasterxml.jackson.core,     artifactId: jackson-annotations,     version: '${jackson-version}'}
+- {groupId: com.fasterxml.jackson.core,     artifactId: jackson-databind,        version: '${jackson-version}'}
 - {groupId: com.fasterxml.jackson.datatype, artifactId: jackson-datatype-jsr310, version: '${jackson-version}'}
-- {groupId: com.typesafe, artifactId: config, version: 1.3.4}
-- {groupId: io.vavr, artifactId: vavr, version: 1.0.0-alpha-3}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
-- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
-  optional: true}
-distributionManagement:
-  repository: {id: bintray-stcarolas-maven, layout: default, uniqueVersion: true,
-    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-gocd-handlers/;publish=1'}
-build:
-  plugins:
-  - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
-  - groupId: org.apache.maven.plugins
-    artifactId: maven-compiler-plugin
-    configuration:
-      annotationProcessorPaths:
-      - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
-repositories:
-- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}
+- {groupId: com.typesafe,                   artifactId: config,                  version: 1.3.4}
+- {groupId: io.vavr,                        artifactId: vavr,                    version: 1.0.0-alpha-3}
+- {groupId: org.apache.logging.log4j,       artifactId: log4j-api,               version: 2.12.1}
+- {groupId: org.apache.logging.log4j,       artifactId: log4j-core,              version: 2.12.1}
+- {groupId: org.projectlombok,              artifactId: lombok,                  version: 1.18.8, scope: provided, optional: true}

@@ -1,30 +1,15 @@
-modelEncoding: UTF-8
-modelVersion: 4.0.0
-parent: {artifactId: enki, groupId: com.github.stcarolas.enki, relativePath: ../../pom.xml,
-  version: 1.1.1}
-groupId: com.github.stcarolas.enki
-artifactId: enki-logging-handlers
-packaging: jar
 name: Enki Logging Analyzers
-properties: {maven.compiler.target: 1.8, java.version: 1.8, maven.compiler.source: 1.8,
-  revision: 0.0.1}
+artifactId: enki-logging-handlers
+
+modelVersion: 4.0.0
+parent:
+  artifactId: enki
+  groupId: com.github.stcarolas.enki
+  relativePath: ../../pom.yml
+  version: ${revision}
+
 dependencies:
-- {groupId: com.github.stcarolas.enki, artifactId: enki-core, version: '${project.version}'}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-api, version: 2.12.1}
-- {groupId: org.apache.logging.log4j, artifactId: log4j-core, version: 2.12.1}
-- {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8, scope: provided,
-  optional: true}
-distributionManagement:
-  repository: {id: bintray-stcarolas-maven, layout: default, uniqueVersion: true,
-    url: 'https://api.bintray.com/maven/stcarolas/maven/enki-logging-handlers/;publish=1'}
-build:
-  plugins:
-  - {groupId: org.apache.maven.plugins, artifactId: maven-surefire-plugin}
-  - groupId: org.apache.maven.plugins
-    artifactId: maven-compiler-plugin
-    configuration:
-      annotationProcessorPaths:
-      - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.8}
-repositories:
-- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}
-- {id: jcenter, layout: default, name: jcenter, url: 'https://jcenter.bintray.com'}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-core,  version: '${project.version}'}
+- {groupId: org.apache.logging.log4j,  artifactId: log4j-api,  version: 2.12.1}
+- {groupId: org.apache.logging.log4j,  artifactId: log4j-core, version: 2.12.1}
+- {groupId: org.projectlombok,         artifactId: lombok,     version: 1.18.8, scope: provided, optional: true}
