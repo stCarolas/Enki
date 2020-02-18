@@ -1,0 +1,54 @@
+name: Enki
+groupId: com.github.stcarolas.enki
+artifactId: enki-parent
+version: 1.0.0
+packaging: pom
+
+modelVersion: 4.0.0
+properties: 
+  maven.compiler.target: 14
+  maven.compiler.source: 14
+  revision: 1.0.0
+
+dependencyManagement:
+  dependencies:
+  - {groupId: org.junit, artifactId: junit-bom, version: 5.5.1, type: pom, scope: import}
+
+build:
+  plugins:
+
+  - groupId: org.apache.maven.plugins
+    artifactId: maven-surefire-plugin
+    version: 3.0.0-M4
+
+  - groupId: org.apache.maven.plugins
+    artifactId: maven-source-plugin
+    version: 3.2.1
+    executions:
+    - goals: [jar-no-fork]
+      id: attach-sources
+      inherited: true
+      phase: package
+      priority: 0
+
+  - groupId: org.apache.maven.plugins
+    artifactId: maven-compiler-plugin
+    version: 3.8.1
+    configuration:
+      failOnError: true
+      compilerArguments: {AaddGeneratedAnnotation: false, Adebug: true}
+      dependencies:
+      - {groupId: org.ow2.asm, artifactId: asm, version: 7.3.1, type: jar}
+      annotationProcessorPaths:
+      - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.12}
+
+repositories:
+- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}
+- {id: jcenter, layout: default, name: jcenter, url: 'https://jcenter.bintray.com'}
+
+distributionManagement:
+  repository: 
+    id: bintray-stcarolas-maven
+    layout: default
+    uniqueVersion: true
+    url: "https://api.bintray.com/maven/stcarolas/maven/${project.artifactId}/;publish=1"

@@ -1,37 +1,41 @@
 package com.github.stcarolas.enki.github.provider;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import com.github.stcarolas.enki.core.CloneURLType;
+import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.commit;
+import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.directory;
+import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.identity;
+import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.name;
+import static io.vavr.collection.List.empty;
+import static io.vavr.collection.List.ofAll;
+
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
-import com.github.stcarolas.enki.core.impl.GitRepo;
+
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.RepositoryService;
-import org.eclipse.jgit.util.StringUtils;
 
+import io.vavr.collection.Seq;
+import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.ToString;
-import lombok.val;
 import lombok.extern.log4j.Log4j2;
+
 
 @Log4j2
 @Builder
 @ToString
-public class GitHubRepoProvider implements RepoProvider {
+public class GitHubRepoProvider implements RepoProvider<GitHubRepo> {
 	private String username;
 	private String password;
 	private String organization;
 
 	@Override
-	public List<Repo> getRepos() {
+	public Seq<GitHubRepo> repositories() {
 		return Try.of(
 			() -> {
-				val repoService = new RepositoryService();
+				var repoService = new RepositoryService();
 				repoService.getClient().setCredentials(username, password);
-				if (StringUtils.isEmptyOrNull(organization)){
+				if (organization == null || organization.isEmpty()){
 					return repoService.getRepositories();
 				}
 				return repoService.getOrgRepositories(organization);
@@ -43,20 +47,29 @@ public class GitHubRepoProvider implements RepoProvider {
 				}
 			)
 			.map(
-				repos -> {
-					return repos.stream()
+				repos -> ofAll(repos)
 						.map(repo -> convert(repo))
-						.collect(Collectors.toList());
-				}
 			)
-			.getOrElse(new ArrayList<>());
+			.getOrElse(empty());
 	}
 
-	private Repo convert(Repository repo) {
-		return GitRepo.builder()
-			.name(repo.getName())
-			.cloneUrl(CloneURLType.SSH, repo.getSshUrl())
-			.repoProvider(this)
-			.build();
+	private GitHubRepo convert(Repository repo) {
+		var githubRepo = new GitHubRepo();
+		githubRepo
+			.setNameStrategy(name(repo.getName()))
+			.setDirectoryStrategy(directory(githubRepo))
+			.setIdentityStrategy(identity())
+			.setCommitStrategy(commit(githubRepo));
+		return githubRepo;
+	}
+
+	@Override
+	public Option<GitHubRepo> download(GitHubRepo repo) {
+		return Option.none();
+	}
+
+	@Override
+	public Option<GitHubRepo> upload(Repo repo) {
+		return Option.none();
 	}
 }

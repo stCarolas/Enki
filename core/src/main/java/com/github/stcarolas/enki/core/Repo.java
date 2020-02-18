@@ -1,21 +1,40 @@
 package com.github.stcarolas.enki.core;
 
 import java.io.File;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+
+import io.vavr.collection.Seq;
+import io.vavr.control.Option;
 
 public interface Repo {
 
-	UUID getId();
+	/**
+	*
+	* @return unique technical id of this copy of repository
+	*/
+	Option<String> id();
 
-	String getName();
+	/**
+	*
+	* @return some human-readable name of repository
+	*/
+	Option<String> name();
 
-	Map<CloneURLType, String> getCloneUrls();
+	/**
+	*
+	* @return file-based access to this repository
+	*/
+	Option<File> directory();
 
-	Optional<File> getDirectory();
+	/**
+	*
+	* @return list of {@link RepoProvider} which able to host and provide this repository
+	*/
+	Seq<RepoProvider<? extends Repo>> providers();
 
-	RepoProvider getRepoProvider();
+	/**
+	*
+	* @return copy of this repository after commiting changes
+	*/
+	Option<? extends Repo> commit(String commitMessage);
 
-	@Deprecated void commitAndPush(String commitMessage);
 }

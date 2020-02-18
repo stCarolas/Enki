@@ -3,6 +3,7 @@ module com.github.stcarolas.enki.github {
 	requires com.github.stcarolas.enki.core;
 	requires org.apache.logging.log4j;
 	requires org.eclipse.egit.github.core;
+	requires vavr;
 
 	exports com.github.stcarolas.enki.github.provider;
 }

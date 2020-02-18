@@ -4,6 +4,7 @@ module com.github.stcarolas.enki.gitea {
 	requires feign.jackson;
 	requires jackson.databind;
 	requires jackson.datatype.jsr310;
+	requires vavr;
 
 	requires gitea.api;
 	requires com.github.stcarolas.enki.core;

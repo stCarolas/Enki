@@ -1,28 +1,70 @@
 package com.github.stcarolas.enki.core;
 
-import java.util.List;
-import java.util.Objects;
+import static io.vavr.collection.List.empty;
 
-import lombok.Builder;
-import lombok.Singular;
+import io.vavr.collection.Seq;
+import io.vavr.control.Option;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
-@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Log4j2
+@Getter(AccessLevel.PRIVATE)
 public class EnkiRunner<T extends Repo> {
-	@Singular
-	private List<RepoProvider<T>> providers;
 
-	@Singular
-	private List<RepoHandler<T>> handlers;
+	private Seq<RepoProvider<T>> providers;
+	private Seq<RepoHandler<T>> handlers;
 
-	public void handle() {
-		if (Objects.isNull(providers) || Objects.isNull(handlers)){
-			log.info("no providers or handlers, exiting");
-			return;
-		}
-		providers.stream()
-			.flatMap(provider -> provider.getRepos().stream())
-			.forEach(repo -> handlers.forEach(handler -> handler.handle(repo)));
+	public void run() {
+		providers
+			.onEmpty(() -> log.error("missing any RepoProvider"))
+
+			.peek( provider -> log.info("use provider {}", provider) )
+			.flatMap(
+				provider -> provider
+						.repositories()
+						.onEmpty(() -> log.error("{} provide empty list of repositories", provider))
+			)
+
+			.onEmpty(() -> log.error("no repository provided at all"))
+
+			.peek( repo -> log.info("handle repository {}", repo) )
+			.flatMap( 
+				repo -> Option.sequence(this.runHandlersOnRepo(repo))
+					.peek( results -> log.info("repo {} was successfully handled", repo))
+					.onEmpty(() -> log.error("repository {} was handled with one or more error", repo))
+			)
+
+			.onEmpty(() -> log.error("all repositories was handled with errors"));
+	}
+
+	private Seq<Option<T>> runHandlersOnRepo(T repository) {
+		return handlers
+			.onEmpty(() -> log.error("missing any RepoHandler"))
+			.map(
+				handler -> handler
+					.handle(repository)
+					.onEmpty(() -> log.error("{} was unable to handle repo", handler.getClass()))
+			);
+	}
+
+	public static <T extends Repo> EnkiRunner<T> enki() {
+		return new EnkiRunner<>(empty(), empty());
+	}
+
+	public EnkiRunner<T> withProvider(RepoProvider<T> provider) {
+		return Option.of(provider)
+			.map(providers::append)
+			.map(changedProviders -> new EnkiRunner<T>(changedProviders, handlers))
+			.getOrElse(this);
+	}
+
+	public EnkiRunner<T> withHandler(RepoHandler<T> handler) {
+		return Option.of(handler)
+			.map(handlers::append)
+			.map(changedHandlers -> new EnkiRunner<T>(providers, changedHandlers))
+			.getOrElse(this);
 	}
 }

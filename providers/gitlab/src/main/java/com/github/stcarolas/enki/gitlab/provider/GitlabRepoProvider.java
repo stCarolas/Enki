@@ -1,29 +1,35 @@
 package com.github.stcarolas.enki.gitlab.provider;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.commit;
+import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.directory;
+import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.identity;
+import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.name;
+import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.providers;
+import static io.vavr.collection.List.empty;
+import static io.vavr.collection.List.ofAll;
 
-import com.github.stcarolas.enki.core.CloneURLType;
+import java.util.Arrays;
+
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
-import com.github.stcarolas.enki.core.impl.GitRepo;
 
 import org.gitlab4j.api.GitLabApi;
 import org.gitlab4j.api.models.Project;
 
+import io.vavr.collection.Seq;
+import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Builder
-public class GitlabRepoProvider implements RepoProvider {
+public class GitlabRepoProvider implements RepoProvider<GitlabRepo> {
 	private String endpoint;
 	private String token;
 
 	@Override
-	public List<Repo> getRepos() {
+	public Seq<GitlabRepo> repositories() {
 		return Try.of(
 			() -> {
 				return new GitLabApi(endpoint, token).getProjectApi().getProjects();
@@ -35,20 +41,29 @@ public class GitlabRepoProvider implements RepoProvider {
 				}
 			)
 			.map(
-				repos -> {
-					return repos.stream()
+				repos -> ofAll(repos)
 						.map(repo -> convert(repo))
-						.collect(Collectors.toList());
-				}
 			)
-			.getOrElse(new ArrayList<>());
+			.getOrElse(empty());
 	}
 
-	private Repo convert(Project repo) {
-		return GitRepo.builder()
-			.name(repo.getName())
-			.cloneUrl(CloneURLType.SSH, repo.getSshUrlToRepo())
-			.repoProvider(this)
-			.build();
+	private GitlabRepo convert(Project repo) {
+		var gitlabRepo = new GitlabRepo();
+		gitlabRepo.setNameStrategy(name(repo.getName()))
+			.setDirectoryStrategy(directory(gitlabRepo))
+			.setIdentityStrategy(identity())
+			.setCommitStrategy(commit(gitlabRepo))
+			.setProvidersStrategy(providers(Arrays.asList(this)));
+		return gitlabRepo;
+	}
+
+	@Override
+	public Option<GitlabRepo> download(GitlabRepo repo) {
+		return Option.none();
+	}
+
+	@Override
+	public Option<GitlabRepo> upload(Repo repo) {
+		return Option.none();
 	}
 }

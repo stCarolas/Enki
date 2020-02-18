@@ -1,7 +1,10 @@
 package com.github.stcarolas.enki.core;
 
-import java.util.List;
+import io.vavr.collection.Seq;
+import io.vavr.control.Option;
 
 public interface RepoProvider<T extends Repo> {
-	List<T> getRepos();
+	Seq<T> repositories();
+	Option<T> download(T repo);
+	Option<T> upload(Repo repo);
 }

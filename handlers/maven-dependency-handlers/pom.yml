@@ -3,10 +3,9 @@ artifactId: enki-maven-dependency-handlers
 
 modelVersion: 4.0.0
 parent:
-  artifactId: enki
+  artifactId: enki-parent
   groupId: com.github.stcarolas.enki
-  relativePath: ../../pom.yml
-  version: ${revision}
+  version: 1.0.0
 
 dependencies:
 - {groupId: com.github.stcarolas.enki,      artifactId: enki-core,  version: '${project.version}'}

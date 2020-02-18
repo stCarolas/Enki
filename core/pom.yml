@@ -1,16 +1,16 @@
 name: Enki Core
 artifactId: enki-core
+version: ${revision}
 
 modelVersion: 4.0.0
 parent:
-  artifactId: enki
+  artifactId: enki-parent
   groupId: com.github.stcarolas.enki
-  version: ${revision}
-  relativePath: ../pom.yml
+  version: 1.0.0
 
 dependencies:
 - {groupId: com.typesafe,             artifactId: config,               version: 1.3.4}
-- {groupId: io.vavr,                  artifactId: vavr,                 version: 1.0.0-alpha-3}
+- {groupId: io.vavr,                  artifactId: vavr,                 version: 1.0.0}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-api,            version: 2.12.1}
 - {groupId: org.apache.logging.log4j, artifactId: log4j-core,           version: 2.12.1}
 - {groupId: org.eclipse.jgit,         artifactId: org.eclipse.jgit,     version: 5.4.0.201906121030-r}

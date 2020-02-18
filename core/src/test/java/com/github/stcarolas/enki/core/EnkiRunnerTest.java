@@ -1,66 +1,54 @@
 package com.github.stcarolas.enki.core;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-
-import com.github.stcarolas.enki.core.RepoProvider;
-import com.github.stcarolas.enki.core.impl.test.TestProviderMother;
-
 import org.junit.jupiter.api.Test;
-
+import io.vavr.collection.List;
+import io.vavr.collection.Seq;
+import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
+import static com.github.stcarolas.enki.core.EnkiRunner.*;
+
 public class EnkiRunnerTest {
 
 	@Test
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({ "unchecked" })
 	public void should_accept_two_different_providers_generics() {
-		//expect:
 		RepoProvider<AnotherTestRepo> anotherProvider = AnotherTestProvider.builder()
-			.testRepos(Arrays.asList(new AnotherTestRepo("first")))
 			.build();
-		EnkiRunner.<Repo>builder()
-			.provider(
-				(RepoProvider<Repo>)(RepoProvider<?>)TestProviderMother.testProvider()
-			)
-			.provider((RepoProvider<Repo>)(RepoProvider<?>)anotherProvider)
-			.build();
+		enki()
+			.withProvider((RepoProvider<Repo>) (RepoProvider<?>) anotherProvider)
+			.run();
 	}
 
 	@RequiredArgsConstructor
 	public class AnotherTestRepo implements Repo {
 
-		private final String name;
-
-		@Override public UUID getId() {
-			return UUID.randomUUID();
+		@Override
+		public Option<String> id() {
+			return Option.none();
 		}
 
-		@Override public String getName() {
-			return name;
+		@Override
+		public Option<String> name() {
+			return Option.none();
 		}
 
-		@Override public Map<CloneURLType, String> getCloneUrls() {
-			return Collections.emptyMap();
+		@Override
+		public Option<File> directory() {
+			return Option.none();
 		}
 
-		@Override public Optional<File> getDirectory() {
-			return Optional.empty();
+		@Override
+		public Seq<RepoProvider<? extends Repo>> providers() {
+			return List.empty();
 		}
 
-		@Override public RepoProvider getRepoProvider() {
-			return null;
-		}
-
-		@Override public void commitAndPush(String commitMessage) {
-
+		@Override
+		public Option<? extends Repo> commit(String commitMessage) {
+			return Option.none();
 		}
 	}
 
@@ -68,11 +56,19 @@ public class EnkiRunnerTest {
 	@AllArgsConstructor
 	public static class AnotherTestProvider implements RepoProvider<AnotherTestRepo> {
 
-		private List<AnotherTestRepo> testRepos;
+		@Override
+		public Seq<AnotherTestRepo> repositories() {
+			return List.empty();
+		}
 
-		@Override public List<AnotherTestRepo> getRepos() {
-			return testRepos;
+		@Override
+		public Option<AnotherTestRepo> download(AnotherTestRepo repo) {
+			return Option.none();
+		}
+
+		@Override
+		public Option<AnotherTestRepo> upload(Repo repo) {
+			return Option.none();
 		}
 	}
-    
 }
