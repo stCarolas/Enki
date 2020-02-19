@@ -1,6 +1,9 @@
 package com.github.stcarolas.enki.core.repo;
 
 import static io.vavr.collection.List.empty;
+import static com.github.stcarolas.enki.core.util.FunctionCaller.option;
+import static com.github.stcarolas.enki.core.util.FunctionCaller.seq;
+import static io.vavr.control.Option.some;
 
 import java.io.File;
 import java.util.function.Function;
@@ -26,28 +29,28 @@ public class StrategiesAsRepo implements Repo {
 	public Option<String> id() {
 		return identityStrategy
 			.onEmpty(() -> log.info("no IdentityStrategy defined"))
-			.flatMap(Supplier::get);
+			.flatMap(strategy -> option(strategy::get));
 	}
 
 	@Override
 	public Option<String> name() {
 		return nameStrategy
 			.onEmpty(() -> log.info("no NameStrategy defined"))
-			.flatMap(Supplier::get);
+			.flatMap(strategy -> option(strategy::get));
 	}
 
 	@Override
 	public Option<File> directory() {
 		return directoryStrategy
 			.onEmpty(() -> log.info("no DirectoryStrategy defined"))
-			.flatMap(Supplier::get);
+			.flatMap(strategy -> option(strategy::get));
 	}
 
 	@Override
 	public Seq<RepoProvider<? extends Repo>> providers() {
 		return providersStrategy
 			.onEmpty(() -> log.info("no ProvidersStrategy defined"))
-			.map(Supplier::get)
+			.map(strategy -> seq(strategy::get))
 			.getOrElse(empty());
 	}
 
@@ -55,31 +58,31 @@ public class StrategiesAsRepo implements Repo {
 	public Option<? extends Repo> commit(String commitMessage) {
 		return commitStrategy
 			.onEmpty(() -> log.info("no CommitStrategy defined"))
-			.flatMap( strategy -> strategy.apply(commitMessage) );
+			.flatMap(strategy -> option(() -> strategy.apply(commitMessage)) );
 	}
 
 	public StrategiesAsRepo setDirectoryStrategy(Supplier<Option<File>> strategy) {
-		this.directoryStrategy = Option.of(strategy);
+		this.directoryStrategy = some(strategy);
 		return this;
 	}
 
 	public StrategiesAsRepo setProvidersStrategy(Supplier<Seq<RepoProvider<? extends Repo>>> strategy) {
-		this.providersStrategy = Option.of(strategy);
+		this.providersStrategy = some(strategy);
 		return this;
 	}
 
 	public StrategiesAsRepo setIdentityStrategy(Supplier<Option<String>> strategy) {
-		this.identityStrategy = Option.of(strategy);
+		this.identityStrategy = some(strategy);
 		return this;
 	}
 
 	public StrategiesAsRepo setNameStrategy(Supplier<Option<String>> strategy) {
-		this.nameStrategy = Option.of(strategy);
+		this.nameStrategy = some(strategy);
 		return this;
 	}
 
 	public StrategiesAsRepo setCommitStrategy(Function<String, Option<? extends Repo>> strategy) {
-		this.commitStrategy = Option.of(strategy);
+		this.commitStrategy = some(strategy);
 		return this;
 	}
 }

@@ -20,6 +20,7 @@ public class EnkiRunnerTest {
 			.build();
 		enki()
 			.withProvider((RepoProvider<Repo>) (RepoProvider<?>) anotherProvider)
+			.withProvider((RepoProvider<Repo>) (RepoProvider<?>) anotherProvider)
 			.run();
 	}
 

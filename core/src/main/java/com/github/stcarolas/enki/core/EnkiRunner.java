@@ -1,6 +1,9 @@
 package com.github.stcarolas.enki.core;
 
+import static com.github.stcarolas.enki.core.util.FunctionCaller.option;
+import static com.github.stcarolas.enki.core.util.FunctionCaller.seq;
 import static io.vavr.collection.List.empty;
+import static io.vavr.control.Option.some;
 
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
@@ -20,32 +23,30 @@ public class EnkiRunner<T extends Repo> {
 	public void run() {
 		providers
 			.onEmpty(() -> log.error("missing any RepoProvider"))
+			.peek( provider -> log.info("calling repository providers") )
 
-			.peek( provider -> log.info("use provider {}", provider) )
 			.flatMap(
-				provider -> provider
-						.repositories()
-						.onEmpty(() -> log.error("{} provide empty list of repositories", provider))
+				provider -> seq(provider::repositories)
+					.onEmpty(() -> log.error("{} provide empty list of repositories", provider))
 			)
 
 			.onEmpty(() -> log.error("no repository provided at all"))
+			.peek( repo -> log.info("calling repository handlers") )
 
-			.peek( repo -> log.info("handle repository {}", repo) )
 			.flatMap( 
 				repo -> Option.sequence(this.runHandlersOnRepo(repo))
 					.peek( results -> log.info("repo {} was successfully handled", repo))
 					.onEmpty(() -> log.error("repository {} was handled with one or more error", repo))
 			)
 
-			.onEmpty(() -> log.error("all repositories was handled with errors"));
+			.onEmpty(() -> log.error("no successfull handled repository"));
 	}
 
 	private Seq<Option<T>> runHandlersOnRepo(T repository) {
 		return handlers
 			.onEmpty(() -> log.error("missing any RepoHandler"))
 			.map(
-				handler -> handler
-					.handle(repository)
+				handler -> option(() -> handler.handle(repository))
 					.onEmpty(() -> log.error("{} was unable to handle repo", handler.getClass()))
 			);
 	}
@@ -55,14 +56,14 @@ public class EnkiRunner<T extends Repo> {
 	}
 
 	public EnkiRunner<T> withProvider(RepoProvider<T> provider) {
-		return Option.of(provider)
+		return some(provider)
 			.map(providers::append)
 			.map(changedProviders -> new EnkiRunner<T>(changedProviders, handlers))
 			.getOrElse(this);
 	}
 
 	public EnkiRunner<T> withHandler(RepoHandler<T> handler) {
-		return Option.of(handler)
+		return some(handler)
 			.map(handlers::append)
 			.map(changedHandlers -> new EnkiRunner<T>(providers, changedHandlers))
 			.getOrElse(this);

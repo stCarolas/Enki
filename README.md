@@ -23,10 +23,7 @@
     - ![JaCoCo configurator for maven projects](https://github.com/stCarolas/Enki/tree/master/handlers/jacoco)
     - ![Print a list of found repositories](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
     - ![Collect all dependency from maven project](https://github.com/stCarolas/Enki/tree/master/handlers/logging-handlhandlers)
-1. Tools:
-    - ![Cli/Server Runner](https://github.com/stCarolas/Enki/tree/master/server)
-    - ![Discord Bot](https://github.com/stCarolas/Enki/tree/master/tools/discord-bot)
-    - ![Console Wrapper for Template Generator](https://github.com/stCarolas/Enki/tree/master/tools/generator)
+1. ![Cli/Server Runner](https://github.com/stCarolas/Enki/tree/master/server)
 1. ![Roadmap](https://github.com/stCarolas/Enki/milestones)
 
 # Why
