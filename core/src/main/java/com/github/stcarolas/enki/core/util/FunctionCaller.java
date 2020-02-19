@@ -10,13 +10,13 @@ import io.vavr.control.Try;
 
 public class FunctionCaller {
 
-    public static final <T>Seq<T> seq(CheckedFunction0<Seq<T>> function) {
+	public static final <T>Seq<T> seq(CheckedFunction0<Seq<T>> function) {
 		return Try.of(function)
 			.filter( seq -> seq != null )
 			.getOrElse(empty());
 	}
 
-    public static final <T>Option<T> option(CheckedFunction0<Option<T>> function) {
+	public static final <T>Option<T> option(CheckedFunction0<Option<T>> function) {
 		return Try.of(function)
 			.filter( option -> option != null )
 			.getOrElse(none())
