@@ -1,2 +1,4 @@
 todo:
-  keyword: "TODO"
+  autoAssign: false
+  label: false
+  reopenClosed: true

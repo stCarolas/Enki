@@ -1,6 +1,7 @@
 package com.github.stcarolas.enki.core.provider;
 
 import static io.vavr.collection.List.empty;
+import static io.vavr.control.Option.some;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -12,6 +13,7 @@ import io.vavr.collection.Seq;
 import io.vavr.control.Option;
 import lombok.extern.log4j.Log4j2;
 
+// TODO call strategy implementations with safety
 @Log4j2
 public class StrategiesAsProvider<T extends Repo> implements RepoProvider<T> {
 	private Option<Supplier<Seq<T>>> repositoriesStrategy;
@@ -33,7 +35,7 @@ public class StrategiesAsProvider<T extends Repo> implements RepoProvider<T> {
 			.onEmpty(() -> log.info("no DownloadStrategy provided"))
 			.iterator()
 			.zip(
-				Option.of(repo)
+				some(repo)
 					.onEmpty(() -> log.error("NULL repo was given to download"))
 			)
 			.flatMap( 

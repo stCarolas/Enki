@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
 
+import static io.vavr.control.Option.some;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
@@ -36,7 +37,7 @@ public class TemporaryFileDirectoryStrategy implements Supplier<Option<File>> {
 	}
 
 	private Option<File> constructDirectoryPath(String filename) {
-		return Option.of(filename)
+		return some(filename)
 			.map(it -> new File(TEMPORARY_LOCATION + it));
 	}
 

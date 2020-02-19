@@ -31,7 +31,7 @@ public class EnkiRunner<T extends Repo> {
 			)
 
 			.onEmpty(() -> log.error("no repository provided at all"))
-			.peek( repo -> log.info("calling repository handlers") )
+			.peek(repo -> log.info("calling repository handlers") )
 
 			.flatMap( 
 				repo -> Option.sequence(this.runHandlersOnRepo(repo))

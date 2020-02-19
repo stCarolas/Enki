@@ -16,6 +16,7 @@ import io.vavr.collection.Seq;
 import io.vavr.control.Option;
 import lombok.extern.log4j.Log4j2;
 
+// TODO javadoc for StrategiesAsRepo
 @Log4j2
 public class StrategiesAsRepo implements Repo {
 
@@ -66,6 +67,7 @@ public class StrategiesAsRepo implements Repo {
 		return this;
 	}
 
+	// TODO set StrategiesAsRepo immutable
 	public StrategiesAsRepo setProvidersStrategy(Supplier<Seq<RepoProvider<? extends Repo>>> strategy) {
 		this.providersStrategy = some(strategy);
 		return this;
