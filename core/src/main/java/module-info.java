@@ -1,9 +1,9 @@
 module com.github.stcarolas.enki.core {
 	requires static lombok;
 
-	requires org.eclipse.jgit;
+	requires transitive org.eclipse.jgit;
 	requires org.apache.logging.log4j;
-	requires vavr;
+	requires transitive vavr;
 	requires jsch;
 
 	exports com.github.stcarolas.enki.core;

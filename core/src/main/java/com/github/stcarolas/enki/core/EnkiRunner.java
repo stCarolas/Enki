@@ -23,7 +23,7 @@ public class EnkiRunner<T extends Repo> {
 	public void run() {
 		providers
 			.onEmpty(() -> log.error("missing any RepoProvider"))
-			.peek( provider -> log.info("calling repository providers") )
+			.peek(first -> log.info("calling repository providers"))
 
 			.flatMap(
 				provider -> seq(provider::repositories)
@@ -31,11 +31,11 @@ public class EnkiRunner<T extends Repo> {
 			)
 
 			.onEmpty(() -> log.error("no repository provided at all"))
-			.peek(repo -> log.info("calling repository handlers") )
+			.peek(first -> log.info("calling repository handlers") )
 
 			.flatMap( 
 				repo -> Option.sequence(this.runHandlersOnRepo(repo))
-					.peek( results -> log.info("repo {} was successfully handled", repo))
+					.peek(it -> log.info("repo {} was successfully handled by all handlers", repo))
 					.onEmpty(() -> log.error("repository {} was handled with one or more error", repo))
 			)
 
@@ -47,7 +47,8 @@ public class EnkiRunner<T extends Repo> {
 			.onEmpty(() -> log.error("missing any RepoHandler"))
 			.map(
 				handler -> option(() -> handler.handle(repository))
-					.onEmpty(() -> log.error("{} was unable to handle repo", handler.getClass()))
+					.peek(it -> log.info("repository {} was successfully handled by {}", repository, handler))
+					.onEmpty(() -> log.error("{} was unable to handle repository", handler.getClass()))
 			);
 	}
 

@@ -7,6 +7,7 @@ import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.n
 import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.providers;
 import static io.vavr.collection.List.empty;
 import static io.vavr.collection.List.ofAll;
+import static io.vavr.control.Option.some;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,42 +16,29 @@ import java.util.List;
 import com.cdancy.bitbucket.rest.BitbucketClient;
 import com.cdancy.bitbucket.rest.domain.repository.Repository;
 import com.cdancy.bitbucket.rest.domain.repository.RepositoryPage;
-import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
 
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
-import lombok.Builder;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
+// TODO add http implementation for bitbucket
 @Log4j2
-@Builder
 @ToString
-public class BitbucketRepoProvider implements RepoProvider<BitbucketRepo> {
+public abstract class BitbucketRepoProvider implements RepoProvider<BitbucketRepo> {
 
 	private String endpoint;
     
 	private String token;
 
-	@Builder.Default
 	private BitbucketRepoQueryOptions options = BitbucketRepoQueryOptions.builder().build();
-
-	@Override
-	public Option<BitbucketRepo> download(BitbucketRepo repo) {
-		return Option.none();
-	}
-
-	@Override
-	public Option<BitbucketRepo> upload(Repo repo) {
-		return Option.none();
-	}
 
 	@Override
 	public Seq<BitbucketRepo> repositories() {
 		return Try.of(this::listRepos)
-			.onFailure( error -> log.error(error) )
+			.onFailure(error -> log.error(error))
 			.map(
 				repos -> ofAll(repos)
 						.flatMap(repo -> convert(repo))
@@ -58,6 +46,7 @@ public class BitbucketRepoProvider implements RepoProvider<BitbucketRepo> {
 			.getOrElse(empty());
 	}
 
+	// TODO make code more functional
 	private List<Repository> listRepos(){
 			BitbucketClient client = BitbucketClient.builder()
 				.endPoint(endpoint)
@@ -86,22 +75,21 @@ public class BitbucketRepoProvider implements RepoProvider<BitbucketRepo> {
 	}
 
 	private Option<BitbucketRepo> convert(Repository repo) {
-		return Option.ofOptional(repo.links()
+		var bitbucketRepo = new BitbucketRepo();
+		bitbucketRepo
+			.setNameStrategy(name(repo.name()))
+			.setDirectoryStrategy(directory(bitbucketRepo))
+			.setCommitStrategy(commit(bitbucketRepo))
+			.setProvidersStrategy(providers(Arrays.asList(this)))
+			.setIdentityStrategy(identity());
+		repo.links()
 			.clone()
 			.stream()
-			.filter(href -> "ssh".equals(href.get("name")))
-			.map(
-				sshUrlHolder -> {
-					var bitbucketRepo = new BitbucketRepo();
-					bitbucketRepo
-						.setNameStrategy(name(repo.name()))
-						.setDirectoryStrategy(directory(bitbucketRepo))
-						.setCommitStrategy(commit(bitbucketRepo))
-						.setProvidersStrategy(providers(Arrays.asList(this)))
-						.setIdentityStrategy(identity());
-					return bitbucketRepo;
+			.forEach( href -> {
+				if ("ssh".equals(href.get("name"))) {
+					bitbucketRepo.setSshUrl(href.get("href"));
 				}
-			)
-			.findFirst());
+			});
+		return some(bitbucketRepo);
 	}
 }
