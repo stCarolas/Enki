@@ -1,3 +1,5 @@
+temporary disable projects
+
 # Enki-generator
 
 Генератор из mustache шаблонов. Берет git ssh url, клонирует репу,

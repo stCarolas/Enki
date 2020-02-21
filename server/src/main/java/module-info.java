@@ -6,6 +6,7 @@ module com.github.stcarolas.enki {
 	requires org.apache.logging.log4j;
 	requires jcl.core;
 	requires gson;
+	requires vavr;
 
 	requires com.github.stcarolas.enki.core;
 	requires com.github.stcarolas.enki.github;
