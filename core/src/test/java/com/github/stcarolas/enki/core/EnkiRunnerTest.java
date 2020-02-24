@@ -1,23 +1,23 @@
 package com.github.stcarolas.enki.core;
 
+import static com.github.stcarolas.enki.core.EnkiRunner.enki;
+
 import java.io.File;
+
 import org.junit.jupiter.api.Test;
+
 import io.vavr.collection.List;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-
-import static com.github.stcarolas.enki.core.EnkiRunner.*;
 
 public class EnkiRunnerTest {
 
 	@Test
 	@SuppressWarnings({ "unchecked" })
 	public void should_accept_two_different_providers_generics() {
-		RepoProvider<AnotherTestRepo> anotherProvider = AnotherTestProvider.builder()
-			.build();
+		RepoProvider<AnotherTestRepo> anotherProvider = new AnotherTestProvider();
 		enki()
 			.withProvider((RepoProvider<Repo>) (RepoProvider<?>) anotherProvider)
 			.withProvider((RepoProvider<Repo>) (RepoProvider<?>) anotherProvider)
@@ -53,7 +53,6 @@ public class EnkiRunnerTest {
 		}
 	}
 
-	@Builder
 	@AllArgsConstructor
 	public static class AnotherTestProvider implements RepoProvider<AnotherTestRepo> {
 

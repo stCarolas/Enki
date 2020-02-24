@@ -5,12 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.github.stcarolas.enki.core.CloneURLType;
 import com.github.stcarolas.enki.core.EnkiRunner;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoHandler;
 import com.github.stcarolas.enki.core.RepoProvider;
-import com.github.stcarolas.enki.core.functions.FilterFunction;
 import com.google.gson.Gson;
 
 import io.undertow.server.HttpHandler;

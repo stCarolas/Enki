@@ -5,8 +5,11 @@ module com.github.stcarolas.enki.gitea {
 	requires jackson.databind;
 	requires jackson.datatype.jsr310;
 	requires vavr;
+	requires org.apache.logging.log4j;
 
 	requires gitea.api;
-	requires com.github.stcarolas.enki.core;
+	
+	requires transitive com.github.stcarolas.enki.core;
+
 	exports com.github.stcarolas.enki.gitea.provider;
 }

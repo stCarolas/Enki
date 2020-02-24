@@ -9,8 +9,6 @@ module com.github.stcarolas.enki {
 	requires vavr;
 
 	requires com.github.stcarolas.enki.core;
-	requires com.github.stcarolas.enki.github;
-	requires com.github.stcarolas.enki.onerepo;
 	requires com.github.stcarolas.enki.bitbucket;
 
 }

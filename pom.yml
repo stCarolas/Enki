@@ -12,16 +12,16 @@ packaging: pom
 modules:
   - parent-pom
   - core
-  - server
-  - providers/github
-  - providers/gitea
-  - providers/gitlab
-  - providers/one-repo
   - providers/bitbucket
-  - handlers/discord-commit-hook
-  - handlers/gitea-mirror
-  - handlers/github-archive-repo
-  - handlers/gocd-handlers
-  - handlers/jacoco
-  - handlers/logging-handlers
-  - handlers/maven-dependency-handlers
+  - providers/gitea
+  #- providers/github
+  #- providers/gitlab
+  #- providers/one-repo
+  #- server
+  #- handlers/discord-commit-hook
+  #- handlers/gitea-mirror
+  #- handlers/github-archive-repo
+  #- handlers/gocd-handlers
+  #- handlers/jacoco
+  #- handlers/logging-handlers
+  #- handlers/maven-dependency-handlers
