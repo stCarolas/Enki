@@ -1,9 +1,8 @@
 package com.github.stcarolas.enki.core.repo;
 
-import static io.vavr.Function0.lift;
-import static io.vavr.Function1.lift;
+import static com.github.stcarolas.enki.core.util.Lifting.call;
 import static io.vavr.control.Option.none;
-import static io.vavr.control.Option.some;
+import static io.vavr.control.Option.of;
 
 import java.io.File;
 import java.util.function.Function;
@@ -31,8 +30,7 @@ public class StrategiesAsRepo implements Repo {
 		return identityStrategy
 			.onEmpty(() -> log.info("no IdentityStrategy defined"))
 			.flatMap(
-				strategy -> lift(strategy::get)
-					.apply()
+				strategy -> call(strategy::get)
 					.onEmpty(() -> log.error("cant call identity strategy"))
 					.get()
 			)
@@ -43,7 +41,7 @@ public class StrategiesAsRepo implements Repo {
 	public String name() {
 		return nameStrategy
 			.onEmpty(() -> log.info("no NameStrategy defined"))
-			.flatMap(strategy -> lift(strategy::get).apply().getOrElse(none()))
+			.flatMap(strategy -> call(strategy::get).getOrElse(none()))
 			.get();
 	}
 
@@ -52,8 +50,7 @@ public class StrategiesAsRepo implements Repo {
 		return directoryStrategy
 			.onEmpty(() -> log.info("no DirectoryStrategy defined"))
 			.flatMap(
-				strategy -> lift(strategy::get)
-					.apply()
+				strategy -> call(strategy::get)
 					.onEmpty(() -> log.error("cant call directory strategy"))
 					.getOrElse(none())
 			)
@@ -65,8 +62,7 @@ public class StrategiesAsRepo implements Repo {
 		return providersStrategy
 			.onEmpty(() -> log.info("no ProvidersStrategy defined"))
 			.flatMap(
-				strategy -> lift(strategy::get)
-					.apply()
+				strategy -> call(strategy::get)
 					.onEmpty(() -> log.error("cant call providers strategy"))
 			)
 			.get();
@@ -77,8 +73,7 @@ public class StrategiesAsRepo implements Repo {
 		return commitStrategy
 			.onEmpty(() -> log.info("no CommitStrategy defined"))
 			.flatMap(
-				strategy -> lift(strategy::apply)
-					.apply(commitMessage)
+				strategy -> call(() -> strategy.apply(commitMessage))
 					.onEmpty(() -> log.error("cant call commit strategy"))
 					.getOrElse(none())
 			)
@@ -86,28 +81,28 @@ public class StrategiesAsRepo implements Repo {
 	}
 
 	public StrategiesAsRepo setDirectoryStrategy(Supplier<Option<File>> strategy) {
-		this.directoryStrategy = some(strategy);
+		this.directoryStrategy = of(strategy);
 		return this;
 	}
 
 	// TODO set StrategiesAsRepo immutable
 	public StrategiesAsRepo setProvidersStrategy(Supplier<Seq<RepoProvider<? extends Repo>>> strategy) {
-		this.providersStrategy = some(strategy);
+		this.providersStrategy = of(strategy);
 		return this;
 	}
 
 	public StrategiesAsRepo setIdentityStrategy(Supplier<Option<String>> strategy) {
-		this.identityStrategy = some(strategy);
+		this.identityStrategy = of(strategy);
 		return this;
 	}
 
 	public StrategiesAsRepo setNameStrategy(Supplier<Option<String>> strategy) {
-		this.nameStrategy = some(strategy);
+		this.nameStrategy = of(strategy);
 		return this;
 	}
 
 	public StrategiesAsRepo setCommitStrategy(Function<String, Option<? extends Repo>> strategy) {
-		this.commitStrategy = some(strategy);
+		this.commitStrategy = of(strategy);
 		return this;
 	}
 }

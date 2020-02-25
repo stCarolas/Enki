@@ -8,7 +8,7 @@ import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.p
 import static io.vavr.Function4.lift;
 import static io.vavr.collection.List.empty;
 import static io.vavr.collection.List.ofAll;
-import static io.vavr.control.Option.some;
+import static io.vavr.control.Option.of;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -74,14 +74,14 @@ public final class GiteaRepoProvider implements RepoProvider<GiteaRepo> {
 		giteaRepo.setDirectoryStrategy(directory(giteaRepo));
 		giteaRepo.setCommitStrategy(commit(giteaRepo));
 		giteaRepo.setProvidersStrategy(providers(Arrays.asList(this)));
-		giteaRepo.setIdentityStrategy(identity());
-		some(repo)
+		giteaRepo.setIdentityStrategy(identity());;
+		of(repo)
 			.peek( it -> giteaRepo.setNameStrategy(name(it.getName())) );
 		return giteaRepo;
 	}
 
 	public static RepoProvider<GiteaRepo> usingSsh(GiteaProviderSettings settings){
-		return GiteaSshRepoProvider.create(new GiteaRepoProvider(some(settings)));
+		return GiteaSshRepoProvider.create(new GiteaRepoProvider(of(settings)));
 	}
 
 	public Option<String> username(){

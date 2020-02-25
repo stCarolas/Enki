@@ -1,6 +1,7 @@
 package com.github.stcarolas.enki.core.provider.strategies.download;
 
-import static io.vavr.control.Option.some;
+import static com.github.stcarolas.enki.core.util.Lifting.call;
+import static io.vavr.control.Option.of;
 
 import java.io.File;
 import java.util.function.Supplier;
@@ -10,8 +11,6 @@ import com.github.stcarolas.enki.core.transport.DefaultTransportConfigCallback;
 
 import org.eclipse.jgit.api.Git;
 
-import static io.vavr.Function0.lift;
-import io.vavr.Function0;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
@@ -32,7 +31,7 @@ public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<Option
 			.flatMap(
 				url -> repository
 					.onEmpty(() -> log.error("missing repository to clone for url {}", url))
-					.flatMap(repo -> lift(repo::directory).apply()
+					.flatMap(repo -> call(repo::directory)
 						.onEmpty(() -> log.error("missing any directory to clone into"))
 					)
 					.peek(
@@ -50,7 +49,7 @@ public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<Option
 	}
 
 	public static <T extends Repo>Supplier<Option<File>> gitSshClone(T repo, String sshUrl){
-		return new GitCloneDownloadStrategy<>(some(sshUrl), some(repo));
+		return new GitCloneDownloadStrategy<>(of(sshUrl), of(repo));
 	}
 
 }

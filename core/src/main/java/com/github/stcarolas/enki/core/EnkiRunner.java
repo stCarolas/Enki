@@ -1,9 +1,8 @@
 package com.github.stcarolas.enki.core;
 
-import static io.vavr.Function0.lift;
-import static io.vavr.Function1.lift;
+import static com.github.stcarolas.enki.core.util.Lifting.call;
 import static io.vavr.collection.List.empty;
-import static io.vavr.control.Option.some;
+import static io.vavr.control.Option.of;
 
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
@@ -17,8 +16,8 @@ import lombok.extern.log4j.Log4j2;
 @Getter(AccessLevel.PRIVATE)
 public class EnkiRunner<T extends Repo> {
 
-	private Seq<RepoProvider<T>> providers;
-	private Seq<RepoHandler<T>> handlers;
+	private final Seq<RepoProvider<T>> providers;
+	private final Seq<RepoHandler<T>> handlers;
 
 	public void run() {
 		providers
@@ -26,10 +25,11 @@ public class EnkiRunner<T extends Repo> {
 			.peek(first -> log.info("calling repository providers"))
 
 			.flatMap(
-				provider -> lift(provider::repositories).apply()
+				provider -> call(provider::repositories)
 					.onEmpty(() -> log.error("{} cant provide list of repositories", provider))
 					.peek( list -> log.info("{} provide {} repositories", provider, list.size()) )
 					.getOrElse(empty())
+
 			)
 
 			.onEmpty(() -> log.error("no repository provided at all"))
@@ -48,7 +48,7 @@ public class EnkiRunner<T extends Repo> {
 		return handlers
 			.onEmpty(() -> log.error("missing any RepoHandler"))
 			.map(
-				handler -> lift(handler::handle).apply(repository)
+				handler -> call(() -> handler.handle(repository))
 					.peek(it -> log.info("repository {} was successfully handled by {}", repository, handler))
 					.onEmpty(() -> log.error("{} was unable to handle repository", handler.getClass()))
 			);
@@ -59,14 +59,14 @@ public class EnkiRunner<T extends Repo> {
 	}
 
 	public EnkiRunner<T> withProvider(RepoProvider<T> provider) {
-		return some(provider)
+		return of(provider)
 			.map(providers::append)
 			.map(changedProviders -> new EnkiRunner<T>(changedProviders, handlers))
 			.getOrElse(this);
 	}
 
 	public EnkiRunner<T> withHandler(RepoHandler<T> handler) {
-		return some(handler)
+		return of(handler)
 			.map(handlers::append)
 			.map(changedHandlers -> new EnkiRunner<T>(providers, changedHandlers))
 			.getOrElse(this);

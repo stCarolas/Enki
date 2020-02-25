@@ -1,5 +1,7 @@
 package com.github.stcarolas.enki.core.repo.strategies.commit;
 
+import static com.github.stcarolas.enki.core.util.Lifting.call;
+
 import java.io.File;
 import java.util.function.Function;
 
@@ -8,7 +10,6 @@ import com.github.stcarolas.enki.core.Repo;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.revwalk.RevCommit;
 
-import static io.vavr.Function0.lift;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
@@ -27,7 +28,7 @@ public class GitCommitStrategy implements Function<String, Option<? extends Repo
 			.onEmpty(() -> log.error("dont try to commit to NULL repository"))
 			.peek(it -> log.info("commiting to repository {}", it))
 			.peek(
-				repo -> lift(repo::directory).apply()
+				repo -> call(repo::directory)
 					.onEmpty(
 						() -> log.error("try to download repo {} before commiting into that", repo)
 					)

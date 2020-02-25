@@ -1,16 +1,13 @@
 package com.github.stcarolas.enki.core.repo.strategies.directory;
 
+import static com.github.stcarolas.enki.core.util.Lifting.call;
+
 import java.io.File;
 import java.util.function.Supplier;
 
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
 
-import static io.vavr.control.Option.some;
-import static io.vavr.Function0.lift;
-import static io.vavr.Function1.lift;
-
-import io.vavr.Function0;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
@@ -29,13 +26,13 @@ public class TemporaryFileDirectoryStrategy implements Supplier<Option<File>> {
 		return repo
 			.onEmpty(() -> log.error("dont try to get directory for NULL repo"))
 			.flatMap(
-				it -> lift(it::id).apply()
+				it -> call(it::id)
 					.onEmpty(() -> log.info("cant get identity for {}", repo))
-					.flatMap( lift(this::constructDirectoryPath) )
+					.flatMap( dir -> call(() -> this.constructDirectoryPath(dir)) )
 					.onEmpty(() -> log.error("cant get path to store repo {}", repo))
 			)
 
-			.flatMap( lift(this::createDirIfMissing) )
+			.flatMap( dir -> call(() -> this.createDirIfMissing(dir)) )
 			.onEmpty(() -> log.error("something is wrong, directory for storage is missing"))
 
 			.peek(dir -> this.load())
@@ -60,7 +57,7 @@ public class TemporaryFileDirectoryStrategy implements Supplier<Option<File>> {
 	}
 
 	private void load() {
-		repo.flatMap(it -> lift(it::providers).apply()
+		repo.flatMap(it -> call(it::providers)
 				.onEmpty(() -> log.error("repo cant give us his repo provider")))
 			.flatMap(it -> it.headOption())
 			.onEmpty(() -> log.info("no providers to load from"))

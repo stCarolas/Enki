@@ -1,7 +1,7 @@
 package com.github.stcarolas.enki.gitea.provider;
 
 import static io.vavr.control.Option.none;
-import static io.vavr.control.Option.some;
+import static io.vavr.control.Option.of;
 
 import io.vavr.control.Option;
 import lombok.AccessLevel;
@@ -24,18 +24,18 @@ public class GiteaProviderSettings {
 	}
 
 	public GiteaProviderSettings withBaseUrl(String url){
-		return new GiteaProviderSettings(some(url), organization, username, password);
+		return new GiteaProviderSettings(of(url), organization, username, password);
 	}
 
 	public GiteaProviderSettings withOrganization(String organization){
-		return new GiteaProviderSettings(baseUrl, some(organization), username, password);
+		return new GiteaProviderSettings(baseUrl, of(organization), username, password);
 	}
 
 	public GiteaProviderSettings withUsername(String username){
-		return new GiteaProviderSettings(baseUrl, organization, some(username), password);
+		return new GiteaProviderSettings(baseUrl, organization, of(username), password);
 	}
 
 	public GiteaProviderSettings withPassword(String password){
-		return new GiteaProviderSettings(baseUrl, organization, username, some(password));
+		return new GiteaProviderSettings(baseUrl, organization, username, of(password));
 	}
 }

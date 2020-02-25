@@ -7,7 +7,7 @@ import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.n
 import static com.github.stcarolas.enki.core.repo.DefaultRepoStrategiesFactory.providers;
 import static io.vavr.collection.List.empty;
 import static io.vavr.collection.List.ofAll;
-import static io.vavr.control.Option.some;
+import static io.vavr.control.Option.of;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,6 +90,6 @@ public abstract class BitbucketRepoProvider implements RepoProvider<BitbucketRep
 					bitbucketRepo.setSshUrl(href.get("href"));
 				}
 			});
-		return some(bitbucketRepo);
+		return of(bitbucketRepo);
 	}
 }

@@ -1,7 +1,7 @@
 package com.github.stcarolas.enki.core.provider.strategies.upload;
 
-import static io.vavr.Function0.lift;
-import static io.vavr.control.Option.some;
+import static com.github.stcarolas.enki.core.util.Lifting.call;
+import static io.vavr.control.Option.of;
 
 import java.util.function.Supplier;
 
@@ -32,7 +32,7 @@ public class GitPushUploadStrategy<T extends Repo> implements Supplier<Option<It
 						() -> log.error("missing repository for uploading to {}", url)
 					)
 					.flatMap(
-						repo -> lift(repo::directory).apply()
+						repo -> call(repo::directory)
 							.onEmpty(()-> log.error("missing directory from repository for {}", url))
 					)
 					.flatMap(
@@ -51,6 +51,6 @@ public class GitPushUploadStrategy<T extends Repo> implements Supplier<Option<It
 	}
 
 	public static <T extends Repo>Supplier<Option<Iterable<PushResult>>> gitSshPush(T repo, String sshUrl){
-		return new GitPushUploadStrategy<>(some(sshUrl), some(repo));
+		return new GitPushUploadStrategy<>(of(sshUrl), of(repo));
 	}
 }
