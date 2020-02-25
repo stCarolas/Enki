@@ -7,6 +7,10 @@ import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
 
 import static io.vavr.control.Option.some;
+import static io.vavr.Function0.lift;
+import static io.vavr.Function1.lift;
+
+import io.vavr.Function0;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
@@ -24,24 +28,25 @@ public class TemporaryFileDirectoryStrategy implements Supplier<Option<File>> {
 	public Option<File> get() {
 		return repo
 			.onEmpty(() -> log.error("dont try to get directory for NULL repo"))
-			.flatMap(it -> it.id().flatMap(this::constructDirectoryPath))
+			.flatMap(
+				it -> lift(it::id).apply()
+					.onEmpty(() -> log.info("cant get identity for {}", repo))
+					.flatMap( lift(this::constructDirectoryPath) )
+					.onEmpty(() -> log.error("cant get path to store repo {}", repo))
+			)
 
-			.onEmpty(() -> log.error("dont use directory for repo without id"))
-			.flatMap(this::createDirIfMissing)
+			.flatMap( lift(this::createDirIfMissing) )
+			.onEmpty(() -> log.error("something is wrong, directory for storage is missing"))
 
-			.onEmpty(() -> log.error("something is wrong, directory is missing"))
 			.peek(dir -> this.load())
-
-			.onEmpty(() -> log.error("fail to download repo"))
-			;
+			.onEmpty(() -> log.error("fail to store repo"));
 	}
 
-	private Option<File> constructDirectoryPath(String filename) {
-		return some(filename)
-			.map(it -> new File(TEMPORARY_LOCATION + it));
+	private File constructDirectoryPath(String filename) {
+		return new File(TEMPORARY_LOCATION + filename);
 	}
 
-	private Option<File> createDirIfMissing(File dir) {
+	private File createDirIfMissing(File dir) {
 		return Option.of(dir)
 			.filter(File::exists)
 			.peek( file -> log.info("directory {} was existed", file.getPath()) )
@@ -51,19 +56,21 @@ public class TemporaryFileDirectoryStrategy implements Supplier<Option<File>> {
 					.onFailure( error -> log.error("error while creating directory {}: {}", dir, error) )
 					.onSuccess( file -> log.info("directory {} was created", file.getPath()) )
 					.toOption()
-			);
+			).get();
 	}
 
 	private void load() {
-		repo.map(it -> it.providers())
+		repo.flatMap(it -> lift(it::providers).apply()
+				.onEmpty(() -> log.error("repo cant give us his repo provider")))
 			.flatMap(it -> it.headOption())
 			.onEmpty(() -> log.info("no providers to load from"))
-			.peek(this::loadFrom);
+			.map(this::loadFrom)
+			.onEmpty(() -> log.error("cant load repo"));
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	private void loadFrom(RepoProvider<? extends Repo> provider) {
-		repo.peek(it -> ((RepoProvider<Repo>) (RepoProvider<?>) provider).download(it));
+	private Option<? extends Repo> loadFrom(RepoProvider<? extends Repo> provider) {
+		return repo.peek(it -> ((RepoProvider<Repo>) (RepoProvider<?>) provider).download(it));
 	}
 
 	public static Supplier<Option<File>> tmpStorage(Repo repo) {

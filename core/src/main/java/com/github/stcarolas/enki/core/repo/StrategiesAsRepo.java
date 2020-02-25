@@ -1,8 +1,8 @@
 package com.github.stcarolas.enki.core.repo;
 
-import static io.vavr.collection.List.empty;
-import static com.github.stcarolas.enki.core.util.FunctionCaller.option;
-import static com.github.stcarolas.enki.core.util.FunctionCaller.seq;
+import static io.vavr.Function0.lift;
+import static io.vavr.Function1.lift;
+import static io.vavr.control.Option.none;
 import static io.vavr.control.Option.some;
 
 import java.io.File;
@@ -27,39 +27,62 @@ public class StrategiesAsRepo implements Repo {
 	private Option<Supplier<Seq<RepoProvider<? extends Repo>>>> providersStrategy;
 
 	@Override
-	public Option<String> id() {
+	public String id() {
 		return identityStrategy
 			.onEmpty(() -> log.info("no IdentityStrategy defined"))
-			.flatMap(strategy -> option(strategy::get));
+			.flatMap(
+				strategy -> lift(strategy::get)
+					.apply()
+					.onEmpty(() -> log.error("cant call identity strategy"))
+					.get()
+			)
+			.get();
 	}
 
 	@Override
-	public Option<String> name() {
+	public String name() {
 		return nameStrategy
 			.onEmpty(() -> log.info("no NameStrategy defined"))
-			.flatMap(strategy -> option(strategy::get));
+			.flatMap(strategy -> lift(strategy::get).apply().getOrElse(none()))
+			.get();
 	}
 
 	@Override
-	public Option<File> directory() {
+	public File directory() {
 		return directoryStrategy
 			.onEmpty(() -> log.info("no DirectoryStrategy defined"))
-			.flatMap(strategy -> option(strategy::get));
+			.flatMap(
+				strategy -> lift(strategy::get)
+					.apply()
+					.onEmpty(() -> log.error("cant call directory strategy"))
+					.getOrElse(none())
+			)
+			.get();
 	}
 
 	@Override
 	public Seq<RepoProvider<? extends Repo>> providers() {
 		return providersStrategy
 			.onEmpty(() -> log.info("no ProvidersStrategy defined"))
-			.map(strategy -> seq(strategy::get))
-			.getOrElse(empty());
+			.flatMap(
+				strategy -> lift(strategy::get)
+					.apply()
+					.onEmpty(() -> log.error("cant call providers strategy"))
+			)
+			.get();
 	}
 
 	@Override
-	public Option<? extends Repo> commit(String commitMessage) {
+	public Repo commit(String commitMessage) {
 		return commitStrategy
 			.onEmpty(() -> log.info("no CommitStrategy defined"))
-			.flatMap(strategy -> option(() -> strategy.apply(commitMessage)) );
+			.flatMap(
+				strategy -> lift(strategy::apply)
+					.apply(commitMessage)
+					.onEmpty(() -> log.error("cant call commit strategy"))
+					.getOrElse(none())
+			)
+			.get();
 	}
 
 	public StrategiesAsRepo setDirectoryStrategy(Supplier<Option<File>> strategy) {

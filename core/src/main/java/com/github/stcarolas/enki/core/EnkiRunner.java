@@ -1,7 +1,7 @@
 package com.github.stcarolas.enki.core;
 
-import static com.github.stcarolas.enki.core.util.FunctionCaller.option;
-import static com.github.stcarolas.enki.core.util.FunctionCaller.seq;
+import static io.vavr.Function0.lift;
+import static io.vavr.Function1.lift;
 import static io.vavr.collection.List.empty;
 import static io.vavr.control.Option.some;
 
@@ -26,14 +26,16 @@ public class EnkiRunner<T extends Repo> {
 			.peek(first -> log.info("calling repository providers"))
 
 			.flatMap(
-				provider -> seq(provider::repositories)
-					.onEmpty(() -> log.error("{} provide empty list of repositories", provider))
+				provider -> lift(provider::repositories).apply()
+					.onEmpty(() -> log.error("{} cant provide list of repositories", provider))
+					.peek( list -> log.info("{} provide {} repositories", provider, list.size()) )
+					.getOrElse(empty())
 			)
 
 			.onEmpty(() -> log.error("no repository provided at all"))
-			.peek(first -> log.info("calling repository handlers") )
+			.peek( first -> log.info("calling repository handlers") )
 
-			.flatMap( 
+			.flatMap(
 				repo -> Option.sequence(this.runHandlersOnRepo(repo))
 					.peek(it -> log.info("repo {} was successfully handled by all handlers", repo))
 					.onEmpty(() -> log.error("repository {} was handled with one or more error", repo))
@@ -46,7 +48,7 @@ public class EnkiRunner<T extends Repo> {
 		return handlers
 			.onEmpty(() -> log.error("missing any RepoHandler"))
 			.map(
-				handler -> option(() -> handler.handle(repository))
+				handler -> lift(handler::handle).apply(repository)
 					.peek(it -> log.info("repository {} was successfully handled by {}", repository, handler))
 					.onEmpty(() -> log.error("{} was unable to handle repository", handler.getClass()))
 			);

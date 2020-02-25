@@ -6,6 +6,6 @@ import io.vavr.control.Option;
 // TODO add javadoc to RepoProvider
 public interface RepoProvider<T extends Repo> {
 	Seq<T> repositories();
-	Option<T> download(T repo);
-	Option<T> upload(Repo repo);
+	T download(T repo);
+	T upload(Repo repo);
 }

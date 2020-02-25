@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class BitbucketRepo extends StrategiesAsRepo {
+	// TODO optional
 	@Getter
 	@Setter
 	private String sshUrl;

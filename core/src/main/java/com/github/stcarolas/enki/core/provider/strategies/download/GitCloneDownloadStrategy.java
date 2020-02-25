@@ -1,6 +1,5 @@
 package com.github.stcarolas.enki.core.provider.strategies.download;
 
-import static com.github.stcarolas.enki.core.util.FunctionCaller.option;
 import static io.vavr.control.Option.some;
 
 import java.io.File;
@@ -11,6 +10,8 @@ import com.github.stcarolas.enki.core.transport.DefaultTransportConfigCallback;
 
 import org.eclipse.jgit.api.Git;
 
+import static io.vavr.Function0.lift;
+import io.vavr.Function0;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
@@ -31,7 +32,7 @@ public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<Option
 			.flatMap(
 				url -> repository
 					.onEmpty(() -> log.error("missing repository to clone for url {}", url))
-					.flatMap(repo -> option(repo::directory)
+					.flatMap(repo -> lift(repo::directory).apply()
 						.onEmpty(() -> log.error("missing any directory to clone into"))
 					)
 					.peek(

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class GiteaRepo extends StrategiesAsRepo {
+	// TODO optional
 	@Getter
 	@Setter
 	String sshUrl;

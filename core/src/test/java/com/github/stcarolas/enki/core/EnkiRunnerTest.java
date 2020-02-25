@@ -28,18 +28,18 @@ public class EnkiRunnerTest {
 	public class AnotherTestRepo implements Repo {
 
 		@Override
-		public Option<String> id() {
-			return Option.none();
+		public String id() {
+			return null;
 		}
 
 		@Override
-		public Option<String> name() {
-			return Option.none();
+		public String name() {
+			return null;
 		}
 
 		@Override
-		public Option<File> directory() {
-			return Option.none();
+		public File directory() {
+			return null;
 		}
 
 		@Override
@@ -48,8 +48,8 @@ public class EnkiRunnerTest {
 		}
 
 		@Override
-		public Option<? extends Repo> commit(String commitMessage) {
-			return Option.none();
+		public Repo commit(String commitMessage) {
+			return null;
 		}
 	}
 
@@ -62,13 +62,13 @@ public class EnkiRunnerTest {
 		}
 
 		@Override
-		public Option<AnotherTestRepo> download(AnotherTestRepo repo) {
-			return Option.none();
+		public AnotherTestRepo download(AnotherTestRepo repo) {
+			return null;
 		}
 
 		@Override
-		public Option<AnotherTestRepo> upload(Repo repo) {
-			return Option.none();
+		public AnotherTestRepo upload(Repo repo) {
+			return null;
 		}
 	}
 }
