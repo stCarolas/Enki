@@ -54,7 +54,7 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
   
     - name: Publish Enki jar's
-      run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s .github/workflows/settings.xml -pl "!parent-pom"
+      run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s .github/workflows/settings.xml -pl '!parent-pom,!.'
 
     #- name: Prepare Docker building
       #run: |
