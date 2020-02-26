@@ -63,9 +63,9 @@ jobs:
         cp -rf Dockerfile ..
       working-directory: server
 
-    - name: Publish Enki Server Docker
-      uses: manusa/actions-publish-docker@master
-      with:
-        name: stcarolas/enki
-        username: stcarolas
-        password: ${{ secrets.DOCKER_TOKEN }}
+    #- name: Publish Enki Server Docker
+      #uses: manusa/actions-publish-docker@master
+      #with:
+        #name: stcarolas/enki
+        #username: stcarolas
+        #password: ${{ secrets.DOCKER_TOKEN }}
