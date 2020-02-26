@@ -8,16 +8,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ProvidedNameStrategy implements Supplier<Option<String>> {
+public class ProvidedNameStrategy implements Supplier<String> {
 	@Getter
 	private final Option<String> name;
 
 	@Override
-	public Option<String> get() {
-		return name;
+	public String get() {
+		return name.getOrNull();
 	}
 
-	public static Supplier<Option<String>> providedName(String name) {
+	public static Supplier<String> providedName(String name) {
 		return new ProvidedNameStrategy(Option.of(name));
 	}
 }

@@ -18,12 +18,12 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class GitCommitStrategy implements Function<String, Option<? extends Repo>> {
+public class GitCommitStrategy implements Function<String, Repo> {
 
 	private final Option<Repo> repo;
 
 	@Override
-	public Option<? extends Repo> apply(String commitMessage) {
+	public Repo apply(String commitMessage) {
 		return repo
 			.onEmpty(() -> log.error("dont try to commit to NULL repository"))
 			.peek(it -> log.info("commiting to repository {}", it))
@@ -38,7 +38,7 @@ public class GitCommitStrategy implements Function<String, Option<? extends Repo
 							.onEmpty(() -> log.error("missing commit message"))
 							.peek( message -> this.commit(dir, message))
 					)
-			);
+			).getOrNull();
 	}
 
 	private Try<RevCommit> commit(File directory, String commitMessage){
@@ -61,7 +61,7 @@ public class GitCommitStrategy implements Function<String, Option<? extends Repo
 	}
 
 
-	public static Function<String, Option<? extends Repo>> viaGit(Repo repo) {
+	public static Function<String, Repo> viaGit(Repo repo) {
 		return new GitCommitStrategy(Option.of(repo));
 	}
 }

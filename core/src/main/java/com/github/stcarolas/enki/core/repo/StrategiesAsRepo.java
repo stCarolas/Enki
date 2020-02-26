@@ -1,8 +1,7 @@
 package com.github.stcarolas.enki.core.repo;
 
 import static com.github.stcarolas.enki.core.util.Lifting.call;
-import static io.vavr.control.Option.none;
-import static io.vavr.control.Option.of;
+import static io.vavr.API.*;
 
 import java.io.File;
 import java.util.function.Function;
@@ -19,11 +18,11 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class StrategiesAsRepo implements Repo {
 
-	private Option<Function<String, Option<? extends Repo>>> commitStrategy;
-	private Option<Supplier<Option<File>>> directoryStrategy;
-	private Option<Supplier<Option<String>>> identityStrategy;
-	private Option<Supplier<Option<String>>> nameStrategy;
-	private Option<Supplier<Seq<RepoProvider<? extends Repo>>>> providersStrategy;
+	private Option<Function<String, ? extends Repo>> commitStrategy = None();
+	private Option<Supplier<File>> directoryStrategy = None();
+	private Option<Supplier<String>> identityStrategy = None();
+	private Option<Supplier<String>> nameStrategy = None();
+	private Option<Supplier<Seq<RepoProvider<? extends Repo>>>> providersStrategy = None();
 
 	@Override
 	public String id() {
@@ -32,17 +31,18 @@ public class StrategiesAsRepo implements Repo {
 			.flatMap(
 				strategy -> call(strategy::get)
 					.onEmpty(() -> log.error("cant call identity strategy"))
-					.get()
 			)
-			.get();
+			.getOrNull();
 	}
 
 	@Override
 	public String name() {
 		return nameStrategy
 			.onEmpty(() -> log.info("no NameStrategy defined"))
-			.flatMap(strategy -> call(strategy::get).getOrElse(none()))
-			.get();
+			.flatMap(strategy -> call(strategy::get)
+					.onEmpty(() -> log.error("cant call name strategy"))
+			)
+			.getOrNull();
 	}
 
 	@Override
@@ -52,9 +52,8 @@ public class StrategiesAsRepo implements Repo {
 			.flatMap(
 				strategy -> call(strategy::get)
 					.onEmpty(() -> log.error("cant call directory strategy"))
-					.getOrElse(none())
 			)
-			.get();
+			.getOrNull();
 	}
 
 	@Override
@@ -65,7 +64,7 @@ public class StrategiesAsRepo implements Repo {
 				strategy -> call(strategy::get)
 					.onEmpty(() -> log.error("cant call providers strategy"))
 			)
-			.get();
+			.getOrElse(Seq());
 	}
 
 	@Override
@@ -75,34 +74,35 @@ public class StrategiesAsRepo implements Repo {
 			.flatMap(
 				strategy -> call(() -> strategy.apply(commitMessage))
 					.onEmpty(() -> log.error("cant call commit strategy"))
-					.getOrElse(none())
 			)
-			.get();
+			.getOrNull();
 	}
 
-	public StrategiesAsRepo setDirectoryStrategy(Supplier<Option<File>> strategy) {
-		this.directoryStrategy = of(strategy);
+	public StrategiesAsRepo setDirectoryStrategy(Supplier<File> strategy) {
+		this.directoryStrategy = Option(strategy);
 		return this;
 	}
 
 	// TODO set StrategiesAsRepo immutable
-	public StrategiesAsRepo setProvidersStrategy(Supplier<Seq<RepoProvider<? extends Repo>>> strategy) {
-		this.providersStrategy = of(strategy);
+	public StrategiesAsRepo setProvidersStrategy(
+		Supplier<Seq<RepoProvider<? extends Repo>>> strategy
+	){
+		this.providersStrategy = Option(strategy);
 		return this;
 	}
 
-	public StrategiesAsRepo setIdentityStrategy(Supplier<Option<String>> strategy) {
-		this.identityStrategy = of(strategy);
+	public StrategiesAsRepo setIdentityStrategy(Supplier<String> strategy) {
+		this.identityStrategy = Option(strategy);
 		return this;
 	}
 
-	public StrategiesAsRepo setNameStrategy(Supplier<Option<String>> strategy) {
-		this.nameStrategy = of(strategy);
+	public StrategiesAsRepo setNameStrategy(Supplier<String> strategy) {
+		this.nameStrategy = Option(strategy);
 		return this;
 	}
 
-	public StrategiesAsRepo setCommitStrategy(Function<String, Option<? extends Repo>> strategy) {
-		this.commitStrategy = of(strategy);
+	public StrategiesAsRepo setCommitStrategy(Function<String, ? extends Repo> strategy) {
+		this.commitStrategy = Option(strategy);
 		return this;
 	}
 

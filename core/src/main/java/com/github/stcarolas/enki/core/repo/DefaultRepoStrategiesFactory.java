@@ -14,23 +14,22 @@ import com.github.stcarolas.enki.core.repo.strategies.name.ProvidedNameStrategy;
 import com.github.stcarolas.enki.core.repo.strategies.provider.ProvidedProvidersStrategy;
 
 import io.vavr.collection.Seq;
-import io.vavr.control.Option;
 
 public class DefaultRepoStrategiesFactory {
 
-	public static Function<String, Option<? extends Repo>> commit(Repo repo) {
+	public static Function<String, ? extends Repo> commit(Repo repo) {
 		return GitCommitStrategy.viaGit(repo);
 	}
 
-	public static Supplier<Option<File>> directory(Repo repo) {
+	public static Supplier<File> directory(Repo repo) {
 		return TemporaryFileDirectoryStrategy.tmpStorage(repo);
 	}
 
-	public static Supplier<Option<String>> identity() {
+	public static Supplier<String> identity() {
 		return UUIDIdentityStrategy.uuidIdentity();
 	}
 
-	public static Supplier<Option<String>> name(String name) {
+	public static Supplier<String> name(String name) {
 		return ProvidedNameStrategy.providedName(name);
 	}
 

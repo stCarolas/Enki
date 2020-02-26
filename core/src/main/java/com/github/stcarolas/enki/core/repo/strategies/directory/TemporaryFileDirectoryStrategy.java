@@ -16,13 +16,13 @@ import lombok.extern.log4j.Log4j2;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Log4j2
-public class TemporaryFileDirectoryStrategy implements Supplier<Option<File>> {
+public class TemporaryFileDirectoryStrategy implements Supplier<File> {
 	private static final String TEMPORARY_LOCATION = "/tmp/enki/";
 
 	private final Option<? extends Repo> repo;
 
 	@Override
-	public Option<File> get() {
+	public File get() {
 		return repo
 			.onEmpty(() -> log.error("dont try to get directory for NULL repo"))
 			.flatMap(
@@ -36,7 +36,8 @@ public class TemporaryFileDirectoryStrategy implements Supplier<Option<File>> {
 			.onEmpty(() -> log.error("something is wrong, directory for storage is missing"))
 
 			.peek(dir -> this.load())
-			.onEmpty(() -> log.error("fail to store repo"));
+			.onEmpty(() -> log.error("fail to store repo"))
+			.getOrNull();
 	}
 
 	private File constructDirectoryPath(String filename) {
@@ -70,7 +71,7 @@ public class TemporaryFileDirectoryStrategy implements Supplier<Option<File>> {
 		return repo.peek(it -> ((RepoProvider<Repo>) (RepoProvider<?>) provider).download(it));
 	}
 
-	public static Supplier<Option<File>> tmpStorage(Repo repo) {
+	public static Supplier<File> tmpStorage(Repo repo) {
 		return new TemporaryFileDirectoryStrategy(Option.of(repo));
 	}
 }
