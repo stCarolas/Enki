@@ -56,12 +56,12 @@ jobs:
     - name: Publish Enki jar's
       run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s .github/workflows/settings.xml -pl "!parent-pom"
 
-    - name: Prepare Docker building
-      run: |
-        rm -rf target/*-sources.jar 
-        cp -rf target ..
-        cp -rf Dockerfile ..
-      working-directory: server
+    #- name: Prepare Docker building
+      #run: |
+        #rm -rf target/*-sources.jar 
+        #cp -rf target ..
+        #cp -rf Dockerfile ..
+      #working-directory: server
 
     #- name: Publish Enki Server Docker
       #uses: manusa/actions-publish-docker@master
