@@ -1,0 +1,4 @@
+TODO add handler for running one shell command provided via argument
+BODY 1) handler for running shell command
+2) package that provider into docker image
+3) write a instruction how to use that handler with docker
