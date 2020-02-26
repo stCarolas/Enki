@@ -1,6 +1,7 @@
 .classpath
 .factorypath
 .project
+.flattened-pom.xml
 pom.xml
 .settings/
 *.versionsBackup
