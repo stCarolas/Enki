@@ -3,6 +3,7 @@ package com.github.stcarolas.enki.core;
 import java.io.File;
 
 import io.vavr.collection.Seq;
+import static io.vavr.API.*;
 
 public interface Repo {
 
@@ -35,5 +36,9 @@ public interface Repo {
 	* @return copy of this repository after commiting changes
 	*/
 	Repo commit(String commitMessage);
+
+	default String describe(){
+		return this.getClass().getSimpleName() + "#" + Option(name()).getOrElse("");
+	}
 
 }

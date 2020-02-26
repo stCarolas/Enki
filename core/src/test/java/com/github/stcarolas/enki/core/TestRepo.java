@@ -33,4 +33,10 @@ public class TestRepo implements Repo {
 	public Repo commit(String commitMessage) {
 		return null;
 	}
+
+	@Override
+	public String toString(){
+		return describe();
+	}
+
 }

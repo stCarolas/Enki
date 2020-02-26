@@ -25,3 +25,6 @@ modules:
   #- handlers/jacoco
   #- handlers/logging-handlers
   #- handlers/maven-dependency-handlers
+
+repositories:
+- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}

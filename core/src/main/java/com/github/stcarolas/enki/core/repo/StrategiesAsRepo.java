@@ -105,4 +105,9 @@ public class StrategiesAsRepo implements Repo {
 		this.commitStrategy = of(strategy);
 		return this;
 	}
+
+	@Override
+	public String toString(){
+		return describe();
+	}
 }
