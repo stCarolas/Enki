@@ -17,3 +17,6 @@ dependencies:
 - {groupId: org.gitlab4j,              artifactId: gitlab4j-api, version: 4.14.15, exclusions:[
     {groupId: com.fasterxml.jackson.jaxrs, artifactId: jackson-jaxrs-json-provider}
   ]}
+
+repositories:
+- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}

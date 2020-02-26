@@ -19,3 +19,6 @@ dependencies:
 - {groupId: org.eclipse.mylyn.github,       artifactId: org.eclipse.egit.github.core, version: 2.1.5}
 - {groupId: com.esotericsoftware.yamlbeans, artifactId: yamlbeans,                    version: 1.13}
 - {groupId: org.projectlombok,              artifactId: lombok,                       version: 1.18.8, scope: provided, optional: true}
+
+repositories:
+- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}
