@@ -9,15 +9,13 @@ import com.github.stcarolas.enki.core.provider.strategies.upload.GitPushUploadSt
 
 import org.eclipse.jgit.transport.PushResult;
 
-import io.vavr.control.Option;
-
 public class DefaultRepoProviderStrategiesFactory {
 
-	public static <T extends Repo>Supplier<Option<Iterable<PushResult>>> gitSshPush(T repo, String sshUrl){
+	public static <T extends Repo>Supplier<Iterable<PushResult>> gitSshPush(T repo, String sshUrl){
 		return GitPushUploadStrategy.gitSshPush(repo, sshUrl);
 	}
 
-	public static <T extends Repo>Supplier<Option<File>> gitSshClone(T repo, String sshUrl){
+	public static <T extends Repo>Supplier<File> gitSshClone(T repo, String sshUrl){
 		return GitCloneDownloadStrategy.gitSshClone(repo,sshUrl);
 	}
 

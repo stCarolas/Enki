@@ -19,20 +19,21 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<Option<File>> {
+public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<File> {
 
 	private final Option<String> sshUrl;
 	private final Option<T> repository;
 
 	@Override
-	public Option<File> get(){
+	public File get(){
 		return sshUrl
 			.onEmpty(() -> log.error("missing ssh url to use for cloning"))
 			.flatMap(
 				url -> repository
 					.onEmpty(() -> log.error("missing repository to clone for url {}", url))
-					.flatMap(repo -> call(repo::directory)
-						.onEmpty(() -> log.error("missing any directory to clone into"))
+					.flatMap(
+						repo -> call(repo::directory)
+							.onEmpty(() -> log.error("missing any directory to clone into"))
 					)
 					.peek(
 						dir -> Try.of(
@@ -45,10 +46,10 @@ public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<Option
 						.onFailure(error -> log.error("error while cloning {}: {}", url, error))
 						.onSuccess(git -> log.info("repository with url {} was cloned", url))
 					)
-			);
+			).getOrNull();
 	}
 
-	public static <T extends Repo>Supplier<Option<File>> gitSshClone(T repo, String sshUrl){
+	public static <T extends Repo>Supplier<File> gitSshClone(T repo, String sshUrl){
 		return new GitCloneDownloadStrategy<>(of(sshUrl), of(repo));
 	}
 

@@ -11,8 +11,10 @@ import io.vavr.collection.Seq;
 import io.vavr.control.Option;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Log4j2
 public class GiteaSshRepoProvider implements RepoProvider<GiteaRepo> {
 
 	private final Option<GiteaRepoProvider> provider;
@@ -26,19 +28,26 @@ public class GiteaSshRepoProvider implements RepoProvider<GiteaRepo> {
 
 	@Override
 	public GiteaRepo download(GiteaRepo repo) {
-		return DefaultRepoProviderStrategiesFactory
-			.gitSshClone(repo, repo.getSshUrl())
-			.get()
+		return of(
+				DefaultRepoProviderStrategiesFactory
+				.gitSshClone(repo, repo.getSshUrl())
+				.get()
+			)
+			.onEmpty(() -> log.error("download failed"))
 			.map( success -> repo )
-			.getOrNull();
+			.getOrNull()
+			;
 	}
 
 	@Override
 	public GiteaRepo upload(Repo repo) {
 		if (repo instanceof GiteaRepo){
-			return DefaultRepoProviderStrategiesFactory
-				.gitSshPush(repo, ((GiteaRepo)repo).getSshUrl())
-				.get()
+			return of(DefaultRepoProviderStrategiesFactory
+					.gitSshPush(repo, ((GiteaRepo)repo).getSshUrl())
+					.get()
+				)
+				.filter( results -> results.iterator().hasNext() )
+				.onEmpty(() -> log.error("upload failed"))
 				.map(success -> (GiteaRepo)repo)
 				.getOrNull();
 		}
