@@ -2,3 +2,10 @@ TODO add handler for running one shell command provided via argument
 1) handler for running shell command
 2) package that provider into docker image
 3) write a instruction how to use that handler with docker
+
+TODO tests on discord-commit-hook
+TODO tests on gitea-mirror
+TODO tests on github-archive-repo
+TODO tests on gocd-handlers
+TODO tests on jacoco
+TODO tests on logging-handlers
