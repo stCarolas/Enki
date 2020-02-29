@@ -10,15 +10,18 @@ import java.util.function.Supplier;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.RepoProvider;
 
+import org.eclipse.jgit.revwalk.RevCommit;
+
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
+import io.vavr.control.Try;
 import lombok.extern.log4j.Log4j2;
 
 // TODO javadoc for StrategiesAsRepo
 @Log4j2
 public class StrategiesAsRepo implements Repo {
 
-	private Option<Function<String, ? extends Repo>> commitStrategy = None();
+	private Option<Function<String, Try<RevCommit>>> commitStrategy = None();
 	private Option<Supplier<File>> directoryStrategy = None();
 	private Option<Supplier<String>> identityStrategy = None();
 	private Option<Supplier<String>> nameStrategy = None();
@@ -75,12 +78,8 @@ public class StrategiesAsRepo implements Repo {
 				strategy -> call(() -> strategy.apply(commitMessage))
 					.onEmpty(() -> log.error("cant call commit strategy"))
 			)
+			.map( result -> this )
 			.getOrNull();
-	}
-
-	public StrategiesAsRepo setDirectoryStrategy(Supplier<File> strategy) {
-		this.directoryStrategy = Option(strategy);
-		return this;
 	}
 
 	// TODO set StrategiesAsRepo immutable
@@ -88,6 +87,11 @@ public class StrategiesAsRepo implements Repo {
 		Supplier<Seq<RepoProvider<? extends Repo>>> strategy
 	){
 		this.providersStrategy = Option(strategy);
+		return this;
+	}
+
+	public StrategiesAsRepo setDirectoryStrategy(Supplier<File> strategy) {
+		this.directoryStrategy = Option(strategy);
 		return this;
 	}
 
@@ -101,7 +105,7 @@ public class StrategiesAsRepo implements Repo {
 		return this;
 	}
 
-	public StrategiesAsRepo setCommitStrategy(Function<String, ? extends Repo> strategy) {
+	public StrategiesAsRepo setCommitStrategy(Function<String, Try<RevCommit>> strategy) {
 		this.commitStrategy = Option(strategy);
 		return this;
 	}

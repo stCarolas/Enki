@@ -9,6 +9,9 @@ import static io.vavr.API.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import io.vavr.control.Try;
+
 import static org.mockito.Mockito.*;
 
 public class StrategiesAsRepoTest {
@@ -123,9 +126,9 @@ public class StrategiesAsRepoTest {
 		var message = "some message";
 
 		var strategy = mock(Function.class);
-		when(strategy.apply(any())).thenReturn(testRepo);
+		when(strategy.apply(any())).thenReturn(Try.success("value"));
 
-		assertEquals(testRepo, repo.setCommitStrategy(strategy).commit(message));
+		assertEquals(repo, repo.setCommitStrategy(strategy).commit(message));
 		verify(strategy).apply(message);
 	}
 
