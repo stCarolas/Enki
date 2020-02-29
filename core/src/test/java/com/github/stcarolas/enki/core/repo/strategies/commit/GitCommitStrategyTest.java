@@ -23,31 +23,27 @@ import io.vavr.control.Try;
 
 public class GitCommitStrategyTest {
 
-	public static class TestsWithFileProvider {
+	@Test
+	public void test_Failure_on_empty_provider() {
+		assertTrue(
+			GitCommit(null).apply("message").isFailure()
+		);
+	}
 
-		@Test
-		public void test_Failure_on_empty_provider() {
-			assertTrue(
-				GitCommit(null).apply("message").isFailure()
-			);
-		}
+	@Test
+	public void test_Failure_on_empty_directory() {
+		assertTrue(
+			GitCommit(() -> null).apply("message").isFailure()
+		);
+	}
 
-		@Test
-		public void test_Failure_on_empty_directory() {
-			assertTrue(
-				GitCommit(() -> null).apply("message").isFailure()
-			);
-		}
-
-		@Test
-		public void test_Failure_on_exception_while_accessing_directory() {
-			assertTrue(
-				GitCommit(() -> {throw new RuntimeException("some error");})
-					.apply("message")
-					.isFailure()
-			);
-		}
-
+	@Test
+	public void test_Failure_on_exception_while_accessing_directory() {
+		assertTrue(
+			GitCommit(() -> {throw new RuntimeException("some error");})
+				.apply("message")
+				.isFailure()
+		);
 	}
 
 	@Test
@@ -110,14 +106,24 @@ public class GitCommitStrategyTest {
 		assertFalse(commitMock.isCalled());
 	}
 
-	private Function1<Git, Try<Git>> successfullStage(){
-		return Function( git -> Success(git) );
+	@Test
+	public void test_Failure_on_failed_commit() {
+		var gitMock    = mock(Git.class);
+		var dir        = tmpDir();
+		var commitMock = Spy2.spy(successfullCommit());
+
+		var strategy = new GitCommitStrategy(Option(() -> dir)){{
+			git     = ignore -> Success(gitMock);
+			isClean = ignore -> false;
+			stage   = successfullStage();
+			commit  = (arg1,arg2) -> Failure(new RuntimeException("error"));
+		}};
+
+		assertTrue(strategy.apply("some message").isFailure());
 	}
 
-	private Function1 failedStage(Git git){
-		var stageMock = mock(Function1.class);
-		when(stageMock.apply(any())).thenReturn(Failure(new RuntimeException("error")));
-		return stageMock;
+	private Function1<Git, Try<Git>> successfullStage(){
+		return Function( git -> Success(git) );
 	}
 
 	private Function2<String, Git, Try<RevCommit>> successfullCommit(){
