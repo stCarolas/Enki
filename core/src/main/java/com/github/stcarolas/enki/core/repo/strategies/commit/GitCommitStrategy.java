@@ -2,8 +2,8 @@ package com.github.stcarolas.enki.core.repo.strategies.commit;
 
 import static com.github.stcarolas.enki.core.util.Lifting.call;
 import static io.vavr.API.Function;
-import static io.vavr.API.Try;
 import static io.vavr.API.Option;
+import static io.vavr.API.Try;
 
 import java.io.File;
 import java.util.function.Function;
@@ -20,12 +20,13 @@ import io.vavr.Function2;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RequiredArgsConstructor(access=AccessLevel.PROTECTED)
+@Getter(AccessLevel.PACKAGE)
 public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 
 	private final Option<Supplier<File>> directory;
@@ -69,28 +70,6 @@ public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 				)
 		);
 
-	protected Function2<Supplier<File>, String, Try<RevCommit>> stageAndCommit = 
-		Function( (directory, commitMessage) -> 
-			call(directory)
-			.onEmpty(
-				() -> log.error("try to download repo before commiting into that")
-			)
-			.peek(dir -> log.info("using directory {}", dir))
-			.toTry()
-			.flatMap(
-				dir -> git.apply(dir)
-					.filterNot($ -> isClean.apply($))
-					.flatMap(stage)
-					.flatMap(commit.apply(commitMessage))
-			)
-			.onFailure( error -> log.error("error: ", error))
-			.peek( revision -> log.info("Successful commit: {}", revision.getId()) )
-		);
-
-	public static Function<String, Try<RevCommit>> GitCommit(Supplier<File> directory){
-		return new GitCommitStrategy(Option(directory));
-	}
-
 	@Override
 	public Try<RevCommit> apply(String message) {
 		return directory
@@ -106,6 +85,10 @@ public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 					.flatMap(commit.apply(message))
 			)
 			.peek( revision -> log.info("Successful commit: {}", revision.getId()) );
+	}
+
+	public static Function<String, Try<RevCommit>> GitCommit(Supplier<File> directory){
+		return new GitCommitStrategy(Option(directory));
 	}
 
 }
