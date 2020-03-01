@@ -9,10 +9,12 @@ import java.util.function.Supplier;
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.transport.DefaultTransportConfigCallback;
 
+import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 
 import io.vavr.Function1;
 import io.vavr.Function2;
+import io.vavr.Function3;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
@@ -27,9 +29,11 @@ public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<File> 
 	private final Option<String> sshUrl;
 	private final Option<T> repository;
 
-	protected Function2<String, File, Try<Git>> clone = (url, dir) -> 
+	protected Supplier<CloneCommand> cloneCommand = () -> Git.cloneRepository();
+
+	protected Function3<Supplier<CloneCommand>, String, File, Try<Git>> clone = (cloneCommand, url, dir) -> 
 		Try(
-			() -> Git.cloneRepository()
+			() -> cloneCommand.get()
 				.setURI(url)
 				.setDirectory(dir)
 				.setTransportConfigCallback(new DefaultTransportConfigCallback())
@@ -48,7 +52,7 @@ public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<File> 
 							.onEmpty(() -> log.error("missing any directory to clone into"))
 					)
 					.peek(
-						dir -> clone.apply(url).apply(dir)
+						dir -> clone.apply(cloneCommand).apply(url).apply(dir)
 							.onFailure(error -> log.error("error while cloning {}: {}", url, error))
 							.onSuccess(git -> log.info("repository with url {} was cloned", url))
 					)
