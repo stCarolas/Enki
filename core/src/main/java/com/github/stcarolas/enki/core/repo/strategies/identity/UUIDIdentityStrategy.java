@@ -4,14 +4,15 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UUIDIdentityStrategy implements Supplier<String> {
+	private String id = UUID.randomUUID().toString();
 
 	@Override
 	public String get() {
-		return UUID.randomUUID().toString();
+		return id;
 	}
 
 	public static Supplier<String> uuidIdentity(){

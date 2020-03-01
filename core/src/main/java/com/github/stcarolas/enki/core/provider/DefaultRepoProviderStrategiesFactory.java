@@ -9,6 +9,10 @@ import com.github.stcarolas.enki.core.provider.strategies.upload.GitPushUploadSt
 
 import org.eclipse.jgit.transport.PushResult;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DefaultRepoProviderStrategiesFactory {
 
 	public static <T extends Repo>Supplier<Iterable<PushResult>> gitSshPush(T repo, String sshUrl){

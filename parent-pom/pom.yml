@@ -1,7 +1,7 @@
 name: Enki Parent Pom
 groupId: com.github.stcarolas.enki
 artifactId: enki-parent
-version: 1.0.1
+version: 1.0.2
 packaging: pom
 
 modelVersion: 4.0.0
@@ -20,6 +20,16 @@ build:
   - groupId: org.apache.maven.plugins
     artifactId: maven-surefire-plugin
     version: 3.0.0-M4
+
+  - groupId: org.jacoco
+    artifactId: jacoco-maven-plugin
+    version: 0.8.5
+    executions:
+    - id: pre-unit-test
+      goals: [prepare-agent]
+    - id: post-unit-test
+      goals: [report]
+      phase: test
 
   - groupId: org.codehaus.mojo
     artifactId: flatten-maven-plugin

@@ -11,12 +11,12 @@ public class TestRepo implements Repo {
 
 	@Override
 	public String id() {
-		return null;
+		return "id";
 	}
 
 	@Override
 	public String name() {
-		return null;
+		return "name";
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class TestRepo implements Repo {
 
 	@Override
 	public Repo commit(String commitMessage) {
-		return null;
+		return this;
 	}
 
 	@Override

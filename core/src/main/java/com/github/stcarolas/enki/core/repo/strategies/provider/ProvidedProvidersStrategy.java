@@ -19,13 +19,13 @@ public class ProvidedProvidersStrategy implements Supplier<Seq<RepoProvider<? ex
 	private final Seq<RepoProvider<? extends Repo>> providers;
 
 	@Override
-	public Seq<RepoProvider<? extends Repo>> get() {
+	public Seq<RepoProvider<? extends Repo>> get(){
 		return providers;
 	}
 
 	public static Supplier<Seq<RepoProvider<? extends Repo>>> providers(
 		List<RepoProvider<? extends Repo>> providers
-	) {
+	){
 		return new ProvidedProvidersStrategy(
 			Option.of(providers)
 				.map(it -> ofAll(it))

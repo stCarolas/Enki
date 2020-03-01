@@ -7,8 +7,4 @@ public interface RepoHandler<T extends Repo> {
 	* @return handled repository
 	*/
 	T handle(T repo);
-
-	default String describe(){
-		return this.getClass().getSimpleName();
-	}
 }

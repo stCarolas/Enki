@@ -103,7 +103,7 @@ public class StrategiesAsRepoTest {
 
 	@Test
 	public void test_return_null_on_missing_commit_strategy(){
-		assertNull(repo.directory());
+		assertNull(repo.commit("some message"));
 	}
 
 	@Test

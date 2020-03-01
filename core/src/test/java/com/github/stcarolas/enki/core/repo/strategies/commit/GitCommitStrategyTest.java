@@ -147,7 +147,7 @@ public class GitCommitStrategyTest {
 	@DisplayName("Tests for git() which should provide Git")
 	public class TestsForGit{
 		Function1<File, Try<Git>> git = 
-			new GitCommitStrategy(Option(tmpDir())).getGit();
+			new GitCommitStrategy(Option(tmpDir())).git;
 
 		@Test
 		public void test_Failure_on_non_directory_without_git_repo() {
@@ -171,7 +171,7 @@ public class GitCommitStrategyTest {
 	@DisplayName("Tests for isClean() which should check if git repo has changes to commit")
 	public class TestsForIsClean{
 		Function1<Git, Boolean> isClean = 
-			new GitCommitStrategy(Option(tmpDir())).getIsClean();
+			new GitCommitStrategy(Option(tmpDir())).isClean;
 
 		@Test
 		public void test_Return_same_as_git_status() throws NoWorkTreeException, GitAPIException {
@@ -211,7 +211,7 @@ public class GitCommitStrategyTest {
 	@DisplayName("Tests for stage() which should add changes to git index")
 	public class TestsForStage{
 		Function1<Git, Try<Git>> stage = 
-			new GitCommitStrategy(Option(tmpDir())).getStage();
+			new GitCommitStrategy(Option(tmpDir())).stage;
 
 		@Test
 		public void test_calling_git_add_with_all_files() throws NoWorkTreeException, GitAPIException {
@@ -247,7 +247,7 @@ public class GitCommitStrategyTest {
 	@DisplayName("Tests for commit() which should make git commit")
 	public class TestsForCommit{
 		Function2<String, Git, Try<RevCommit>> commit = 
-			new GitCommitStrategy(Option(tmpDir())).getCommit();
+			new GitCommitStrategy(Option(tmpDir())).commit;
 
 		@Test
 		public void test_calling_git_commit_with_provided_message() throws NoWorkTreeException, GitAPIException {

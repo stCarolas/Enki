@@ -51,7 +51,7 @@ public class EnkiRunner<T extends Repo> {
 			.map(
 				handler -> call(() -> handler.handle(repository))
 					.peek(it -> log.info("repository {} was successfully handled by {}", repository, handler))
-					.onEmpty(() -> log.error("{} was unable to handle repository", handler.describe()))
+					.onEmpty(() -> log.error("{} was unable to handle repository", handler.getClass().getSimpleName()))
 			);
 	}
 
@@ -75,7 +75,7 @@ public class EnkiRunner<T extends Repo> {
 		return Option(handler)
 			.onEmpty(() -> log.info("### null handler was defined, ignore it"))
 			.peek( it -> log.info("### adding {}", 
-				Option(it.describe()).getOrElse("Unknown handler, maybe Mock"))
+				Option(it.getClass().getSimpleName()).getOrElse("Unknown handler, maybe Mock"))
 			)
 			.map(handlers::append)
 			.map(changedHandlers -> new EnkiRunner<T>(providers, changedHandlers))

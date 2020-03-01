@@ -18,8 +18,12 @@ public class EnkiRunnerTest {
 
 	@Test
 	public void testEmptyHandlers() {
+		var provider = mock(RepoProvider.class);
+		var repo = new TestRepo();
+		when(provider.repositories()).thenReturn(Seq(repo));
+
 		var run = EnkiRunner.enki()
-			.withProvider(mock(RepoProvider.class))
+			.withProvider(provider)
 			.run();
 		Assertions.assertTrue(run.isEmpty());
 	}

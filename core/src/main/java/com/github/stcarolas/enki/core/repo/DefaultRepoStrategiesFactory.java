@@ -18,7 +18,10 @@ import org.eclipse.jgit.revwalk.RevCommit;
 
 import io.vavr.collection.Seq;
 import io.vavr.control.Try;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DefaultRepoStrategiesFactory {
 
 	public static Function<String, Try<RevCommit>> commit(Repo repo) {
@@ -26,7 +29,7 @@ public class DefaultRepoStrategiesFactory {
 	}
 
 	public static Supplier<File> directory(Repo repo) {
-		return TemporaryFileDirectoryStrategy.tmpStorage(repo);
+		return TemporaryFileDirectoryStrategy.TemporaryDirectory(repo);
 	}
 
 	public static Supplier<String> identity() {
