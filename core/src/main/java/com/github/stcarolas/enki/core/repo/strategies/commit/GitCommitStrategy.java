@@ -46,7 +46,7 @@ public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 	@With 
 	@Builder.Default
 	private Function1<Git, Boolean> isClean = git ->
-		Try(git.status()::call)
+		Try(() -> git.status().call())
 			.onFailure( 
 				error -> log.error("error while getting git status: {}", error)
 			)

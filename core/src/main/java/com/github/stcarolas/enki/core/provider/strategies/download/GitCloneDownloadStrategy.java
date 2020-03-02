@@ -19,18 +19,24 @@ import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<File> {
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+public class GitCloneDownloadStrategy<T extends Repo> 
+	implements Supplier<File> {
 
 	private final Option<String> sshUrl;
 	private final Option<T> repository;
 
+	@Builder.Default
 	protected Supplier<CloneCommand> cloneCommand = () -> Git.cloneRepository();
 
+	@Builder.Default
 	protected Function3<Supplier<CloneCommand>, String, File, Try<Git>> clone = (cloneCommand, url, dir) -> 
 		Try(
 			() -> cloneCommand.get()
@@ -46,15 +52,21 @@ public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<File> 
 			.onEmpty(() -> log.error("missing ssh url to use for cloning"))
 			.flatMap(
 				url -> repository
-					.onEmpty(() -> log.error("missing repository to clone for url {}", url))
+					.onEmpty(
+						() -> log.error("missing repository to clone for url {}", url)
+					)
 					.flatMap(
 						repo -> call(repo::directory)
 							.onEmpty(() -> log.error("missing any directory to clone into"))
 					)
 					.peek(
 						dir -> clone.apply(cloneCommand).apply(url).apply(dir)
-							.onFailure(error -> log.error("error while cloning {}: {}", url, error))
-							.onSuccess(git -> log.info("repository with url {} was cloned", url))
+							.onFailure(
+								error -> log.error("error while cloning {}: {}", url, error)
+							)
+							.onSuccess(
+								git -> log.info("repository with url {} was cloned", url)
+							)
 					)
 			).getOrNull();
 	}
