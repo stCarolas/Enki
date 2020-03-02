@@ -12,19 +12,31 @@ import io.vavr.Function1;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.With;
 import lombok.extern.log4j.Log4j2;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Log4j2
+@Builder
+@Getter
 public class TemporaryFileDirectoryStrategy implements Supplier<File> {
 	public static final String TEMPORARY_LOCATION = "/tmp/enki/";
 
 	private final Option<? extends Repo> repo;
 
-	protected Function1<String, File> constructDirectoryPath = filename -> new File(TEMPORARY_LOCATION + filename);
+	@With
+	@Builder.Default
+	private Function1<String, File> constructDirectoryPath = 
+		filename -> new File(TEMPORARY_LOCATION + filename);
 
-	protected Function1<File,File> createDirIfMissing = dir ->
+	@With
+	@Builder.Default
+	private Function1<File,File> createDirIfMissing = dir ->
 			Option.of( dir )
 				.filter( File::exists )
 				.peek( file -> log.info("directory {} was existed", file.getPath()) )

@@ -18,23 +18,34 @@ import io.vavr.Function2;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.With;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-@RequiredArgsConstructor(access=AccessLevel.PROTECTED)
+@AllArgsConstructor(access=AccessLevel.PRIVATE)
+@RequiredArgsConstructor
+@Builder
+@Getter
 public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 
 	private final Option<Supplier<File>> directory;
 
-	protected Function1<File, Try<Git>> git = dir ->
+	@With 
+	@Builder.Default
+	private Function1<File, Try<Git>> git = dir ->
 		Try(() -> Git.open(dir))
 			.onFailure( 
 				error -> log.error("error while getting git status: {}",error)
 			);
 
-	protected Function1<Git, Boolean> isClean = git ->
+	@With 
+	@Builder.Default
+	private Function1<Git, Boolean> isClean = git ->
 		Try(git.status()::call)
 			.onFailure( 
 				error -> log.error("error while getting git status: {}", error)
@@ -42,14 +53,18 @@ public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 			.map(Status::isClean)
 			.getOrElse(true);
 
-	protected Function1<Git, Try<Git>> stage = git ->
+	@With 
+	@Builder.Default
+	private Function1<Git, Try<Git>> stage = git ->
 		Try(git.add().addFilepattern(".")::call)
 			.onFailure( 
 				error -> log.error("error while getting git staging: {}",error)
 			)
 			.map( cache -> git );
 
-	protected Function2<String, Git, Try<RevCommit>> commit = (commitMessage, git) ->
+	@With 
+	@Builder.Default
+	private Function2<String, Git, Try<RevCommit>> commit = (commitMessage, git) ->
 		Option.of(commitMessage)
 			.filterNot(String::isBlank)
 			.onEmpty(() -> log.error("missing commit message"))

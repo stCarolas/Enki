@@ -83,12 +83,13 @@ public class GitCommitStrategyTest {
 			var stageMock  = spy(successfullStage());
 			var commitMock = spy(successfullCommit());
 
-			var strategy = new GitCommitStrategy(Option(tmpDir())){{
-				git     = ignore -> Success(mock(Git.class));
-				isClean = ignore -> true;
-				stage   = stageMock.fn();
-				commit  = commitMock.fn();
-			}};
+			var strategy = GitCommitStrategy.builder()
+				.directory(Option(tmpDir()))
+				.git(ignore -> Success(mock(Git.class)))
+				.isClean(ignore -> true)
+				.stage(stageMock.fn())
+				.commit(commitMock.fn())
+				.build();
 
 			assertTrue(strategy.apply("some message").isFailure());
 			assertFalse(stageMock.isCalled());
@@ -101,12 +102,13 @@ public class GitCommitStrategyTest {
 			var stageMock  = spy(successfullStage());
 			var commitMock = spy(successfullCommit(commit));
 
-			var strategy = new GitCommitStrategy(Option(tmpDir())){{
-				git     = ignore -> Success(mock(Git.class));
-				isClean = ignore -> false;
-				stage   = stageMock.fn();
-				commit  = commitMock.fn();
-			}};
+			var strategy = GitCommitStrategy.builder()
+				.directory(Option(tmpDir()))
+				.git(ignore -> Success(mock(Git.class)))
+				.isClean(ignore -> false)
+				.stage(stageMock.fn())
+				.commit(commitMock.fn())
+				.build();
 
 			var result = strategy.apply("some message");
 			assertTrue(result.isSuccess());
@@ -119,12 +121,13 @@ public class GitCommitStrategyTest {
 		public void test_Failure_on_failed_stage() {
 			var commitMock = spy(successfullCommit());
 
-			var strategy = new GitCommitStrategy(Option(tmpDir())){{
-				git     = ignore -> Success(mock(Git.class));
-				isClean = ignore -> false;
-				stage   = ignore -> Failure(new RuntimeException());
-				commit  = commitMock.fn();
-			}};
+			var strategy = GitCommitStrategy.builder()
+				.directory(Option(tmpDir()))
+				.git(ignore -> Success(mock(Git.class)))
+				.isClean(ignore -> false)
+				.stage(ignore -> Failure(new RuntimeException()))
+				.commit(commitMock.fn())
+				.build();
 
 			assertTrue(strategy.apply("some message").isFailure());
 			assertFalse(commitMock.isCalled());
@@ -132,12 +135,13 @@ public class GitCommitStrategyTest {
 
 		@Test
 		public void test_Failure_on_failed_commit() {
-			var strategy = new GitCommitStrategy(Option(tmpDir())){{
-				git     = ignore -> Success(mock(Git.class));
-				isClean = ignore -> false;
-				stage   = successfullStage();
-				commit  = (arg1,arg2) -> Failure(new RuntimeException("error"));
-			}};
+			var strategy = GitCommitStrategy.builder()
+				.directory(Option(tmpDir()))
+				.git(ignore -> Success(mock(Git.class)))
+				.isClean(ignore -> false)
+				.stage(successfullStage())
+				.commit((arg1,arg2) -> Failure(new RuntimeException("error")))
+				.build();
 
 			assertTrue(strategy.apply("some message").isFailure());
 		}
@@ -147,7 +151,10 @@ public class GitCommitStrategyTest {
 	@DisplayName("Tests for git() which should provide Git")
 	public class TestsForGit{
 		Function1<File, Try<Git>> git = 
-			new GitCommitStrategy(Option(tmpDir())).git;
+			GitCommitStrategy.builder()
+				.directory(Option(tmpDir()))
+				.build()
+				.getGit();
 
 		@Test
 		public void test_Failure_on_non_directory_without_git_repo() {
@@ -171,7 +178,10 @@ public class GitCommitStrategyTest {
 	@DisplayName("Tests for isClean() which should check if git repo has changes to commit")
 	public class TestsForIsClean{
 		Function1<Git, Boolean> isClean = 
-			new GitCommitStrategy(Option(tmpDir())).isClean;
+			GitCommitStrategy.builder()
+				.directory(Option(tmpDir()))
+				.build()
+				.getIsClean();
 
 		@Test
 		public void test_Return_same_as_git_status() throws NoWorkTreeException, GitAPIException {
@@ -211,7 +221,10 @@ public class GitCommitStrategyTest {
 	@DisplayName("Tests for stage() which should add changes to git index")
 	public class TestsForStage{
 		Function1<Git, Try<Git>> stage = 
-			new GitCommitStrategy(Option(tmpDir())).stage;
+			GitCommitStrategy.builder()
+				.directory(Option(tmpDir()))
+				.build()
+				.getStage();
 
 		@Test
 		public void test_calling_git_add_with_all_files() throws NoWorkTreeException, GitAPIException {
@@ -247,7 +260,10 @@ public class GitCommitStrategyTest {
 	@DisplayName("Tests for commit() which should make git commit")
 	public class TestsForCommit{
 		Function2<String, Git, Try<RevCommit>> commit = 
-			new GitCommitStrategy(Option(tmpDir())).commit;
+			GitCommitStrategy.builder()
+				.directory(Option(tmpDir()))
+				.build()
+				.getCommit();
 
 		@Test
 		public void test_calling_git_commit_with_provided_message() throws NoWorkTreeException, GitAPIException {
