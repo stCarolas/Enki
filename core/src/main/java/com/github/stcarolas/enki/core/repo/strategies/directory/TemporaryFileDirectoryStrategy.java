@@ -2,6 +2,7 @@ package com.github.stcarolas.enki.core.repo.strategies.directory;
 
 import static com.github.stcarolas.enki.core.util.Lifting.call;
 import static io.vavr.API.Option;
+import static io.vavr.API.Function;
 
 import java.io.File;
 import java.util.function.Supplier;
@@ -19,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.With;
 import lombok.extern.log4j.Log4j2;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Log4j2
 @Builder
@@ -27,16 +27,13 @@ import lombok.extern.log4j.Log4j2;
 public class TemporaryFileDirectoryStrategy implements Supplier<File> {
 	public static final String TEMPORARY_LOCATION = "/tmp/enki/";
 
-	private final Option<? extends Repo> repo;
+	private static final Function1<String, File> constructDirectoryPathFn = 
+		Function( filename -> 
+				new File(TEMPORARY_LOCATION + filename)
+		);
 
-	@With
-	@Builder.Default
-	private Function1<String, File> constructDirectoryPath = 
-		filename -> new File(TEMPORARY_LOCATION + filename);
-
-	@With
-	@Builder.Default
-	private Function1<File,File> createDirIfMissing = dir ->
+	private static final Function1<File,File> createDirIfMissingFn = 
+		Function( dir ->
 			Option.of( dir )
 				.filter( File::exists )
 				.peek( file -> log.info("directory {} was existed", file.getPath()) )
@@ -46,7 +43,12 @@ public class TemporaryFileDirectoryStrategy implements Supplier<File> {
 						.onFailure( error -> log.error("error while creating directory {}: {}", dir, error) )
 						.onSuccess( file -> log.info("directory {} was created", file.getPath()) )
 						.getOrNull()
-				);
+				)
+		);
+
+	private Option<? extends Repo> repo;
+	private Function1<String, File> constructDirectoryPath; 
+	private Function1<File,File> createDirIfMissing;
 
 	@Override
 	public File get() {
@@ -64,6 +66,10 @@ public class TemporaryFileDirectoryStrategy implements Supplier<File> {
 	}
 
 	public static Supplier<File> TemporaryDirectory(Repo repo) {
-		return new TemporaryFileDirectoryStrategy(Option(repo));
+		return TemporaryFileDirectoryStrategy.builder()
+			.repo(Option(repo))
+			.createDirIfMissing(createDirIfMissingFn)
+			.constructDirectoryPath(constructDirectoryPathFn)
+			.build();
 	}
 }

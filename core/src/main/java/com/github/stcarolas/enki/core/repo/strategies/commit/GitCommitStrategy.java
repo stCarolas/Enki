@@ -1,5 +1,6 @@
 package com.github.stcarolas.enki.core.repo.strategies.commit;
 
+import static io.vavr.API.Function;
 import static io.vavr.API.Option;
 import static io.vavr.API.Try;
 
@@ -21,58 +22,58 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.With;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @AllArgsConstructor(access=AccessLevel.PRIVATE)
-@RequiredArgsConstructor
 @Builder
 @Getter
 public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 
-	private final Option<Supplier<File>> directory;
+	private static final Function1<File, Try<Git>> gitFn = 
+		Function( dir ->
+			Try(() -> Git.open(dir))
+				.onFailure( 
+					error -> log.error("error while getting git status: {}",error)
+				)
+		);
 
-	@With 
-	@Builder.Default
-	private Function1<File, Try<Git>> git = dir ->
-		Try(() -> Git.open(dir))
-			.onFailure( 
-				error -> log.error("error while getting git status: {}",error)
-			);
+	private static final Function1<Git, Boolean> isCleanFn = 
+		Function( git ->
+			Try(() -> git.status().call())
+				.onFailure( 
+					error -> log.error("error while getting git status: {}", error)
+				)
+				.map(Status::isClean)
+				.getOrElse(true)
+		);
 
-	@With 
-	@Builder.Default
-	private Function1<Git, Boolean> isClean = git ->
-		Try(() -> git.status().call())
-			.onFailure( 
-				error -> log.error("error while getting git status: {}", error)
-			)
-			.map(Status::isClean)
-			.getOrElse(true);
+	private static final Function1<Git, Try<Git>> stageFn = 
+		Function( git ->
+			Try(git.add().addFilepattern(".")::call)
+				.onFailure( 
+					error -> log.error("error while getting git staging: {}",error)
+				)
+				.map( cache -> git )
+		);
 
-	@With 
-	@Builder.Default
-	private Function1<Git, Try<Git>> stage = git ->
-		Try(git.add().addFilepattern(".")::call)
-			.onFailure( 
-				error -> log.error("error while getting git staging: {}",error)
-			)
-			.map( cache -> git );
+	private static final Function2<String, Git, Try<RevCommit>> commitFn = 
+		Function( (commitMessage, git) ->
+			Option.of(commitMessage)
+				.filterNot(String::isBlank)
+				.onEmpty(() -> log.error("missing commit message"))
+				.toTry()
+				.mapTry( message -> git.commit().setMessage(message).call() )
+				.onFailure( 
+					error -> log.error("error while getting git staging: {}",error)
+				)
+		);
 
-	@With 
-	@Builder.Default
-	private Function2<String, Git, Try<RevCommit>> commit = (commitMessage, git) ->
-		Option.of(commitMessage)
-			.filterNot(String::isBlank)
-			.onEmpty(() -> log.error("missing commit message"))
-			.toTry()
-			.mapTry( message -> git.commit().setMessage(message).call() )
-			.onFailure( 
-				error -> log.error("error while getting git staging: {}",error)
-			);
+	private Option<Supplier<File>> directory;
+	private Function1<File, Try<Git>> git;
+	private Function1<Git, Boolean> isClean;
+	private Function1<Git, Try<Git>> stage;
+	private Function2<String, Git, Try<RevCommit>> commit;
 
 	@Override
 	public Try<RevCommit> apply(String message) {
@@ -92,7 +93,13 @@ public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 	}
 
 	public static Function<String, Try<RevCommit>> GitCommit(Supplier<File> directory){
-		return new GitCommitStrategy(Option(directory));
+		return GitCommitStrategy.builder()
+			.directory(Option(directory))
+			.git(gitFn)
+			.isClean(isCleanFn)
+			.stage(stageFn)
+			.commit(commitFn)
+			.build();
 	}
 
 }
