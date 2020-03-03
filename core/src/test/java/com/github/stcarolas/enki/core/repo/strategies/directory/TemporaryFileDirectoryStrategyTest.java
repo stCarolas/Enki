@@ -22,14 +22,13 @@ import io.vavr.Function1;
 
 public class TemporaryFileDirectoryStrategyTest {
 
+	TemporaryFileDirectoryStrategy strategy = ((TemporaryFileDirectoryStrategy)TemporaryFileDirectoryStrategy.TemporaryDirectory(null));
+
 	@Nested
 	public class TestForConstructDirectoryPath{
 		@Test
 		public void test_Success(){
-			var fn = TemporaryFileDirectoryStrategy.builder()
-				.repo(None())
-				.build()
-				.getConstructDirectoryPath();
+			var fn = strategy.getConstructDirectoryPath();
 			var result = fn.apply("name");
 			assertNotNull(result);
 			assertEquals(TemporaryFileDirectoryStrategy.TEMPORARY_LOCATION + "name", result.getPath());
