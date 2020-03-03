@@ -39,10 +39,7 @@ public class TemporaryFileDirectoryStrategyTest {
 	public class TestForCreateDirIfMissing{
 		@Test
 		public void test_Success_if_file_doesnt_exist(){
-			var fn = TemporaryFileDirectoryStrategy.builder()
-				.repo(None())
-				.build()
-				.getCreateDirIfMissing();
+			var fn = strategy.getCreateDirIfMissing();
 			var file = mock(File.class);
 			when(file.exists()).thenReturn(false);
 			assertEquals(file, fn.apply(file));
@@ -51,10 +48,7 @@ public class TemporaryFileDirectoryStrategyTest {
 
 		@Test
 		public void test_Success_if_file_exists(){
-			var fn = TemporaryFileDirectoryStrategy.builder()
-				.repo(None())
-				.build()
-				.getCreateDirIfMissing();
+			var fn = strategy.getCreateDirIfMissing();
 			var file = mock(File.class);
 			when(file.exists()).thenReturn(true);
 			assertEquals(file, fn.apply(file));
@@ -63,10 +57,7 @@ public class TemporaryFileDirectoryStrategyTest {
 
 		@Test
 		public void test_Null_if_cant_create_dir(){
-			var fn = TemporaryFileDirectoryStrategy.builder()
-				.repo(None())
-				.build()
-				.getCreateDirIfMissing();
+			var fn = strategy.getCreateDirIfMissing();
 			var file = mock(File.class);
 			when(file.exists()).thenReturn(false);
 			when(file.mkdir()).thenThrow(new RuntimeException("some error"));
@@ -82,34 +73,30 @@ public class TemporaryFileDirectoryStrategyTest {
 		public void test_Call_CreateDirIfMissing_with_result_of_ConstructDirectoryPath() {
 			var expectedFile = mock(File.class);
 			var createDirMock = spy( (Function1<File,File>) file -> file );
-			var strategy = TemporaryFileDirectoryStrategy.builder()
-				.repo(Some(new TestRepo()))
-				.constructDirectoryPath(ignore -> expectedFile)
-				.createDirIfMissing(createDirMock.fn())
-				.build();
-			assertNotNull(strategy.get());
+			var result = strategy.withRepo(Some(new TestRepo()))
+				.withConstructDirectoryPath(ignore -> expectedFile)
+				.withCreateDirIfMissing(createDirMock.fn())
+				.get();
+			assertNotNull(result);
 			assertEquals(expectedFile, createDirMock.arg1());
 		}
 
 		@Test
 		public void test_Success_return_file_as_ConstructDirectoryPath() {
 			var expectedFile = mock(File.class);
-			var strategy = TemporaryFileDirectoryStrategy.builder()
-				.repo(Some(new TestRepo()))
-				.constructDirectoryPath(ignore -> mock(File.class))
-				.createDirIfMissing(file -> file)
-				.build();
-			assertEquals(expectedFile, strategy.get());
+			var result = strategy.withRepo(Some(new TestRepo()))
+				.withConstructDirectoryPath(ignore -> expectedFile)
+				.withCreateDirIfMissing(file -> file)
+				.get();
+			assertEquals(expectedFile, result);
 		}
 
 		@Test
 		public void test_Null_if_repo_missing() {
-			var strategy = TemporaryFileDirectoryStrategy.builder()
-				.repo(None())
-				.constructDirectoryPath(ignore -> mock(File.class))
-				.createDirIfMissing(file -> file)
-				.build();
-			assertNull(strategy.get());
+			var result = strategy.withRepo(None())
+				.withConstructDirectoryPath(ignore -> mock(File.class))
+				.withCreateDirIfMissing(file -> file).get();
+			assertNull(result);
 		}
 
 		@Test
@@ -120,12 +107,10 @@ public class TemporaryFileDirectoryStrategyTest {
 					return null;
 				}
 			};
-			var strategy = TemporaryFileDirectoryStrategy.builder()
-				.repo(Some(repo))
-				.constructDirectoryPath(ignore -> mock(File.class))
-				.createDirIfMissing(file -> file)
-				.build();
-			assertNull(strategy.get());
+			var result = strategy.withRepo(Some(repo))
+				.withConstructDirectoryPath(ignore -> mock(File.class))
+				.withCreateDirIfMissing(file -> file).get();
+			assertNull(result);
 		}
 
 		@Test
@@ -136,12 +121,10 @@ public class TemporaryFileDirectoryStrategyTest {
 					throw new RuntimeException("some error");
 				}
 			};
-			var strategy = TemporaryFileDirectoryStrategy.builder()
-				.repo(Some(repo))
-				.constructDirectoryPath(ignore -> mock(File.class))
-				.createDirIfMissing(file -> file)
-				.build();
-			assertNull(strategy.get());
+			var result = strategy.withRepo(Some(repo))
+				.withConstructDirectoryPath(ignore -> mock(File.class))
+				.withCreateDirIfMissing(file -> file).get();
+			assertNull(result);
 		}
 
 	}

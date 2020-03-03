@@ -79,7 +79,9 @@ public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 	public Try<RevCommit> apply(String message) {
 		return directory
 			.flatMap( Lifting::call )
-			.onEmpty( () -> log.error("try to download repo before commiting into that") )
+			.onEmpty(
+				() -> log.error("try to download repo before commiting into that")
+			)
 			.peek( dir -> log.info("using directory {}", dir) )
 			.toTry()
 			.flatMap(

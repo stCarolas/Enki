@@ -46,9 +46,9 @@ public class TemporaryFileDirectoryStrategy implements Supplier<File> {
 				)
 		);
 
-	private Option<? extends Repo> repo;
-	private Function1<String, File> constructDirectoryPath; 
-	private Function1<File,File> createDirIfMissing;
+	@With private Option<? extends Repo> repo;
+	@With private Function1<String, File> constructDirectoryPath; 
+	@With private Function1<File,File> createDirIfMissing;
 
 	@Override
 	public File get() {
