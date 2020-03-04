@@ -69,11 +69,11 @@ public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 				)
 		);
 
-	private Option<Supplier<File>> directory;
-	private Function1<File, Try<Git>> git;
-	private Function1<Git, Boolean> isClean;
-	private Function1<Git, Try<Git>> stage;
-	private Function2<String, Git, Try<RevCommit>> commit;
+	private final Option<Supplier<File>> directory;
+	private final Function1<File, Try<Git>> git;
+	private final Function1<Git, Boolean> isClean;
+	private final Function1<Git, Try<Git>> stage;
+	private final Function2<String, Git, Try<RevCommit>> commit;
 
 	@Override
 	public Try<RevCommit> apply(String message) {
