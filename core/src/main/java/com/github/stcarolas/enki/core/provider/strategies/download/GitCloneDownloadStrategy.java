@@ -14,6 +14,7 @@ import org.eclipse.jgit.api.Git;
 
 import io.vavr.Function2;
 import io.vavr.Function3;
+import io.vavr.Function4;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
@@ -32,17 +33,21 @@ public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<File> 
 	@With private final Option<String> sshUrl;
 	@With private final Option<T> repository;
 	@With private final Supplier<CloneCommand> cloneCommand;
-	@With private final Function3<Supplier<CloneCommand>, String, File, CloneCommand> clone;
+	@With private final Supplier<DefaultTransportConfigCallback> transport;
+	@With private final Function4<Supplier<DefaultTransportConfigCallback>, Supplier<CloneCommand>, String, File, CloneCommand> clone;
 
 	public static final Supplier<CloneCommand> cloneCommandFn = 
 		() -> Git.cloneRepository();
 
-	public static final Function3<Supplier<CloneCommand>, String, File, CloneCommand> cloneFn = 
-		( cloneCommand, url, dir ) -> 
+	public static final Supplier<DefaultTransportConfigCallback> transportFn = 
+		() -> new DefaultTransportConfigCallback();
+
+	public static final Function4<Supplier<DefaultTransportConfigCallback>, Supplier<CloneCommand>, String, File, CloneCommand> 
+		cloneFn = ( transport, cloneCommand, url, dir ) -> 
 			cloneCommand.get()
 				.setURI(url)
 				.setDirectory(dir)
-				.setTransportConfigCallback(new DefaultTransportConfigCallback());
+				.setTransportConfigCallback(transport.get());
 
 	@Override
 	public File get(){
@@ -58,7 +63,7 @@ public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<File> 
 							.onEmpty(() -> log.error("missing any directory to clone into"))
 					)
 					.peek(
-						dir -> Try(clone.apply(cloneCommandFn).apply(url).apply(dir)::call)
+						dir -> Try(clone.apply(transport).apply(cloneCommand).apply(url).apply(dir)::call)
 							.onFailure(
 								error -> log.error("error while cloning {}: {}", url, error)
 							)
@@ -69,11 +74,13 @@ public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<File> 
 			).getOrNull();
 	}
 
-	public static <T extends Repo>Supplier<File> gitSshClone(T repo, String sshUrl){
+	public static <T extends Repo>Supplier<File> GitSshClone(T repo, String sshUrl){
 		return GitCloneDownloadStrategy.builder()
 			.sshUrl(Option(sshUrl))
 			.repository(Option(repo))
+			.transport(transportFn)
 			.cloneCommand(cloneCommandFn)
+			.clone(cloneFn)
 			.build();
 	}
 

@@ -20,7 +20,7 @@ public class DefaultRepoProviderStrategiesFactory {
 	}
 
 	public static <T extends Repo>Supplier<File> gitSshClone(T repo, String sshUrl){
-		return GitCloneDownloadStrategy.gitSshClone(repo,sshUrl);
+		return GitCloneDownloadStrategy.GitSshClone(repo,sshUrl);
 	}
 
 }
