@@ -78,20 +78,19 @@ public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 	@Override
 	public Try<RevCommit> apply(String message) {
 		return directory
-			.flatMap( Lifting::call )
-			.onEmpty(
-				() -> log.error("try to download repo before commiting into that")
-			)
-			.peek( dir -> log.info("using directory {}", dir) )
+			.flatMap(Lifting::call)
+			.onEmpty(() -> log.error("try to download repo before commiting into that"))
+			.peek($ -> log.info("using directory {}", $))
 			.toTry()
 			.flatMap(
 				dir -> git.apply(dir)
-					.filterNot( $ -> isClean.apply($) )
+					.filterNot($ -> isClean.apply($))
 					.flatMap(stage)
-					.onFailure( error -> log.error("some error: ", error) )
+					.onFailure($ -> log.error("error while staging: ", $))
 					.flatMap(commit.apply(message))
+					.onFailure($ -> log.error("error while commiting: ", $))
 			)
-			.peek( revision -> log.info("Successful commit: {}", revision.getId()) );
+			.peek(revision -> log.info("Successful commit: {}", revision.getId()));
 	}
 
 	public static Function<String, Try<RevCommit>> GitCommit(Supplier<File> directory){
