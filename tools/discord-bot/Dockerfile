@@ -1,7 +1,7 @@
 FROM azul/zulu-openjdk:12.0.1
 VOLUME /tmp
 
-RUN apt-get -qq update && apt-get -qq install git && rm -rf /var/lib/apt/lists/*
+RUN apt-get -qq update --no-install-recommends && apt-get -qq install git --no-install-recommends && rm -rf /var/lib/apt/lists/*
 RUN git config --global user.name "Enki" && git config --global user.email stcarolas@mail.ru
 COPY key /root/.ssh/id_rsa
 COPY key.pub /root/.ssh/id_rsa.pub

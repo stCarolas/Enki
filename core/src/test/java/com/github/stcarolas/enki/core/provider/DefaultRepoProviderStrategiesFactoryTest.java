@@ -11,7 +11,7 @@ public class DefaultRepoProviderStrategiesFactoryTest {
 	@Test
 	public void test_ssh_push_strategy() {
 		Assertions.assertTrue(
-			DefaultRepoProviderStrategiesFactory.gitSshPush(null, null) instanceof GitPushUploadStrategy
+			DefaultRepoProviderStrategiesFactory.gitSshPush(null) instanceof GitPushUploadStrategy
 		);
 	}
 

@@ -27,9 +27,10 @@ public class BitbucketSshRepoProvider extends BitbucketRepoProvider {
 	@Override
 	public BitbucketRepo upload(Repo repo) {
 		if (repo instanceof BitbucketRepo){
-			return of(DefaultRepoProviderStrategiesFactory
-					.gitSshPush(repo, ((BitbucketRepo)repo).getSshUrl())
-					.get()
+			return of(
+					DefaultRepoProviderStrategiesFactory
+						.gitSshPush(repo)
+						.get()
 				)
 				.filter( results -> results.iterator().hasNext() )
 				.onEmpty(() -> log.error("upload failed"))

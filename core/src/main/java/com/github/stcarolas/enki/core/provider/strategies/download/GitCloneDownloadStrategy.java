@@ -1,7 +1,8 @@
 package com.github.stcarolas.enki.core.provider.strategies.download;
 
 import static com.github.stcarolas.enki.core.util.Lifting.call;
-import static io.vavr.API.*;
+import static io.vavr.API.Option;
+import static io.vavr.API.Try;
 
 import java.io.File;
 import java.util.function.Supplier;
@@ -12,11 +13,8 @@ import com.github.stcarolas.enki.core.transport.DefaultTransportConfigCallback;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 
-import io.vavr.Function2;
-import io.vavr.Function3;
 import io.vavr.Function4;
 import io.vavr.control.Option;
-import io.vavr.control.Try;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +27,7 @@ import lombok.extern.log4j.Log4j2;
 @Builder
 @Getter
 public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<File> {
+// todo better naming for git clone subfunctions
 
 	@With private final Option<String> sshUrl;
 	@With private final Option<T> repository;
