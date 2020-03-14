@@ -43,7 +43,7 @@ public class GiteaSshRepoProvider implements RepoProvider<GiteaRepo> {
 	public GiteaRepo upload(Repo repo) {
 		if (repo instanceof GiteaRepo){
 			return of(DefaultRepoProviderStrategiesFactory
-					.gitSshPush(repo, ((GiteaRepo)repo).getSshUrl())
+					.gitSshPush(repo)
 					.get()
 				)
 				.filter( results -> results.iterator().hasNext() )
