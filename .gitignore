@@ -6,6 +6,7 @@ pom.xml
 .settings/
 *.versionsBackup
 .vim
+.codacy-coverage
 
 ### Maven template
 target/
