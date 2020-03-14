@@ -27,6 +27,14 @@ jobs:
       uses: stCarolas/setup-maven@v3
       with:
         maven-version: 3.5.4
+  
+    - name: Test
+      run: mvn -B -q test
+      
+    - name: Coverage
+      uses: mrfyda/codacy-coverage-reporter-action@master
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
     - name: Calculate new version
       id: next_version
