@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    branches:    
-      - master 
+    branches:
+      - master
 
 jobs:
 
@@ -27,36 +27,33 @@ jobs:
       uses: stCarolas/setup-maven@v3
       with:
         maven-version: 3.5.4
+
+    #- name: Calculate new version
+      #id: next_version
+      #uses: zwaldowski/semver-release-action@v1
+      #with:
+        #dry_run: true
+        #bump: patch
+        #github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    #- name: Set new version in maven.config
+      #run: echo "-Drevision=${{ steps.next_version.outputs.version }}" > .mvn/maven.config
+
+    #- name: Push new version
+      #uses: github-actions-x/commit@v2.1
+      #with:
+        #github-token: ${{ secrets.GITHUB_TOKEN }}
+        #push-branch: 'master'
+        #commit-message: 'bump version'
+        #files: ".mvn/maven.config"
+
+    #- name: Tag new version
+      #uses: zwaldowski/semver-release-action@v1
+      #with:
+        #bump: patch
+        #github_token: ${{ secrets.GITHUB_TOKEN }}
   
-    - name: Test
-      run: mvn -B -q test
-
-    - name: Calculate new version
-      id: next_version
-      uses: zwaldowski/semver-release-action@v1
-      with:
-        dry_run: true
-        bump: patch
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Set new version in maven.config
-      run: echo "-Drevision=${{ steps.next_version.outputs.version }}" > .mvn/maven.config
-
-    - name: Push new version
-      uses: github-actions-x/commit@v2.1
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        push-branch: 'master'
-        commit-message: 'bump version'
-        files: ".mvn/maven.config"
-
-    - name: Tag new version
-      uses: zwaldowski/semver-release-action@v1
-      with:
-        bump: patch
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-  
-    - name: Publish Enki jar's
+    - name: Publish jar's
       run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s .github/workflows/settings.xml -pl '!parent-pom,!.'
       
     - name: Coverage

@@ -6,7 +6,7 @@ modelVersion: 4.0.0
 parent:
   artifactId: enki-parent
   groupId: com.github.stcarolas.enki
-  version: 1.0.2
+  version: 1.0.4
 
 dependencies:
 - {groupId: com.typesafe,             artifactId: config,               version: 1.3.4}

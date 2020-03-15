@@ -1,14 +1,14 @@
 name: Enki Parent Pom
 groupId: com.github.stcarolas.enki
 artifactId: enki-parent
-version: 1.0.2
+version: 1.0.4
 packaging: pom
 
 modelVersion: 4.0.0
 properties: 
   maven.compiler.target: 14
   maven.compiler.source: 14
-  revision: 1.0.0
+  revision: 0.2.0
 
 dependencyManagement:
   dependencies:
@@ -65,6 +65,7 @@ build:
 
 repositories:
 - {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}
+- {id: snapshots, layout: default, url: 'https://oss.jfrog.org/artifactory/oss-snapshot-local'}
 - {id: jcenter, layout: default, name: jcenter, url: 'https://jcenter.bintray.com'}
 
 distributionManagement:
@@ -73,3 +74,7 @@ distributionManagement:
     layout: default
     uniqueVersion: true
     url: "https://api.bintray.com/maven/stcarolas/maven/${project.artifactId}/;publish=1"
+  snapshotRepository:
+    id: oss-jfrog-artifactory-snapshots
+    name: oss-jfrog-artifactory-snapshots 
+    url: https://oss.jfrog.org/artifactory/oss-snapshot-local
