@@ -8,5 +8,11 @@
       <username>stCarolas</username>
       <password>${deploy.token}</password>
     </server>
+    <server>
+      <id>oss-jfrog-artifactory-snapshots</id>
+      <snapshots><enabled>true</enabled></snapshots>
+      <username>stcarolas</username>
+      <password>${deploy.token}</password>
+    </server>
   </servers>
 </settings>
