@@ -4,6 +4,7 @@
 [![Version](https://img.shields.io/github/v/tag/stCarolas/Enki?label=Version)](https://github.com/stCarolas/Enki/packages)
 [![Docker Pulls](https://img.shields.io/docker/pulls/stcarolas/enki)](https://hub.docker.com/repository/docker/stcarolas/enki)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a631d4eeb0834e8f99035ce52c204acb)](https://app.codacy.com/manual/stcarolas/Enki?utm_source=github.com&utm_medium=referral&utm_content=stCarolas/Enki&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Coverage](https://api.codacy.com/project/badge/Coverage/d59ffabda9b54d8ab6011fff959a9c36)](https://www.codacy.com/manual/stcarolas/Enki?utm_source=github.com&utm_medium=referral&utm_content=stCarolas/Enki&utm_campaign=Badge_Coverage)
 
 1. [Why](#why)
 1. [Set Up With Maven](#set-up-with-maven)
