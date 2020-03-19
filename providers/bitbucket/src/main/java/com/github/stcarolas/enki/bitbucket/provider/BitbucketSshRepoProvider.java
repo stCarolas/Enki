@@ -2,7 +2,7 @@ package com.github.stcarolas.enki.bitbucket.provider;
 
 import com.github.stcarolas.enki.core.Repo;
 import com.github.stcarolas.enki.core.provider.DefaultRepoProviderStrategiesFactory;
-import static io.vavr.control.Option.of;
+import static io.vavr.API.Option;
 
 import io.vavr.control.Option;
 import lombok.Builder;
@@ -14,7 +14,7 @@ public class BitbucketSshRepoProvider extends BitbucketRepoProvider {
 
 	@Override
 	public BitbucketRepo download(BitbucketRepo repo) {
-		return of(
+		return Option(
 				DefaultRepoProviderStrategiesFactory
 					.gitSshClone(repo, repo.getSshUrl())
 					.get()
@@ -27,7 +27,7 @@ public class BitbucketSshRepoProvider extends BitbucketRepoProvider {
 	@Override
 	public BitbucketRepo upload(Repo repo) {
 		if (repo instanceof BitbucketRepo){
-			return of(
+			return Option(
 					DefaultRepoProviderStrategiesFactory
 						.gitSshPush(repo)
 						.get()
