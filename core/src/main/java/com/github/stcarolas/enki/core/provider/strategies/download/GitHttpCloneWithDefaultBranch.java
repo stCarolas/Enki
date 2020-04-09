@@ -2,7 +2,6 @@ package com.github.stcarolas.enki.core.provider.strategies.download;
 
 import static com.github.stcarolas.enki.core.util.Lifting.call;
 import static io.vavr.API.Option;
-import static io.vavr.API.Try;
 
 import java.io.File;
 import java.util.function.Supplier;
@@ -27,7 +26,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class GitHttpDownloadStrategy<T extends Repo> implements Supplier<File> {
+public class GitHttpCloneWithDefaultBranch<T extends Repo> implements Supplier<File> {
 
 	@With private final Option<String> url;
 	@With private final Option<T> repository;
@@ -73,7 +72,7 @@ public class GitHttpDownloadStrategy<T extends Repo> implements Supplier<File> {
 	}
 
 	public static <T extends Repo>Supplier<File> GitHttpClone(T repo, String url){
-		return GitHttpDownloadStrategy.builder()
+		return GitHttpCloneWithDefaultBranch.builder()
 			.url(
           Option(url).onEmpty(() -> log.error("missing ssh url to use for cloning"))
       )

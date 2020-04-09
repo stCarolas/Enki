@@ -35,19 +35,6 @@ public class GitCloneDownloadStrategy<T extends Repo> implements Supplier<File> 
 	@With private final Supplier<DefaultTransportConfigCallback> transport;
 	@With private final Function4<Supplier<DefaultTransportConfigCallback>, Supplier<CloneCommand>, String, File, CloneCommand> clone;
 
-	public static final Supplier<CloneCommand> cloneCommandFn = 
-		() -> Git.cloneRepository();
-
-	public static final Supplier<DefaultTransportConfigCallback> transportFn = 
-		() -> new DefaultTransportConfigCallback();
-
-	public static final Function4<Supplier<DefaultTransportConfigCallback>, Supplier<CloneCommand>, String, File, CloneCommand> 
-		cloneFn = ( transport, cloneCommand, url, dir ) -> 
-			cloneCommand.get()
-				.setURI(url)
-				.setDirectory(dir)
-				.setTransportConfigCallback(transport.get());
-
 	@Override
 	public File get(){
 		return sshUrl

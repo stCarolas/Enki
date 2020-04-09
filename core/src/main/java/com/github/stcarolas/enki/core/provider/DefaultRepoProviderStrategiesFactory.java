@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.github.stcarolas.enki.core.Repo;
 import static com.github.stcarolas.enki.core.provider.strategies.download.GitCloneDownloadStrategy.GitSshClone;
-import static com.github.stcarolas.enki.core.provider.strategies.download.GitHttpDownloadStrategy.GitHttpClone;
+import static com.github.stcarolas.enki.core.provider.strategies.download.GitHttpCloneWithDefaultBranch.GitHttpClone;
 import static com.github.stcarolas.enki.core.provider.strategies.upload.GitPushUploadStrategy.GitPush;
 
 import org.eclipse.jgit.transport.PushResult;
@@ -24,7 +24,11 @@ public class DefaultRepoProviderStrategiesFactory {
 		return GitSshClone(repo,url);
 	}
 
-	public static <T extends Repo>Supplier<File> gitHttpClone(T repo, String url){
+	public static <T extends Repo>Supplier<File> gitHttpClone(
+		T repo, 
+		String url, 
+		Boolean allBranches
+	){
 		return GitHttpClone(repo,url);
 	}
 
