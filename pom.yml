@@ -14,12 +14,13 @@ modules:
   - core
   - providers/bitbucket
   - providers/gitea
+  - providers/gitlab
   #- providers/github
-  #- providers/gitlab
   #- providers/one-repo
   #- server
   #- handlers/discord-commit-hook
   #- handlers/gitea-mirror
+  #- handlers/gitlab-push
   #- handlers/github-archive-repo
   #- handlers/gocd-handlers
   #- handlers/jacoco

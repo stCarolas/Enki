@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.function.Supplier;
 import com.github.stcarolas.enki.core.Repo;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.PushResult;
 
 import io.vavr.Function1;
@@ -25,6 +26,7 @@ import static io.vavr.API.*;
 public class GitPushUploadStrategy<T extends Repo> implements Supplier<Iterable<PushResult>> {
 
 	private final Option<T> repository;
+	private final Supplier<CredentialsProvider> credentials;
 	private final Function1<File, Option<Git>> gitOpenFn;
 	private final Function1<Git, Option<Iterable<PushResult>>> gitPushFn;
 	private final Function1<Repo, Option<File>> repoDirectoryFn;
@@ -62,9 +64,24 @@ public class GitPushUploadStrategy<T extends Repo> implements Supplier<Iterable<
 			;
 	}
 
-	public static <T extends Repo> Supplier<Iterable<PushResult>> GitPushUploadStrategy(T repo){
+	public static <T extends Repo> Supplier<Iterable<PushResult>> GitPush(T repo){
 		return GitPushUploadStrategy.builder()
 			.repository(Option(repo))
+      .credentials(None())
+			.repoDirectoryFn(defaultRepoDirectoryFn)
+			.gitOpenFn(defaultGitOpenFn)
+			.gitPushFn(defaultGitPushFn)
+			.build()
+		;
+	}
+
+	public static <T extends Repo> Supplier<Iterable<PushResult>> GitPush(
+    T repo, 
+    CredentialsProvider credentials
+  ){
+		return GitPushUploadStrategy.builder()
+			.repository(Option(repo))
+      .credentials(Option(credentials))
 			.repoDirectoryFn(defaultRepoDirectoryFn)
 			.gitOpenFn(defaultGitOpenFn)
 			.gitPushFn(defaultGitPushFn)

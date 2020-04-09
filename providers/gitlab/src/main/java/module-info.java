@@ -4,6 +4,7 @@ module com.github.stcarolas.enki.gitlab {
 	requires org.apache.logging.log4j;
 	requires vavr;
 	requires gitlab4j.api;
+	requires org.eclipse.jgit;
 
 	exports com.github.stcarolas.enki.gitlab.provider;
 }

@@ -86,9 +86,7 @@ public class GitCommitStrategy implements Function<String, Try<RevCommit>> {
 				dir -> git.apply(dir)
 					.filterNot($ -> isClean.apply($))
 					.flatMap(stage)
-					.onFailure($ -> log.error("error while staging: ", $))
 					.flatMap(commit.apply(message))
-					.onFailure($ -> log.error("error while commiting: ", $))
 			)
 			.peek(revision -> log.info("Successful commit: {}", revision.getId()));
 	}

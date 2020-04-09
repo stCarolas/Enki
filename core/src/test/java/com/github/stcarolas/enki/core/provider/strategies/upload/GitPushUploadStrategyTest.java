@@ -94,7 +94,7 @@ public class GitPushUploadStrategyTest {
 	public class TestGitPushUploadStrategy {
 		@Test
 		public void use_default_functions() throws Exception {
-			var strategy = (GitPushUploadStrategy)GitPushUploadStrategy.GitPushUploadStrategy(null);
+			var strategy = (GitPushUploadStrategy)GitPushUploadStrategy.GitPush(null);
 			assertEquals(
 					GitPushUploadStrategy.defaultGitOpenFn, 
 					strategy.getGitOpenFn()
@@ -111,11 +111,11 @@ public class GitPushUploadStrategyTest {
 
 		@Test
 		public void setting_repo() throws Exception {
-			var strategy = (GitPushUploadStrategy)GitPushUploadStrategy.GitPushUploadStrategy(null);
+			var strategy = (GitPushUploadStrategy)GitPushUploadStrategy.GitPush(null);
 			assertTrue(strategy.getRepository().isEmpty());
 
 			var repo = mock(Repo.class);
-			strategy = (GitPushUploadStrategy)GitPushUploadStrategy.GitPushUploadStrategy(repo);
+			strategy = (GitPushUploadStrategy)GitPushUploadStrategy.GitPush(repo);
 			assertEquals(repo, strategy.getRepository().get());
 		}
 	}

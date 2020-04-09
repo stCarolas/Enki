@@ -4,8 +4,9 @@ import java.io.File;
 import java.util.function.Supplier;
 
 import com.github.stcarolas.enki.core.Repo;
-import com.github.stcarolas.enki.core.provider.strategies.download.GitCloneDownloadStrategy;
-import static com.github.stcarolas.enki.core.provider.strategies.upload.GitPushUploadStrategy.GitPushUploadStrategy;
+import static com.github.stcarolas.enki.core.provider.strategies.download.GitCloneDownloadStrategy.GitSshClone;
+import static com.github.stcarolas.enki.core.provider.strategies.download.GitHttpDownloadStrategy.GitHttpClone;
+import static com.github.stcarolas.enki.core.provider.strategies.upload.GitPushUploadStrategy.GitPush;
 
 import org.eclipse.jgit.transport.PushResult;
 
@@ -16,11 +17,15 @@ import lombok.NoArgsConstructor;
 public class DefaultRepoProviderStrategiesFactory {
 
 	public static <T extends Repo>Supplier<Iterable<PushResult>> gitSshPush(T repo){
-		return GitPushUploadStrategy(repo);
+		return GitPush(repo);
 	}
 
-	public static <T extends Repo>Supplier<File> gitSshClone(T repo, String sshUrl){
-		return GitCloneDownloadStrategy.GitSshClone(repo,sshUrl);
+	public static <T extends Repo>Supplier<File> gitSshClone(T repo, String url){
+		return GitSshClone(repo,url);
+	}
+
+	public static <T extends Repo>Supplier<File> gitHttpClone(T repo, String url){
+		return GitHttpClone(repo,url);
 	}
 
 }
