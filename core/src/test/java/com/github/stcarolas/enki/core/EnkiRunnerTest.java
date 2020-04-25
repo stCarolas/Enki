@@ -1,6 +1,7 @@
 package com.github.stcarolas.enki.core;
 
 import static io.vavr.API.Seq;
+import static io.vavr.API.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,7 +13,7 @@ public class EnkiRunnerTest {
 
 	@Test
 	public void testEmptyProviders() {
-		var run = EnkiRunner.enki().run();
+		var run = EnkiRunner.Enki().run();
 		Assertions.assertTrue(run.isEmpty());
 	}
 
@@ -20,9 +21,9 @@ public class EnkiRunnerTest {
 	public void testEmptyHandlers() {
 		var provider = mock(RepoProvider.class);
 		var repo = new TestRepo();
-		when(provider.repositories()).thenReturn(Seq(repo));
+		when(provider.repositories()).thenReturn(Success(Seq(repo)));
 
-		var run = EnkiRunner.enki()
+		var run = EnkiRunner.Enki()
 			.withProvider(provider)
 			.run();
 		Assertions.assertTrue(run.isEmpty());
@@ -33,12 +34,12 @@ public class EnkiRunnerTest {
 	public void test_ignore_null_provider() {
 		var provider = mock(RepoProvider.class);
 		var repo = new TestRepo();
-		when(provider.repositories()).thenReturn(Seq(repo));
+		when(provider.repositories()).thenReturn(Success(Seq(repo)));
 
 		var handler = mock(RepoHandler.class);
-		when(handler.handle(repo)).thenReturn(repo);
+		when(handler.handle(repo)).thenReturn(Success(repo));
 
-		var run = EnkiRunner.enki()
+		var run = EnkiRunner.Enki()
 			.withProvider(null)
 			.withProvider(provider)
 			.withProvider(null)
@@ -53,12 +54,12 @@ public class EnkiRunnerTest {
 	public void test_ignore_null_handler() {
 		var provider = mock(RepoProvider.class);
 		var repo = new TestRepo();
-		when(provider.repositories()).thenReturn(Seq(repo));
+		when(provider.repositories()).thenReturn(Success(Seq(repo)));
 
 		var handler = mock(RepoHandler.class);
-		when(handler.handle(repo)).thenReturn(repo);
+		when(handler.handle(repo)).thenReturn(Success(repo));
 
-		var run = EnkiRunner.enki()
+		var run = EnkiRunner.Enki()
 			.withProvider(provider)
 			.withHandler(null)
 			.withHandler(handler)
@@ -73,15 +74,15 @@ public class EnkiRunnerTest {
 	public void test_ignore_error_in_provider() {
 		var rightProvider = mock(RepoProvider.class);
 		var repo = new TestRepo();
-		when(rightProvider.repositories()).thenReturn(Seq(repo));
+		when(rightProvider.repositories()).thenReturn(Success(Seq(repo)));
 
 		var wrongProvider = mock(RepoProvider.class);
 		when(wrongProvider.repositories()).thenThrow(new RuntimeException("some error"));
 
 		var handler = mock(RepoHandler.class);
-		when(handler.handle(repo)).thenReturn(repo);
+		when(handler.handle(repo)).thenReturn(Success(repo));
 
-		var run = EnkiRunner.enki()
+		var run = EnkiRunner.Enki()
 			.withProvider(wrongProvider)
 			.withProvider(rightProvider)
 			.withHandler(handler)
@@ -95,14 +96,14 @@ public class EnkiRunnerTest {
 	public void test_ignore_error_in_handler() {
 		var repo = new TestRepo();
 		var provider = mock(RepoProvider.class);
-		when(provider.repositories()).thenReturn(Seq(repo));
+		when(provider.repositories()).thenReturn(Success(Seq(repo)));
 
 		var rightHandler = mock(RepoHandler.class);
-		when(rightHandler.handle(repo)).thenReturn(repo);
+		when(rightHandler.handle(repo)).thenReturn(Success(repo));
 		var wrongHandler = mock(RepoHandler.class);
 		when(wrongHandler.handle(repo)).thenThrow(new RuntimeException("some error"));
 
-		var run = EnkiRunner.enki()
+		var run = EnkiRunner.Enki()
 			.withProvider(provider)
 			.withHandler(wrongHandler)
 			.withHandler(rightHandler)
@@ -117,11 +118,11 @@ public class EnkiRunnerTest {
 		var provider = mock(RepoProvider.class);
 		var repo1 = new TestRepo();
 		var repo2 = new TestRepo();
-		when(provider.repositories()).thenReturn(Seq(repo1,repo2));
+		when(provider.repositories()).thenReturn(Success(Seq(repo1,repo2)));
 		var handler = mock(RepoHandler.class);
-		when(handler.handle(repo1)).thenReturn(repo1);
-		when(handler.handle(repo2)).thenReturn(repo2);
-		EnkiRunner.enki()
+		when(handler.handle(repo1)).thenReturn(Success(repo1));
+		when(handler.handle(repo2)).thenReturn(Success(repo2));
+		EnkiRunner.Enki()
 			.withProvider(provider)
 			.withHandler(handler)
 			.run();
@@ -134,16 +135,16 @@ public class EnkiRunnerTest {
 	public void test_calling_handler_for_each_repo_provided_by_multiple_providers() {
 		var provider1 = mock(RepoProvider.class);
 		var repo1 = new TestRepo();
-		when(provider1.repositories()).thenReturn(Seq(repo1));
+		when(provider1.repositories()).thenReturn(Success(Seq(repo1)));
 
 		var provider2 = mock(RepoProvider.class);
 		var repo2 = new TestRepo();
-		when(provider2.repositories()).thenReturn(Seq(repo2));
+		when(provider2.repositories()).thenReturn(Success(Seq(repo2)));
 
 		var handler = mock(RepoHandler.class);
-		when(handler.handle(repo1)).thenReturn(repo1);
-		when(handler.handle(repo2)).thenReturn(repo2);
-		EnkiRunner.enki()
+		when(handler.handle(repo1)).thenReturn(Success(repo1));
+		when(handler.handle(repo2)).thenReturn(Success(repo2));
+		EnkiRunner.Enki()
 			.withProvider(provider1)
 			.withProvider(provider2)
 			.withHandler(handler)

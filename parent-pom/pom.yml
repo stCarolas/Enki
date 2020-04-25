@@ -1,7 +1,7 @@
 name: Enki Parent Pom
 groupId: com.github.stcarolas.enki
 artifactId: enki-parent
-version: 1.0.4
+version: 1.0.5
 packaging: pom
 
 modelVersion: 4.0.0
@@ -61,7 +61,8 @@ build:
       dependencies:
       - {groupId: org.ow2.asm, artifactId: asm, version: 7.3.1, type: jar}
       annotationProcessorPaths:
-      - {groupId: org.projectlombok, artifactId: lombok, version: 1.18.12}
+      - {groupId: org.projectlombok, artifactId: lombok,          version: 1.18.12}
+      - {groupId: io.micronaut, artifactId: micronaut-inject-java, version: 1.3.4}
 
 repositories:
 - {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}

@@ -12,9 +12,9 @@ packaging: pom
 modules:
   - parent-pom
   - core
-  - providers/bitbucket
-  - providers/gitea
-  - providers/gitlab
+  #- providers/bitbucket
+  #- providers/gitea
+  #- providers/gitlab
   #- providers/github
   #- providers/one-repo
   #- server
