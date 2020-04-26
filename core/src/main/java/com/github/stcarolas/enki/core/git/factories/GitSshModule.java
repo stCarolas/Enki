@@ -1,22 +1,25 @@
-package com.github.stcarolas.enki.core.git.dagger;
+package com.github.stcarolas.enki.core.git.factories;
+
 import java.io.File;
 
+import javax.inject.Named;
+
 import com.github.stcarolas.enki.core.git.DefaultTransportConfigCallback;
-import com.github.stcarolas.enki.core.git.GitCloneSsh;
 
 import org.eclipse.jgit.api.CloneCommand;
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.TransportConfigCallback;
 
-import dagger.Module;
-import dagger.Provides;
+import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Prototype;
+import io.micronaut.context.annotation.Requires;
 import io.vavr.Function2;
-import io.vavr.control.Try;
 
-@Module(includes=GitCommonModule.class)
+@Factory
 public class GitSshModule {
 
-	@Provides static Function2<String, File, CloneCommand> cloneCommand(
+	@Prototype @Requires(property="protocol", value="ssh")
+	@Named("FilledCloneCommand") 
+	Function2<String, File, CloneCommand> cloneCommand(
 		CloneCommand cloneCommand,
 		TransportConfigCallback callback
 	){
@@ -27,7 +30,8 @@ public class GitSshModule {
 				.setTransportConfigCallback(callback);
 	}
 
-	@Provides static TransportConfigCallback callback(){
+	@Prototype @Requires(property="protocol", value="ssh")
+	TransportConfigCallback callback(){
 		return new DefaultTransportConfigCallback();
 	}
 	

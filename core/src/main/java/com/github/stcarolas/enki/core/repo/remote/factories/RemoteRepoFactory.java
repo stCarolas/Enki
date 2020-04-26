@@ -1,4 +1,4 @@
-package com.github.stcarolas.enki.core.repo.remote;
+package com.github.stcarolas.enki.core.repo.remote.factories;
 
 import java.io.File;
 import java.util.function.Function;
@@ -8,6 +8,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import com.github.stcarolas.enki.core.hosting.RepoHosting;
+import com.github.stcarolas.enki.core.repo.remote.RemoteRepo;
 
 import org.eclipse.jgit.api.Git;
 
@@ -36,4 +37,5 @@ public class RemoteRepoFactory {
 		this.directoryProvider = directoryProvider;
 		this.identityProvider = identityProvider;
 	}
+
 }

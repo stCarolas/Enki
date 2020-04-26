@@ -1,13 +1,9 @@
-package com.github.stcarolas.enki.core.git.dagger;
+package com.github.stcarolas.enki.core.git.factories;
 
 import static io.vavr.API.Option;
 import static io.vavr.API.Try;
 
 import java.io.File;
-import java.util.function.Function;
-
-import com.github.stcarolas.enki.core.git.GitCommit;
-import com.github.stcarolas.enki.core.git.GitPush;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;

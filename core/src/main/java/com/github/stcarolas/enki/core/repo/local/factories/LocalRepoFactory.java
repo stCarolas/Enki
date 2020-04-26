@@ -1,9 +1,11 @@
-package com.github.stcarolas.enki.core.repo.local;
+package com.github.stcarolas.enki.core.repo.local.factories;
 
 import java.io.File;
 import java.util.function.Function;
 
 import javax.inject.Inject;
+
+import com.github.stcarolas.enki.core.repo.local.LocalRepo;
 
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.PushResult;
