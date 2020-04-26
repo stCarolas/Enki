@@ -9,8 +9,6 @@ import java.util.function.Function;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import com.github.stcarolas.enriched.Enriched;
-
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 

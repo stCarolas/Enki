@@ -6,7 +6,7 @@ import java.util.function.Function;
 import javax.inject.Named;
 
 import com.github.stcarolas.enki.core.hosting.RepoHosting;
-import com.github.stcarolas.enriched.Enriched;
+import com.github.stcarolas.enrichedbeans.annotations.Enriched;
 
 import org.eclipse.jgit.api.Git;
 

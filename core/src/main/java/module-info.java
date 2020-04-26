@@ -10,5 +10,5 @@ module com.github.stcarolas.enki.core {
 	requires javax.inject;
 	requires java.compiler;
 	requires jsch;
-	requires com.github.stcarolas.enriched;
+	requires com.github.stcarolas.enrichedbeans.annotations;
 }
