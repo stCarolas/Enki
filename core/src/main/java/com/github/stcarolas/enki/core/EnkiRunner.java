@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 import com.github.stcarolas.enki.core.hosting.RepoHosting;
 import com.github.stcarolas.enki.core.repo.remote.RemoteRepo;
-import com.github.stcarolas.enki.core.repo.remote.factories.RemoteRepoFactory;
+import com.github.stcarolas.enki.core.repo.remote.RemoteRepoFactory;
 
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.env.PropertySource;
@@ -29,6 +29,7 @@ public class EnkiRunner {
 
 	public static void main(String args[]) {
 		var enki = new EnkiRunner(Seq());
+		enki.run();
 		//factory
 			//.map(factory -> factory.remote(null, "git@github.com:stCarolas/nvim-configs.git"))
 			//.onFailure(error -> log.error(error))

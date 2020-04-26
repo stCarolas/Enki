@@ -5,7 +5,7 @@ import static io.vavr.API.Option;
 import java.util.function.Function;
 
 import com.github.stcarolas.enki.core.repo.remote.RemoteRepo;
-import com.github.stcarolas.enki.core.repo.remote.factories.RemoteRepoFactory;
+import com.github.stcarolas.enki.core.repo.remote.RemoteRepoFactory;
 
 import io.vavr.collection.Seq;
 import io.vavr.control.Try;
