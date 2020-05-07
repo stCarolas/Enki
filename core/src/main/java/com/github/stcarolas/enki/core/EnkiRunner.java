@@ -1,9 +1,7 @@
 package com.github.stcarolas.enki.core;
 
-import static io.vavr.API.Try;
 import static io.vavr.API.Seq;
-import static io.vavr.API.For;
-import static io.vavr.API.println;
+import static io.vavr.API.Try;
 
 import java.util.function.Function;
 
@@ -12,13 +10,11 @@ import com.github.stcarolas.enki.core.repo.remote.RemoteRepo;
 import com.github.stcarolas.enki.core.repo.remote.RemoteRepoFactory;
 
 import io.micronaut.context.ApplicationContext;
-import io.micronaut.context.env.PropertySource;
 import io.micronaut.core.util.CollectionUtils;
 import io.vavr.collection.Seq;
 import io.vavr.control.Try;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -27,24 +23,19 @@ public class EnkiRunner {
 
 	private final Seq<Function<RemoteRepoFactory, Try<Seq<RemoteRepo>>>> providers;
 
-	public static void main(String args[]) {
-		var enki = new EnkiRunner(Seq());
-		enki.run();
-		//factory
-			//.map(factory -> factory.remote(null, "git@github.com:stCarolas/nvim-configs.git"))
-			//.onFailure(error -> log.error(error))
-			//.forEach(remote -> remote.toLocal());
+	public EnkiRunner withProvider(Function<RemoteRepoFactory, Try<Seq<RemoteRepo>>> provider){
+		return new EnkiRunner(providers.append(provider));
 	}
 
 	public void run(){
 		loadFactory()
-			.map(factory -> providers.map( fn -> new RepoHosting(factory, fn) ));
+			.map(factory -> providers.map(provider -> new RepoHosting(factory, provider)));
 	}
-
 
 	private Try<RemoteRepoFactory> loadFactory(){
 		return Try(
 				() -> ApplicationContext.builder()
+					//.packages("com.github.stcarolas.enki.core")
 					.deduceEnvironment(false)
 					.properties(CollectionUtils.mapOf("protocol", "ssh"))
 					.start()
@@ -54,4 +45,9 @@ public class EnkiRunner {
 				error -> log.error("Cant create RepoFactory: {}", error.getMessage())
 			);
 	}
+
+	public static EnkiRunner Enki(){
+		return new EnkiRunner(Seq());
+	}
+
 }
