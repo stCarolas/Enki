@@ -12,20 +12,13 @@ packaging: pom
 modules:
   - parent-pom
   - core
-  #- providers/bitbucket
-  #- providers/gitea
-  #- providers/gitlab
-  #- providers/github
-  #- providers/one-repo
-  #- server
-  #- handlers/discord-commit-hook
-  #- handlers/gitea-mirror
-  #- handlers/gitlab-push
-  #- handlers/github-archive-repo
-  #- handlers/gocd-handlers
-  #- handlers/jacoco
-  #- handlers/logging-handlers
-  #- handlers/maven-dependency-handlers
+  - providers/gitlab
+  - handlers/shell-runner
+  - server
 
 repositories:
-- {id: enki-repo, layout: default, url: 'https://dl.bintray.com/stcarolas/maven'}
+  - {
+      id: enki-repo,
+      layout: default,
+      url: "https://dl.bintray.com/stcarolas/maven",
+    }

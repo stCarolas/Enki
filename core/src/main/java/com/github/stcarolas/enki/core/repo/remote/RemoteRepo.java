@@ -26,10 +26,10 @@ public class RemoteRepo {
 
 	private final RepoHosting provider;
 
-	@Enrich @Named("HttpCloneCommand") 
+	@Enrich @Named("HttpCloneCommand")
 	private final Function2<String, File, Try<Git>> cloneCommand;
 
-	@Enrich @Named("EnsuredFileProvider") 
+	@Enrich @Named("EnsuredFileProvider")
 	private final Function<String, Try<File>> directoryProvider;
 
 	public void toLocal(){

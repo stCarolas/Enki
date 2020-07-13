@@ -4,6 +4,7 @@ import static io.vavr.API.Seq;
 import static io.vavr.API.Try;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import com.github.stcarolas.enki.core.hosting.RepoHosting;
 import com.github.stcarolas.enki.core.repo.remote.RemoteRepo;
@@ -21,9 +22,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class EnkiRunner {
 
-	private final Seq<Function<RemoteRepoFactory, Try<Seq<RemoteRepo>>>> providers;
+	private final Seq<Supplier<Try<Seq<String>>>> providers;
 
-	public EnkiRunner withProvider(Function<RemoteRepoFactory, Try<Seq<RemoteRepo>>> provider){
+	public EnkiRunner withProvider(Supplier<Try<Seq<String>>> provider){
 		return new EnkiRunner(providers.append(provider));
 	}
 

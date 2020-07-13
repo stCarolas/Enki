@@ -5,5 +5,5 @@ import java.io.File;
 import io.vavr.control.Try;
 
 public interface LocalRepoFileHandler {
-	void handle(File directory);
+	Try<Void> handle(File directory);
 }
