@@ -35,7 +35,6 @@ public class EnkiRunner {
 	private Try<RemoteRepoFactory> loadFactory(){
 		return Try(
 				() -> ApplicationContext.builder()
-					//.packages("com.github.stcarolas.enki.core")
 					.deduceEnvironment(false)
 					.properties(CollectionUtils.mapOf("protocol", "ssh"))
 					.start()

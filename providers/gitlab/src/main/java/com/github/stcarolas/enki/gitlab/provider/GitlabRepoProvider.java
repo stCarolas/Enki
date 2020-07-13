@@ -51,32 +51,32 @@ public class GitlabRepoProvider implements RepoProvider<GitlabRepo> {
 	private GitlabRepo convert(Project repo) {
 		var gitlabRepo = new GitlabRepo();
 		gitlabRepo
-      .setNameStrategy(name(repo.getName()))
+			.setNameStrategy(name(repo.getName()))
 			.setDirectoryStrategy(directory(gitlabRepo))
 			.setIdentityStrategy(identity())
 			.setCommitStrategy(commit(gitlabRepo))
 			.setProvidersStrategy(providers(Arrays.asList(this)));
-    gitlabRepo.setSshUrl(repo.getSshUrlToRepo());
-    gitlabRepo.setHttpUrl(repo.getHttpUrlToRepo());
-    gitlabRepo.setPath(repo.getPath());
-    gitlabRepo.setNamespace(repo.getNamespace().getName());
+		gitlabRepo.setSshUrl(repo.getSshUrlToRepo());
+		gitlabRepo.setHttpUrl(repo.getHttpUrlToRepo());
+		gitlabRepo.setPath(repo.getPath());
+		gitlabRepo.setNamespace(repo.getNamespace().getName());
 		return gitlabRepo;
 	}
 
 	@Override
 	public GitlabRepo download(GitlabRepo repo) {
-    return Option(
-        DefaultRepoProviderStrategiesFactory
-          .gitHttpClone(repo, repo.getHttpUrl())
-          .get()
-      )
-      .onEmpty(() -> log.error("download failed"))
-      .map( success -> repo )
-      .getOrNull();
+		return Option(
+				DefaultRepoProviderStrategiesFactory
+					.gitHttpClone(repo, repo.getHttpUrl())
+					.get()
+			)
+			.onEmpty(() -> log.error("download failed"))
+			.map( success -> repo )
+			.getOrNull();
 	}
 
 	@Override
 	public GitlabRepo upload(Repo repo) {
-    return null;
+		return null;
 	}
 }
