@@ -67,7 +67,9 @@ public class EnkiRunner {
 					Success(repository),
 					(repo, handler) -> repo.flatMap(handler::handle)
 				)
-			);
+			)
+			;
+			//.map(repository -> repository.map($ -> $.toLocal()))
 			//.map( (repo) -> repo.map(RemoteRepo::toLocal) );
 	//.map(repo -> repo.toLocal());
 	}
