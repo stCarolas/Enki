@@ -1,5 +1,6 @@
 name: Enki Shell Command Runner
 artifactId: enki-shell-runner
+version: '${revision}'
 
 modelVersion: 4.0.0
 parent:

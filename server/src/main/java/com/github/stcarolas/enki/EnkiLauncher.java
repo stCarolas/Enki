@@ -3,16 +3,15 @@ package com.github.stcarolas.enki;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import com.github.stcarolas.enki.bitbucket.provider.BitbucketRepoProvider;
 import com.github.stcarolas.enki.core.EnkiRunner;
-import com.github.stcarolas.enki.core.Repo;
-import com.github.stcarolas.enki.core.RepoHandler;
 import com.github.stcarolas.enki.core.RepoProvider;
-import com.github.stcarolas.enki.github.provider.GitHubRepoProvider;
+import com.github.stcarolas.enki.gitlab.provider.GitlabRepoProvider;
+import com.github.stcarolas.enki.shell.ShellRunner;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
+import static io.vavr.API.*;
 
 @Command(
 	name = "enki-server",
@@ -33,10 +32,7 @@ public class EnkiLauncher implements Callable<Integer> {
 	@Option(names = { "--gitlab" }, description = "use GitLab RepoProvider")
 	private boolean useGitlabProvider = false;
 
-	@Option(
-		names = { "--gitlab-endpoint" },
-		description = "Gitlab REST API Endpoint"
-	)
+	@Option(names = { "--gitlab-endpoint" }, description = "Gitlab REST API Endpoint")
 	private String gitlabEndpoint = "";
 
 	@Option(names = { "--gitlab-token" }, description = "Gitlab Access Token")
@@ -48,25 +44,15 @@ public class EnkiLauncher implements Callable<Integer> {
 
 	@Override
 	public Integer call() throws Exception {
-		//List<RepoHandler<Repo>> handlers = ClasspathScanner.scan(jar);
-		List<RepoProvider<Repo>> providers = new ArrayList<>();
-		List<RepoHandler<Repo>> handlers = List(new ShellRunner("touch /tmp/touched"));
+		List<RepoProvider> providers = new ArrayList<>();
 
-		if (isServer) {
-			EnkiServer.builder()
-				.providers(providers)
-				.handlers(handlers)
-				.port(port)
-				.serverHost(host)
-				.build()
-				.start();
-		} else {
-			EnkiRunner.<Repo>builder()
-				.providers(providers)
-				.handlers(handlers)
-				.build()
-				.handle();
-		}
+		EnkiRunner.Enki()
+			.withProvider(
+				GitlabRepoProvider.builder()
+					.endpoint(gitlabEndpoint)
+					.token(gitlabToken)
+					.build()
+			);
 
 		return 0;
 	}

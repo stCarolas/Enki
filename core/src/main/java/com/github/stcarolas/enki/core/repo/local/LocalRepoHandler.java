@@ -4,6 +4,6 @@ import java.io.File;
 
 import io.vavr.control.Try;
 
-public interface LocalRepoFileHandler {
-	Try<Void> handle(File directory);
+public interface LocalRepoHandler {
+	Try<LocalRepo> handle(LocalRepo directory);
 }

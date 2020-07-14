@@ -19,12 +19,12 @@ import static io.vavr.API.*;
 @RequiredArgsConstructor
 public class RemoteRepo {
 
-	@Enrich @Named("GeneratedId")
-	private final String id;
-
 	private final String url;
 
 	private final RepoHosting provider;
+
+	@Enrich @Named("GeneratedId")
+	private final String id;
 
 	@Enrich @Named("HttpCloneCommand")
 	private final Function2<String, File, Try<Git>> cloneCommand;
@@ -36,4 +36,4 @@ public class RemoteRepo {
 		directoryProvider.apply(id).flatMap(dir -> cloneCommand.apply(url, dir));
 	}
 
-}
+} 

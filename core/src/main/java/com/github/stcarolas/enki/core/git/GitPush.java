@@ -3,6 +3,7 @@ package com.github.stcarolas.enki.core.git;
 import java.io.File;
 import java.util.function.Function;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.eclipse.jgit.api.Git;
@@ -13,7 +14,7 @@ import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Singleton
+@Named("GitPush")
 public class GitPush implements Function<File, Try<Iterable<PushResult>>> {
 
 	private final Function1<File, Try<Git>> gitOpen;
