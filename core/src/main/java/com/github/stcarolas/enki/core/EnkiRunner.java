@@ -5,6 +5,7 @@ import static io.vavr.API.Try;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import com.github.stcarolas.enki.core.hosting.RepoHosting;
+import com.github.stcarolas.enki.core.repo.local.LocalRepo;
 import com.github.stcarolas.enki.core.repo.local.LocalRepoHandler;
 import com.github.stcarolas.enki.core.repo.remote.RemoteRepo;
 import com.github.stcarolas.enki.core.repo.remote.RemoteRepoFactory;
@@ -51,13 +52,12 @@ public class EnkiRunner {
 
 	public void run() {
 		loadFactory()
-			.map(
-				factory -> providers.map(provider -> new RepoHosting(factory, provider))
-			);
+			.map(factory -> providers.map(provider -> new RepoHosting(factory, provider)))
+			.forEach(this::handle);
 	}
 
-	private void handle(Seq<RepoHosting> hostings) {
-		hostings.flatMap(
+	private Seq<Try<LocalRepo>> handle(Seq<RepoHosting> hostings) {
+		return hostings.flatMap(
 			hosting -> hosting.repositories()
 				.onFailure(error -> log.error(error))
 				.getOrElse(Seq())
@@ -68,17 +68,23 @@ public class EnkiRunner {
 					(repo, handler) -> repo.flatMap(handler::handle)
 				)
 			)
-			;
-			//.map(repository -> repository.map($ -> $.toLocal()))
-			//.map( (repo) -> repo.map(RemoteRepo::toLocal) );
-	//.map(repo -> repo.toLocal());
+			.map(repository -> repository.flatMap($ -> $.toLocal()))
+			.map(
+				repository -> localRepoHandlers.foldLeft(
+					repository,
+					(repo, handler) -> repo.flatMap(handler::handle)
+				)
+			);
 	}
 
 	private Try<RemoteRepoFactory> loadFactory() {
 		return Try(
 			() -> ApplicationContext.builder()
 				.deduceEnvironment(false)
-				.properties(CollectionUtils.mapOf("protocol", "ssh"))
+				.properties(Map("protocol", (Object)"http")
+					.put("http.username","username")
+					.put("http.password","password")
+					.toJavaMap())
 				.start()
 		)
 			.map(context -> context.getBean(RemoteRepoFactory.class))

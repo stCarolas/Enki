@@ -52,7 +52,9 @@ public class EnkiLauncher implements Callable<Integer> {
 					.endpoint(gitlabEndpoint)
 					.token(gitlabToken)
 					.build()
-			);
+			)
+			.withLocalRepoHandler(new ShellRunner("touch /tmp/shellrunner"))
+			.run();
 
 		return 0;
 	}

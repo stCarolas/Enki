@@ -1,14 +1,15 @@
 name: Enki Generator
 artifactId: enki-generator
+version: ${revision}
 
 modelVersion: 4.0.0
 parent: 
   artifactId: enki-parent
   groupId: com.github.stcarolas.enki
-  version: 1.0.0
+  version: 1.0.6
 
 dependencies:
-- {groupId: com.github.stcarolas.enki,              artifactId: enki-core,                     version: '${project.version}'}
+- {groupId: com.github.stcarolas.enki,              artifactId: enki-core,                     version: '${revision}'}
 - {groupId: org.apache.logging.log4j,               artifactId: log4j-api,                     version: 2.12.1}
 - {groupId: org.apache.logging.log4j,               artifactId: log4j-core,                    version: 2.12.1}
 - {groupId: com.github.stcarolas.gittemplateloader, artifactId: handlebars-git-templateloader, version: 0.0.3}
