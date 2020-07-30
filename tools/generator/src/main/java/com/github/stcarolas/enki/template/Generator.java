@@ -8,7 +8,6 @@ import java.util.function.Function;
 import com.github.stcarolas.enki.core.repo.local.LocalRepo;
 import com.github.stcarolas.enki.core.repo.local.LocalRepoHandler;
 import com.github.stcarolas.enki.generator.operators.LoadTemplate;
-import com.github.stcarolas.enki.generator.operators.TemplateLoaderSupplier;
 import com.github.stcarolas.gittemplateloader.GitTemplateLoader;
 import io.vavr.collection.Seq;
 import io.vavr.control.Option;
