@@ -1,5 +1,5 @@
-name: Enki Shell Command Runner
-artifactId: enki-shell-runner
+name: Enki Url Regexp Filter
+artifactId: enki-url-regexp-filter
 version: '${revision}'
 
 modelVersion: 4.0.0

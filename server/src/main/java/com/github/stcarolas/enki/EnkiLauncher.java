@@ -7,31 +7,17 @@ import com.github.stcarolas.enki.core.EnkiRunner;
 import com.github.stcarolas.enki.core.RepoProvider;
 import com.github.stcarolas.enki.gitlab.provider.GitlabRepoProvider;
 import com.github.stcarolas.enki.shell.ShellRunner;
+import com.github.stcarolas.enki.shell.UrlRegexpFilter;
+import lombok.extern.log4j.Log4j2;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import static io.vavr.API.*;
 
-@Command(
-	name = "enki-server",
-	mixinStandardHelpOptions = true,
-	version = "0.2",
-	description = "run enki handlers"
-)
+@Command(name = "enki", mixinStandardHelpOptions = true, version = "0.2")
+@Log4j2
 public class EnkiLauncher implements Callable<Integer> {
-	@Option(names = { "--server" }, description = "run in server mode")
-	private boolean isServer = false;
-
-	@Option(names = { "--host" }, description = "host to listen for Enki Server")
-	private String host = "0.0.0.0";
-
-	@Option(names = { "--port" }, description = "port to listen for Enki Server")
-	private int port = 8080;
-
-	@Option(names = { "--gitlab" }, description = "use GitLab RepoProvider")
-	private boolean useGitlabProvider = false;
-
 	@Option(names = { "--gitlab-endpoint" }, description = "Gitlab REST API Endpoint")
 	private String gitlabEndpoint = "";
 
@@ -52,7 +38,12 @@ public class EnkiLauncher implements Callable<Integer> {
 					.endpoint(gitlabEndpoint)
 					.token(gitlabToken)
 					.build()
-			);
+			)
+			.withRemoteRepoFilter(new UrlRegexpFilter("accounting"))
+			.withLocalRepoHandler(new ShellRunner("touch shellrunner.txt"))
+			.run()
+			.onFailure(error -> log.error(error))
+			.map(result -> result.map(repo -> repo.onFailure(error -> log.error(error))));
 
 		return 0;
 	}

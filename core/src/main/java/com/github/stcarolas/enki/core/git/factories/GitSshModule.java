@@ -18,7 +18,7 @@ import io.vavr.Function2;
 public class GitSshModule {
 
 	@Prototype @Requires(property="protocol", value="ssh")
-	@Named("FilledCloneCommand") 
+	//@Named("FilledCloneCommand") 
 	Function2<String, File, CloneCommand> cloneCommand(
 		CloneCommand cloneCommand,
 		TransportConfigCallback callback

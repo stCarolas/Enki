@@ -36,8 +36,14 @@ public class RemoteRepo {
 	@Enrich @Named("LocalRepoFactory")
 	private final Function2<String, File, LocalRepo> localRepoFactory;
 
-	public void toLocal(){
-		directoryProvider.apply(id).flatMap(dir -> cloneCommand.apply(url, dir));
+	public Try<LocalRepo> toLocal(){
+		return directoryProvider.apply(id)
+			.andThen(dir -> cloneCommand.apply(url, dir))
+			.map(dir -> localRepoFactory.apply(id, dir));
+	}
+
+	public Boolean check(Function<String, Boolean> filter){
+		return filter.apply(url);
 	}
 
 } 

@@ -5,6 +5,8 @@ import static io.vavr.API.Try;
 
 import java.io.File;
 
+import javax.inject.Named;
+
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
@@ -26,7 +28,8 @@ public class GitCommonModule {
 		return Git.cloneRepository();
 	}
 
-	@Prototype Function1<File, Try<Git>> gitOpenFn(){
+	@Prototype @Named("GitRepo")
+	Function1<File, Try<Git>> gitOpenFn(){
 		return directory ->
 			Try(() -> Git.open(directory))
 				.onFailure(
@@ -43,7 +46,7 @@ public class GitCommonModule {
 				.map(Status::isClean);
 	}
 
-	@Prototype Function2<Git, String, Try<Git>> gitStageFn(){
+	@Prototype @Named("GitStage") Function2<Git, String, Try<Git>> gitStageFn(){
 		return (git,pattern) ->
 			Try(() -> git.add().addFilepattern(pattern).call())
 				.onFailure( 
@@ -52,7 +55,7 @@ public class GitCommonModule {
 				.map( result -> git );
 	}
 
-	@Prototype Function2<String, Git, Try<RevCommit>> gitCommitFn(){
+	@Prototype @Named("GitCommit") Function2<String, Git, Try<RevCommit>> gitCommitFn(){
 		return (commitMessage, git) ->
 			Option(commitMessage)
 				.filterNot(String::isBlank)
@@ -64,7 +67,7 @@ public class GitCommonModule {
 				);
 	}
 
-	@Prototype Function1<Git, Try<Iterable<PushResult>>> gitPushFn(){
+	@Prototype @Named("GitRawPush") Function1<Git, Try<Iterable<PushResult>>> gitPushFn(){
 		return git ->
 			Try(() -> git.push().call())
 				.onFailure(error -> log.error("error while pushing repo: {}", error))

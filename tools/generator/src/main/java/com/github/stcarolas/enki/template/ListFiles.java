@@ -1,5 +1,6 @@
-package com.github.stcarolas.enki.generator.operators;
+package com.github.stcarolas.enki.template;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Function;
@@ -14,17 +15,13 @@ import reactor.core.publisher.Flux;
 
 @Builder
 @Log4j2
-public class TemplateLoaderToPathMapper
-	implements Function<GitTemplateLoader, Try<Seq<Path>>> {
+public class ListFiles implements Function<Option<File>, Try<Seq<Path>>> {
 
 	@Override
-	public Try<Seq<Path>> apply(GitTemplateLoader t) {
-		return Option.ofOptional(t.getDirectory())
-			.toTry()
+	public Try<Seq<Path>> apply(Option<File> directory) {
+		return directory.toTry()
 			.mapTry(
-				directory -> List.ofAll(
-					Files.walk(directory.toPath()).filter(Files::isRegularFile)
-				)
+				dir -> List.ofAll(Files.walk(dir.toPath()).filter(Files::isRegularFile))
 			);
 	}
 }

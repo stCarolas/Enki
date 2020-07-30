@@ -5,6 +5,7 @@ import static io.vavr.API.Try;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import com.github.stcarolas.enki.core.hosting.RepoHosting;
+import com.github.stcarolas.enki.core.repo.local.LocalRepo;
 import com.github.stcarolas.enki.core.repo.local.LocalRepoHandler;
 import com.github.stcarolas.enki.core.repo.remote.RemoteRepo;
 import com.github.stcarolas.enki.core.repo.remote.RemoteRepoFactory;
@@ -24,12 +25,14 @@ public class EnkiRunner {
 	private final Seq<Supplier<Try<Seq<String>>>> providers;
 	private final Seq<RemoteRepoHandler> remoteRepoHandlers;
 	private final Seq<LocalRepoHandler> localRepoHandlers;
+	private final Seq<Function<String, Boolean>> remoteRepoFilters;
 
 	public EnkiRunner withProvider(Supplier<Try<Seq<String>>> provider) {
 		return new EnkiRunner(
 			providers.append(provider),
 			remoteRepoHandlers,
-			localRepoHandlers
+			localRepoHandlers,
+			remoteRepoFilters
 		);
 	}
 
@@ -37,7 +40,17 @@ public class EnkiRunner {
 		return new EnkiRunner(
 			providers,
 			remoteRepoHandlers.append(handler),
-			localRepoHandlers
+			localRepoHandlers,
+			remoteRepoFilters
+		);
+	}
+
+	public EnkiRunner withRemoteRepoFilter(Function<String,Boolean> filter) {
+		return new EnkiRunner(
+			providers,
+			remoteRepoHandlers,
+			localRepoHandlers,
+			remoteRepoFilters.append(filter)
 		);
 	}
 
@@ -45,21 +58,27 @@ public class EnkiRunner {
 		return new EnkiRunner(
 			providers,
 			remoteRepoHandlers,
-			localRepoHandlers.append(handler)
+			localRepoHandlers.append(handler),
+			remoteRepoFilters
 		);
 	}
 
-	public void run() {
-		loadFactory()
-			.map(
-				factory -> providers.map(provider -> new RepoHosting(factory, provider))
-			);
+	public Try<Seq<Try<LocalRepo>>> run() {
+		return loadFactory()
+			.map(factory -> providers.map(provider -> new RepoHosting(factory, provider)))
+			.map(this::handle);
 	}
 
-	private void handle(Seq<RepoHosting> hostings) {
-		hostings.flatMap(
+	private Seq<Try<LocalRepo>> handle(Seq<RepoHosting> hostings) {
+		return hostings.flatMap(
 			hosting -> hosting.repositories()
 				.onFailure(error -> log.error(error))
+				.map(
+					repositories -> remoteRepoFilters.foldLeft(
+						repositories,
+						(repos, filter) -> repos.filter(it -> it.check(filter))
+					)
+				)
 				.getOrElse(Seq())
 		)
 			.map(
@@ -68,17 +87,25 @@ public class EnkiRunner {
 					(repo, handler) -> repo.flatMap(handler::handle)
 				)
 			)
-			;
-			//.map(repository -> repository.map($ -> $.toLocal()))
-			//.map( (repo) -> repo.map(RemoteRepo::toLocal) );
-	//.map(repo -> repo.toLocal());
+			.map(repository -> repository.flatMap($ -> $.toLocal()))
+			.map(
+				repository -> localRepoHandlers.foldLeft(
+					repository,
+					(repo, handler) -> repo.flatMap(handler::handle)
+				)
+			);
 	}
 
 	private Try<RemoteRepoFactory> loadFactory() {
 		return Try(
 			() -> ApplicationContext.builder()
 				.deduceEnvironment(false)
-				.properties(CollectionUtils.mapOf("protocol", "ssh"))
+				.properties(
+					Map("protocol", (Object) "http")
+						.put("http.username", "username")
+						.put("http.password", "password")
+						.toJavaMap()
+				)
 				.start()
 		)
 			.map(context -> context.getBean(RemoteRepoFactory.class))
@@ -88,6 +115,6 @@ public class EnkiRunner {
 	}
 
 	public static EnkiRunner Enki() {
-		return new EnkiRunner(Seq(), Seq(), Seq());
+		return new EnkiRunner(Seq(), Seq(), Seq(), Seq());
 	}
 }

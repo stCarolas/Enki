@@ -23,7 +23,9 @@ public class ShellRunner implements LocalRepoHandler, Function<File, Try<Void>> 
 					directory
 				)
 		)
+			.andThen( result -> log.info("shell command executed"))
 			.onFailure(error -> log.error(error))
+			.andThenTry(process -> log.error(new String(process.getErrorStream().readAllBytes())))
 			.filter(result -> result.exitValue() == 0)
 			.map(it -> null);
 	}
