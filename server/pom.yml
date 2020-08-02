@@ -14,6 +14,7 @@ dependencies:
 - {groupId: com.github.stcarolas.enki, artifactId: enki-gitlab-provider,   version: '${revision}'}
 - {groupId: com.github.stcarolas.enki, artifactId: enki-shell-runner,      version: '${revision}'}
 - {groupId: com.github.stcarolas.enki, artifactId: enki-url-regexp-filter, version: '${revision}'}
+- {groupId: com.github.stcarolas.enki, artifactId: enki-generator,         version: '${revision}'}
 - {groupId: io.undertow,               artifactId: undertow-core,          version: 2.0.1.Final}
 - {groupId: org.xeustechnologies,      artifactId: jcl-core,               version: 2.8}
 - {groupId: com.typesafe,              artifactId: config,                 version: 1.3.4}

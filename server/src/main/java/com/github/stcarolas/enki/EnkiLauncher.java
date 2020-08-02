@@ -8,6 +8,8 @@ import com.github.stcarolas.enki.core.RepoProvider;
 import com.github.stcarolas.enki.gitlab.provider.GitlabRepoProvider;
 import com.github.stcarolas.enki.shell.ShellRunner;
 import com.github.stcarolas.enki.shell.UrlRegexpFilter;
+import com.github.stcarolas.enki.template.Generator;
+
 import lombok.extern.log4j.Log4j2;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -39,8 +41,8 @@ public class EnkiLauncher implements Callable<Integer> {
 					.token(gitlabToken)
 					.build()
 			)
-			.withRemoteRepoFilter(new UrlRegexpFilter("accounting"))
-			.withLocalRepoHandler(new ShellRunner("touch shellrunner.txt"))
+			.withRemoteRepoFilter(new UrlRegexpFilter("efgi-accounting-object.git"))
+			.withLocalRepoHandler(new Generator("git@github.com:stCarolas/enriched-beans.git"))
 			.run()
 			.onFailure(error -> log.error(error))
 			.map(result -> result.map(repo -> repo.onFailure(error -> log.error(error))));

@@ -1,15 +1,13 @@
 package com.github.stcarolas.enki.generator.operators;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
 import com.github.stcarolas.gittemplateloader.GitTemplateLoader;
 import com.github.stcarolas.gittemplateloader.UrlType;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+
+import io.vavr.Function1;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class LoadTemplate implements Function<String,GitTemplateLoader> {
+public class LoadTemplate implements Function1<String,GitTemplateLoader> {
 
 	@Override
 	public GitTemplateLoader apply(String url) {
