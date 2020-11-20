@@ -56,10 +56,10 @@ jobs:
     - name: Publish jar's
       run: mvn -B -q deploy -Ddeploy.token=${{ secrets.BINTRAY_API_KEY }} -s .github/workflows/settings.xml -pl '!parent-pom,!.'
       
-    - name: Coverage
-      uses: mrfyda/codacy-coverage-reporter-action@master
-      with:
-        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+    #- name: Coverage
+    #  uses: mrfyda/codacy-coverage-reporter-action@master
+    #  with:
+    #    project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
     #- name: Prepare Docker building
       #run: |
