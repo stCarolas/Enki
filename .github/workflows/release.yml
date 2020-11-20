@@ -24,7 +24,7 @@ jobs:
         java-version: 14.0.0-ea.34
 
     - name: Set up Apache Maven
-      uses: stCarolas/setup-maven@v3
+      uses: stCarolas/setup-maven@v4
       with:
         maven-version: 3.5.4
 
